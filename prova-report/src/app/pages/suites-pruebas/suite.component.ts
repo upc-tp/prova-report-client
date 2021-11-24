@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { SuitesService } from '../../services/suites.service';
 
 @Component({
@@ -7,7 +9,7 @@ import { SuitesService } from '../../services/suites.service';
   templateUrl: './suite.component.html',
   styleUrls: ['./suite.component.scss'],
 })
-export class SuiteComponent implements OnInit {
+export class SuiteComponent implements OnInit, OnDestroy {
   data: Array<{
     title: string;
     description: string;
@@ -18,6 +20,10 @@ export class SuiteComponent implements OnInit {
   isOkLoading = false;
   validateForm!: FormGroup;
 
+  private modelChanged: Subject<string> = new Subject<string>();
+  private subscription: Subscription;
+  debounceTime = 500;
+
   constructor(private suiteService: SuitesService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -26,6 +32,14 @@ export class SuiteComponent implements OnInit {
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
     });
+
+    this.subscription = this.modelChanged
+      .pipe(
+        debounceTime(this.debounceTime),
+      )
+      .subscribe((search: string) => {
+        this.fetchSuites(search);
+      });
   }
 
   submitForm(): void {
@@ -52,8 +66,8 @@ export class SuiteComponent implements OnInit {
     }
   }
 
-  fetchSuites() {
-    this.suiteService.getTestSuites().subscribe(
+  fetchSuites(search: string = '') {
+    this.suiteService.getTestSuites(search).subscribe(
       (res) =>
         (this.data = res.result.map((tSuite) => {
           return {
@@ -80,5 +94,13 @@ export class SuiteComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  inputChanged(event) {
+    this.modelChanged.next(event.target.value)
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

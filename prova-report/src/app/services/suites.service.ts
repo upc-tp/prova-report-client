@@ -12,8 +12,8 @@ export class SuitesService {
   private testSuite = 'api/test-suites';
   constructor(private http: HttpClient) { }
 
-  getTestSuites(): Observable<SuiteResponse> {
-    return this.http.get<SuiteResponse>(BASE_URL + this.testSuite)
+  getTestSuites(search: string): Observable<SuiteResponse> {
+    return this.http.get<SuiteResponse>(BASE_URL + this.testSuite + `?search=${search}`)
   }
 
   createTestSuite(title: string, description: string): Observable<SuiteCreatedResponse> {

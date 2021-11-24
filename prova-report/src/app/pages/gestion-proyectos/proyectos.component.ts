@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectService } from '../../services/projects.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-proyectos',
@@ -18,6 +20,10 @@ export class ProyectosComponent implements OnInit {
   isOkLoading = false;
   validateForm!: FormGroup;
 
+  private modelChanged: Subject<string> = new Subject<string>();
+  private subscription: Subscription;
+  debounceTime = 500;
+
   constructor(private projectService: ProjectService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -26,6 +32,14 @@ export class ProyectosComponent implements OnInit {
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
     });
+
+    this.subscription = this.modelChanged
+      .pipe(
+        debounceTime(this.debounceTime),
+      )
+      .subscribe((search: string) => {
+        this.fetchProjects(search);
+      });
   }
 
   submitForm(): void {
@@ -52,8 +66,8 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  fetchProjects() {
-    this.projectService.getTestProjects().subscribe(
+  fetchProjects(search: string = '') {
+    this.projectService.getTestProjects(search).subscribe(
       (res) =>
         (this.data = res.result.map((tSuite) => {
           return {
@@ -80,5 +94,13 @@ export class ProyectosComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+  }
+
+  inputChanged(event) {
+    this.modelChanged.next(event.target.value)
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

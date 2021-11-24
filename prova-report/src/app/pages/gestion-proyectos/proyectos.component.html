@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div>
   <div class="banner">
     <span>Gestion de proyectos de prueba</span>
     <button nz-button nzType="primary" (click)="showModal()">
@@ -51,6 +51,17 @@
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
+
+  <label for="search">Buscar</label>&nbsp;
+  <input
+    style="font-size: 12px !important; width: 200px;"
+    (change)="inputChanged($event)"
+    name="search"
+    type="text"
+    id="search"
+    placeholder="Buscar por título o descripción"
+  />
+  <hr style="border-color: white;">
 
   <nz-table #middleTable nzSize="middle" [nzData]="data">
     <thead>
