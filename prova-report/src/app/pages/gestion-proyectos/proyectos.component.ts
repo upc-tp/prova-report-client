@@ -53,6 +53,7 @@ export class ProyectosComponent implements OnInit {
           (project) => {
             this.fetchProjects();
             console.log('Response: ', project);
+            this.isVisible = false;
           },
           (error) => console.log(error)
         );

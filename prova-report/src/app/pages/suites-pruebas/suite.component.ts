@@ -53,6 +53,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           (suite) => {
             this.fetchSuites();
             console.log('Response: ', suite);
+            this.isVisible = false;
           },
           (error) => console.log(error)
         );
