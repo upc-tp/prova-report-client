@@ -21,6 +21,8 @@ export class ProyectosComponent implements OnInit {
   isOkLoading = false;
   validateForm!: FormGroup;
   id: number;
+  saved: boolean = false;
+  updated: boolean = false;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -29,7 +31,7 @@ export class ProyectosComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchProjects();
@@ -60,6 +62,13 @@ export class ProyectosComponent implements OnInit {
               console.log('Response: ', suite);
               this.isVisible = false;
               this.id = null;
+              this.updated = true;
+              setTimeout(function () {
+                this.updated = false;
+                console.log('Updated: ', this.updated);
+              }.bind(this), 10000);
+              this.validateForm.controls['title'].setValue('');
+              this.validateForm.controls['description'].setValue('');
             },
             (error) => console.log(error)
           );
@@ -74,6 +83,13 @@ export class ProyectosComponent implements OnInit {
               this.fetchProjects();
               console.log('Response: ', project);
               this.isVisible = false;
+              this.saved = true;
+              setTimeout(function () {
+                this.saved = false;
+                console.log('Saved: ', this.saved);
+              }.bind(this), 10000);
+              this.validateForm.controls['title'].setValue('');
+              this.validateForm.controls['description'].setValue('');
             },
             (error) => console.log(error)
           );
@@ -91,15 +107,15 @@ export class ProyectosComponent implements OnInit {
   fetchProjects(search: string = '') {
     this.projectService.getTestProjects(search).subscribe(
       (res) =>
-        (this.data = res.result.map((tSuite) => {
-          return {
-            id: tSuite.id,
-            title: tSuite.title,
-            description: tSuite.description,
-            registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
-            registerBy: 'manuel@gmail.com',
-          };
-        }))
+      (this.data = res.result.map((tSuite) => {
+        return {
+          id: tSuite.id,
+          title: tSuite.title,
+          description: tSuite.description,
+          registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
+          registerBy: 'manuel@gmail.com',
+        };
+      }))
     );
   }
 

@@ -10,6 +10,7 @@ import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
@@ -29,6 +30,7 @@ registerLocaleData(en);
     NzMenuModule,
     NzToolTipModule,
     NzTableModule,
+    NzAlertModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,

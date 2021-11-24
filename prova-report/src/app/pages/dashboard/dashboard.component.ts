@@ -146,20 +146,20 @@ export class DashboardComponent implements OnInit {
     this.stackedBarVerticalOptions = {
       series: [
         {
-          name: 'Aprobada', //verde
-          data: [44, 55, 41],
+          name: 'Omitida', //Azul
+          data: [3, 2, 3],
         },
         {
-          name: 'Fallida', //Naranja
-          data: [13, 23, 20],
+          name: 'Aprobada', //Verde
+          data: [20, 30, 27],
         },
         {
-          name: 'Interrumpida', //Rojo
-          data: [11, 17, 15],
+          name: 'Interrumpida', //Amarillo
+          data: [5, 3, 4],
         },
         {
-          name: 'Omitida', //Rojo
-          data: [0, 1, 2],
+          name: 'Fallida', //Rojo
+          data: [3, 5, 7],
         },
       ],
       chart: {
@@ -273,7 +273,7 @@ export class DashboardComponent implements OnInit {
         offsetY: 0,
         height: 230,
       },
-      labels: ["Aprobadas", "Fallidas", "Interrumpidas", "Omitidas"]
+      labels: ["Omitidas", "Aprobadas", "Interrumpidas", "Fallidas"]
     };
   }
 
