@@ -1,0 +1,59 @@
+<div style="text-align: center">
+  <div class="banner">Dashboard</div>
+  <div class="gutter-example">
+    <div nz-row [nzGutter]="[hGutter, vGutter]">
+      <div nz-col class="gutter-row" [nzSpan]="24 / count">
+        <apx-chart
+          [series]="donutOptions.series"
+          [chart]="donutOptions.chart"
+          [xaxis]="donutOptions.xaxis"
+          [title]="donutOptions.title"
+          [dataLabels]="donutOptions.dataLabels"
+          [legend]="donutOptions.legend"
+          [labels]="donutOptions.labels"
+        ></apx-chart>
+      </div>
+      <div nz-col class="gutter-row" [nzSpan]="24 / count">
+        <apx-chart
+          [series]="stackedBarVerticalOptions.series"
+          [chart]="stackedBarVerticalOptions.chart"
+          [xaxis]="stackedBarVerticalOptions.xaxis"
+          [title]="stackedBarVerticalOptions.title"
+          [plotOptions]="stackedBarVerticalOptions.plotOptions"
+          [yaxis]="stackedBarVerticalOptions.yaxis"
+          [fill]="stackedBarVerticalOptions.fill"
+          [legend]="stackedBarVerticalOptions.legend"
+        ></apx-chart>
+      </div>
+      <div nz-col class="gutter-row" [nzSpan]="24 / count">
+        <apx-chart
+          [series]="stackedBarHorizontalOptions.series"
+          [chart]="stackedBarHorizontalOptions.chart"
+          [xaxis]="stackedBarHorizontalOptions.xaxis"
+          [title]="stackedBarHorizontalOptions.title"
+          [plotOptions]="stackedBarHorizontalOptions.plotOptions"
+          [stroke]="stackedBarHorizontalOptions.stroke"
+          [yaxis]="stackedBarHorizontalOptions.yaxis"
+          [fill]="stackedBarHorizontalOptions.fill"
+          [legend]="stackedBarHorizontalOptions.legend"
+        ></apx-chart>
+      </div>
+      <div nz-col class="gutter-row" [nzSpan]="24 / count">
+        <apx-chart
+          [series]="lineColumnOptions.series"
+          [chart]="lineColumnOptions.chart"
+          [xaxis]="lineColumnOptions.xaxis"
+          [title]="lineColumnOptions.title"
+          [plotOptions]="lineColumnOptions.plotOptions"
+          [stroke]="lineColumnOptions.stroke"
+          [yaxis]="lineColumnOptions.yaxis"
+          [fill]="lineColumnOptions.fill"
+          [legend]="lineColumnOptions.legend"
+          [dataLabels]="lineColumnOptions.dataLabels"
+          [labels]="lineColumnOptions.labels"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,38 @@
+.banner {
+  text-align: left;
+  font-weight: bold;
+  color: #fff;
+  background: #009EAE;
+  padding: 20px 20px 20px 20px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+h4 {
+  margin-bottom: 16px;
+}
+
+.ant-btn-primary {
+  background-color: #3849AA;
+  border: none;
+}
+
+.create-form {
+  max-width: 1000px;
+
+  input {
+    padding: 10px 10px 10px 10px;
+    font-size: 16px;
+    border: 0.5px solid rgb(218, 218, 218);
+    border-radius: 2px;
+    outline: none;
+    transition: all .3s;
+
+    &:focus {
+      outline: none;
+      border: 0.5px solid #3849AA;
+    }
+  }
+}

@@ -1,0 +1,73 @@
+<div style="text-align: center">
+  <div class="banner">
+    <span>Suite pruebas</span>
+    <button nz-button nzType="primary" (click)="showModal()">
+      <span>Nuevo</span>
+    </button>
+  </div>
+
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Suite de prueba"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading"
+  >
+    <form
+      nz-form
+      class="create-form"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item>
+        <nz-form-control>
+          <input
+            nz-input
+            name="title"
+            formControlName="title"
+            type="text"
+            id="title"
+            placeholder="Título"
+          />
+          <p>Ingrese el título para el suite de prueba</p>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <input
+            nz-input
+            name="description"
+            formControlName="description"
+            type="text"
+            id="description"
+            placeholder="Descripción"
+          />
+          <p>Ingrese la descripción para el suite de prueba</p>
+        </nz-form-control>
+      </nz-form-item>
+      <button nz-button nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
+
+  <nz-table #middleTable nzSize="middle" [nzData]="data">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha de registro</th>
+        <th>Registrado por</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td>{{ data.title }}</td>
+        <td>{{ data.description }}</td>
+        <td>{{ data.registerDate }}</td>
+        <td>{{ data.registerBy }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

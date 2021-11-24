@@ -1,0 +1,104 @@
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+      <img
+        [ngStyle]="{ left: isCollapsed ? '20px' : '15px' }"
+        src="assets/images/manu.jpg"
+        alt="logo"
+      />
+      <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
+        <h1>Manuel Alvarado Estanga</h1>
+        <p>Administrador</p>
+        <p>VER PERFIL</p>
+      </div>
+    </div>
+    <p
+      style="color: white; margin-left: 15px; white-space: nowrap"
+      [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }"
+    >
+      Menú de aplicaciones
+    </p>
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <!-- <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/welcome">Welcome</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a>Monitor</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a>Workplace</a>
+          </li>
+        </ul>
+      </li> -->
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
+        nzSelected
+        style="text-align: left"
+        routerLink="/dashboard"
+      >
+        <i nz-icon nzType="home"></i>
+        <span>Dashboard</span>
+      </li>
+
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Gestión de proyectos de prueba' : ''"
+        style="text-align: left"
+        routerLink="/gestion-proyectos"
+      >
+        <i nz-icon nzType="file"></i>
+        <span>Gestión de proyectos de prueba</span>
+      </li>
+
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Suites de prueba' : ''"
+        style="text-align: left"
+        routerLink="/suite-pruebas"
+      >
+        <i nz-icon nzType="form"></i>
+        <span>Suites de prueba</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          ></i>
+          <span>SRPA</span>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
