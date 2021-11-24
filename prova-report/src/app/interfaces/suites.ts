@@ -56,3 +56,40 @@ export interface SuiteCreatedResponse {
 	success: boolean;
 	result: SuiteCreated;
 }
+
+export interface Project {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	title: string;
+	description: string;
+}
+
+export interface TestState {
+	id: number;
+	name: string;
+}
+
+export interface Suite {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	title: string;
+	description: string;
+	project: Project;
+	testState: TestState;
+}
+
+export interface SingleSuiteResponse {
+	message: string;
+	success: boolean;
+	result: Suite;
+}

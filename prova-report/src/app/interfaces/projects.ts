@@ -34,3 +34,21 @@ export interface ProjectCreatedResponse {
 	success: boolean;
 	result: ProjectCreated;
 }
+
+export interface Project {
+	createdAt: string;
+	createdBy?: any;
+	modifiedAt: string;
+	modifiedBy?: any;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	title: string;
+	description: string;
+}
+
+export interface SingleProjectResponse {
+	message: string;
+	success: boolean;
+	result: Project;
+}

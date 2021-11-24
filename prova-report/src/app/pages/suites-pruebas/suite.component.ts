@@ -11,6 +11,7 @@ import { SuitesService } from '../../services/suites.service';
 })
 export class SuiteComponent implements OnInit, OnDestroy {
   data: Array<{
+    id: number;
     title: string;
     description: string;
     registerDate: string;
@@ -19,6 +20,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
+  id: number;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -34,9 +36,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
     });
 
     this.subscription = this.modelChanged
-      .pipe(
-        debounceTime(this.debounceTime),
-      )
+      .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
         this.fetchSuites(search);
       });
@@ -44,19 +44,37 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      this.suiteService
-        .createTestSuite(
-          this.validateForm.controls['title'].value,
-          this.validateForm.controls['description'].value
-        )
-        .subscribe(
-          (suite) => {
-            this.fetchSuites();
-            console.log('Response: ', suite);
-            this.isVisible = false;
-          },
-          (error) => console.log(error)
-        );
+      if (this.id) {
+        this.suiteService
+          .updateTestSuite(
+            this.validateForm.controls['title'].value,
+            this.validateForm.controls['description'].value,
+            this.id
+          )
+          .subscribe(
+            (suite) => {
+              this.fetchSuites();
+              console.log('Response: ', suite);
+              this.isVisible = false;
+              this.id = null;
+            },
+            (error) => console.log(error)
+          );
+      } else {
+        this.suiteService
+          .createTestSuite(
+            this.validateForm.controls['title'].value,
+            this.validateForm.controls['description'].value
+          )
+          .subscribe(
+            (suite) => {
+              this.fetchSuites();
+              console.log('Response: ', suite);
+              this.isVisible = false;
+            },
+            (error) => console.log(error)
+          );
+      }
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -72,6 +90,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
       (res) =>
         (this.data = res.result.map((tSuite) => {
           return {
+            id: tSuite.id,
             title: tSuite.title,
             description: tSuite.description,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
@@ -95,13 +114,23 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   handleCancel(): void {
     this.isVisible = false;
+    this.id = null;
   }
 
   inputChanged(event) {
-    this.modelChanged.next(event.target.value)
+    this.modelChanged.next(event.target.value);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  updateSuite(id: number) {
+    this.id = id;
+    this.suiteService.getTestSuite(id).subscribe((res) => {
+      this.validateForm.get('title').setValue(res.result.title);
+      this.validateForm.get('description').setValue(res.result.description);
+      this.isVisible = true;
+    });
   }
 }

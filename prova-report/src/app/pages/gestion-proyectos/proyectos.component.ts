@@ -11,6 +11,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class ProyectosComponent implements OnInit {
   data: Array<{
+    id: number;
     title: string;
     description: string;
     registerDate: string;
@@ -19,12 +20,16 @@ export class ProyectosComponent implements OnInit {
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
+  id: number;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private projectService: ProjectService, private fb: FormBuilder) {}
+  constructor(
+    private projectService: ProjectService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.fetchProjects();
@@ -34,9 +39,7 @@ export class ProyectosComponent implements OnInit {
     });
 
     this.subscription = this.modelChanged
-      .pipe(
-        debounceTime(this.debounceTime),
-      )
+      .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
         this.fetchProjects(search);
       });
@@ -44,19 +47,37 @@ export class ProyectosComponent implements OnInit {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      this.projectService
-        .createTestProject(
-          this.validateForm.controls['title'].value,
-          this.validateForm.controls['description'].value
-        )
-        .subscribe(
-          (project) => {
-            this.fetchProjects();
-            console.log('Response: ', project);
-            this.isVisible = false;
-          },
-          (error) => console.log(error)
-        );
+      if (this.id) {
+        this.projectService
+          .updateTestProject(
+            this.validateForm.controls['title'].value,
+            this.validateForm.controls['description'].value,
+            this.id
+          )
+          .subscribe(
+            (suite) => {
+              this.fetchProjects();
+              console.log('Response: ', suite);
+              this.isVisible = false;
+              this.id = null;
+            },
+            (error) => console.log(error)
+          );
+      } else {
+        this.projectService
+          .createTestProject(
+            this.validateForm.controls['title'].value,
+            this.validateForm.controls['description'].value
+          )
+          .subscribe(
+            (project) => {
+              this.fetchProjects();
+              console.log('Response: ', project);
+              this.isVisible = false;
+            },
+            (error) => console.log(error)
+          );
+      }
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -72,6 +93,7 @@ export class ProyectosComponent implements OnInit {
       (res) =>
         (this.data = res.result.map((tSuite) => {
           return {
+            id: tSuite.id,
             title: tSuite.title,
             description: tSuite.description,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
@@ -95,13 +117,23 @@ export class ProyectosComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+    this.id = null;
   }
 
   inputChanged(event) {
-    this.modelChanged.next(event.target.value)
+    this.modelChanged.next(event.target.value);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  updateProject(id: number) {
+    this.id = id;
+    this.projectService.getTestProject(id).subscribe((res) => {
+      this.validateForm.get('title').setValue(res.result.title);
+      this.validateForm.get('description').setValue(res.result.description);
+      this.isVisible = true;
+    });
   }
 }

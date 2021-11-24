@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { BASE_URL } from '../common/urlConstants';
-import { ProjectsResponse, ProjectCreatedResponse } from '../interfaces/projects';
+import { ProjectsResponse, ProjectCreatedResponse, SingleProjectResponse } from '../interfaces/projects';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -16,6 +16,10 @@ export class ProjectService {
     return this.http.get<ProjectsResponse>(BASE_URL + this.testProject + `?search=${search}`);
   }
 
+  getTestProject(id: number): Observable<SingleProjectResponse> {
+    return this.http.get<SingleProjectResponse>(BASE_URL + this.testProject + `/${id}`)
+  }
+
   createTestProject(title: string, description: string): Observable<ProjectCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -24,6 +28,22 @@ export class ProjectService {
     };
 
     return this.http.post<ProjectCreatedResponse>(BASE_URL + this.testProject, {
+      title,
+      description
+    }, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleErrorObservable)
+    );
+  }
+
+  updateTestProject(title: string, description: string, id: number): Observable<ProjectCreatedResponse> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+
+    return this.http.put<ProjectCreatedResponse>(BASE_URL + this.testProject + `/${id}`, {
       title,
       description
     }, httpOptions).pipe(

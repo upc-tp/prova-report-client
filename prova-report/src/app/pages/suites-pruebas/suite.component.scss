@@ -36,3 +36,9 @@ input {
     border: 0.5px solid #3849AA;
   }
 }
+
+tbody {
+  &:hover {
+    cursor: pointer;
+  }
+}
