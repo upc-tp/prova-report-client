@@ -10,6 +10,13 @@
   justify-content: space-between;
 }
 
+.selectins{
+  font-size: 16px;
+  width: auto;
+  transition: all .3s;
+}
+
+
 h4 {
   margin-bottom: 16px;
 }
@@ -22,7 +29,9 @@ h4 {
 .create-form {
   max-width: 1000px;
 }
-
+nz-form-label{
+  display: flex;
+}
 input {
   padding: 10px 10px 10px 10px;
   font-size: 16px;
@@ -30,7 +39,6 @@ input {
   border-radius: 2px;
   outline: none;
   transition: all .3s;
-
   &:focus {
     outline: none;
     border: 0.5px solid #3849AA;

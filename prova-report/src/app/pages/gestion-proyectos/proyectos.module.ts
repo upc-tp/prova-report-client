@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule } from 'ng-zorro-antd';
+import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule, NzDropDownModule , NzSelectModule } from 'ng-zorro-antd';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ProyectosRoutingModule } from './proyectos-routing.module';
 import { ProyectosComponent } from './proyectos.component';
@@ -15,6 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzButtonModule,
     NzFormModule,
     NzAlertModule,
+    NzDropDownModule,
+    NzSelectModule,
     ReactiveFormsModule
   ],
   declarations: [ProyectosComponent],

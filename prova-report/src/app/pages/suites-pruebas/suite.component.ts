@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { ProjectService } from 'src/app/services/projects.service';
+
 import { SuitesService } from '../../services/suites.service';
 
 @Component({
@@ -13,14 +15,20 @@ export class SuiteComponent implements OnInit, OnDestroy {
   data: Array<{
     id: number;
     title: string;
+    project:string;
     description: string;
     registerDate: string;
     registerBy: string;
+  }> = [];
+  projects:Array<{
+    label:string;
+    value:number;
   }> = [];
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
   id: number;
+  sProject:number = 0;
   saved: boolean = false;
   updated: boolean = false;
 
@@ -28,13 +36,15 @@ export class SuiteComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private suiteService: SuitesService, private fb: FormBuilder) {}
+  constructor(private suiteService: SuitesService,private projectService: ProjectService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.fetchSuites();
+    this.getProjects();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
+      selectProject: [null,[Validators.required]]
     });
 
     this.subscription = this.modelChanged
@@ -44,6 +54,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
       });
   }
 
+
+
   submitForm(): void {
     if (this.validateForm.valid) {
       if (this.id) {
@@ -51,6 +63,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           .updateTestSuite(
             this.validateForm.controls['title'].value,
             this.validateForm.controls['description'].value,
+            this.validateForm.controls['selectProject'].value,
             this.id
           )
           .subscribe(
@@ -66,6 +79,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
               }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
+              this.validateForm.controls['selectProject'].setValue(0);
             },
             (error) => console.log(error)
           );
@@ -73,7 +87,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
         this.suiteService
           .createTestSuite(
             this.validateForm.controls['title'].value,
-            this.validateForm.controls['description'].value
+            this.validateForm.controls['description'].value,
+            this.validateForm.controls['selectProject'].value
           )
           .subscribe(
             (suite) => {
@@ -87,6 +102,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
               }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
+              this.validateForm.controls['selectProject'].setValue(0);
             },
             (error) => console.log(error)
           );
@@ -101,6 +117,20 @@ export class SuiteComponent implements OnInit, OnDestroy {
     }
   }
 
+  getProjects(){
+    this.projectService.getTestProjects('').subscribe(
+      (res) => (
+          this.projects = res.result.map( (tProject) =>{
+            return{
+              label: tProject.title,
+              value: tProject.id
+            };
+          })
+      )
+
+    );
+  }
+
   fetchSuites(search: string = '') {
     this.suiteService.getTestSuites(search).subscribe(
       (res) =>
@@ -109,6 +139,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             id: tSuite.id,
             title: tSuite.title,
             description: tSuite.description,
+            project: tSuite.project.title,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
             registerBy: 'manuel@gmail.com',
           };
@@ -146,6 +177,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.suiteService.getTestSuite(id).subscribe((res) => {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
+      this.validateForm.get('selectProject').setValue(res.result.project.id);
       this.isVisible = true;
     });
   }

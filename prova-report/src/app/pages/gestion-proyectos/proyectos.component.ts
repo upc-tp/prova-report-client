@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectService } from '../../services/projects.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NzPlacementType } from 'ng-zorro-antd/dropdown';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -23,7 +24,6 @@ export class ProyectosComponent implements OnInit {
   id: number;
   saved: boolean = false;
   updated: boolean = false;
-
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
