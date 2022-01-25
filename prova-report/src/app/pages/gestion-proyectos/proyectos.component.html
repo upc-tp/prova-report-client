@@ -69,7 +69,10 @@
   <nz-alert *ngIf="saved" nzBanner nzMessage="Se ha registrado satisfactoriamente" nzType="success" ></nz-alert>
   <nz-alert *ngIf="updated" nzBanner nzMessage="Se ha actualizado satisfactoriamente" nzType="success" ></nz-alert>
   <br>
-  <nz-table #middleTable nzSize="middle" [nzData]="data">
+  <nz-table #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" 
+  [nzPageIndex]="page" [nzPageSize]="pageSize"
+  [nzShowPagination]="true" [nzTotal]="count" (nzPageIndexChange)="onPageIndexChange($event)"
+  >
     <thead>
       <tr>
         <th>Título</th>
