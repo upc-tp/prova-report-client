@@ -15,42 +15,45 @@ export class SuiteComponent implements OnInit, OnDestroy {
   data: Array<{
     id: number;
     title: string;
-    project:string;
+    project: string;
     description: string;
     registerDate: string;
     registerBy: string;
   }> = [];
-  projects:Array<{
-    label:string;
-    value:number;
+  projects: Array<{
+    label: string;
+    value: number;
   }> = [];
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
   id: number;
-  sProject:number = 0;
+  sProject: number = 0;
   saved: boolean = false;
   updated: boolean = false;
+  page: number = 1;
+  pageSize: number = 10;
+  count: number = this.pageSize;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private suiteService: SuitesService,private projectService: ProjectService, private fb: FormBuilder) {}
+  constructor(private suiteService: SuitesService, private projectService: ProjectService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.fetchSuites();
+    this.fetchSuites(this.page, this.pageSize);
     this.getProjects();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      selectProject: [null,[Validators.required]]
+      selectProject: [null, [Validators.required]]
     });
 
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
-        this.fetchSuites(search);
+        this.fetchSuites(this.page, this.pageSize, search);
       });
   }
 
@@ -68,7 +71,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           )
           .subscribe(
             (suite) => {
-              this.fetchSuites();
+              this.fetchSuites(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
               this.id = null;
@@ -92,7 +95,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           )
           .subscribe(
             (suite) => {
-              this.fetchSuites();
+              this.fetchSuites(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
               this.saved = true;
@@ -117,24 +120,24 @@ export class SuiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProjects(){
-    this.projectService.getTestProjects('').subscribe(
+  getProjects() {
+    this.projectService.getTestProjects(null, null, '').subscribe(
       (res) => (
-          this.projects = res.result.map( (tProject) =>{
-            return{
-              label: tProject.title,
-              value: tProject.id
-            };
-          })
+        this.projects = res.result.map((tProject) => {
+          return {
+            label: tProject.title,
+            value: tProject.id
+          };
+        })
       )
 
     );
   }
 
-  fetchSuites(search: string = '') {
-    this.suiteService.getTestSuites(search).subscribe(
-      (res) =>
-        (this.data = res.result.map((tSuite) => {
+  fetchSuites(page: number, pageSize: number, search: string = '') {
+    this.suiteService.getTestSuites(page, pageSize, search).subscribe(
+      res => {
+        this.data = res.result.map((tSuite) => {
           return {
             id: tSuite.id,
             title: tSuite.title,
@@ -143,7 +146,11 @@ export class SuiteComponent implements OnInit, OnDestroy {
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
             registerBy: 'manuel@gmail.com',
           };
-        }))
+        });
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      }
     );
   }
 
@@ -180,5 +187,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
       this.validateForm.get('selectProject').setValue(res.result.project.id);
       this.isVisible = true;
     });
+  }
+
+  onPageIndexChange(selectedPage: number) {
+    this.page = selectedPage;
+    this.fetchSuites(this.page, this.pageSize);
   }
 }

@@ -25,7 +25,7 @@ export class ProyectosComponent implements OnInit {
   saved: boolean = false;
   updated: boolean = false;
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   count: number = this.pageSize;
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;

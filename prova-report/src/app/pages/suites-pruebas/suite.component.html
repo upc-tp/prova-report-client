@@ -79,7 +79,11 @@
   <nz-alert *ngIf="saved" nzBanner nzMessage="Se ha registrado satisfactoriamente" nzType="success" ></nz-alert>
   <nz-alert *ngIf="updated" nzBanner nzMessage="Se ha actualizado satisfactoriamente" nzType="success" ></nz-alert>
   <br>
-  <nz-table #middleTable nzSize="middle" [nzData]="data">
+  <nz-table #middleTable nzSize="middle" [nzData]="data"
+  [nzFrontPagination]="false" 
+  [nzPageIndex]="page" [nzPageSize]="pageSize"
+  [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
+  >
     <thead>
       <tr>
         <th>Título</th>
@@ -99,4 +103,7 @@
       </tr>
     </tbody>
   </nz-table>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+  </ng-template>
 </div>
