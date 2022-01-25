@@ -49,9 +49,9 @@
         nz-tooltip
         nzTooltipPlacement="right"
         [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
-        nzSelected
         style="text-align: left"
         routerLink="/dashboard"
+        routerLinkActive="ant-menu-item-selected"
       >
         <i nz-icon nzType="home"></i>
         <span>Dashboard</span>
@@ -64,8 +64,9 @@
         [nzTooltipTitle]="isCollapsed ? 'Gestión de proyectos de prueba' : ''"
         style="text-align: left"
         routerLink="/gestion-proyectos"
+        routerLinkActive="ant-menu-item-selected"
       >
-        <i nz-icon nzType="file"></i>
+        <i nz-icon nzType="form"></i>
         <span>Gestión de proyectos de prueba</span>
       </li>
 
@@ -76,6 +77,7 @@
         [nzTooltipTitle]="isCollapsed ? 'Suites de prueba' : ''"
         style="text-align: left"
         routerLink="/suite-pruebas"
+        routerLinkActive="ant-menu-item-selected"
       >
         <i nz-icon nzType="form"></i>
         <span>Suites de prueba</span>
