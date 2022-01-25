@@ -21,6 +21,9 @@
     >
       <nz-form-item>
         <nz-form-control>
+          <nz-form-label> 
+            Título
+          </nz-form-label>
           <input
             nz-input
             name="title"
@@ -29,11 +32,13 @@
             id="title"
             placeholder="Título"
           />
-          <p>Ingrese el título para el proyecto de prueba</p>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
+          <nz-form-label> 
+            Descripción
+          </nz-form-label>
           <input
             nz-input
             name="description"
@@ -42,7 +47,6 @@
             id="description"
             placeholder="Descripción"
           />
-          <p>Ingrese la descripción para el proyecto de prueba</p>
         </nz-form-control>
       </nz-form-item>
       <button nz-button nzType="primary" [nzLoading]="isOkLoading">

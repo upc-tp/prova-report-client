@@ -21,6 +21,9 @@
     >
       <nz-form-item>
         <nz-form-control>
+          <nz-form-label> 
+            Título
+          </nz-form-label>
           <input
             nz-input
             name="title"
@@ -29,11 +32,13 @@
             id="title"
             placeholder="Título"
           />
-          <p>Ingrese el título para el suite de prueba</p>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control>
+          <nz-form-label> 
+            Descripción
+          </nz-form-label>
           <input
             nz-input
             name="description"
@@ -42,10 +47,19 @@
             id="description"
             placeholder="Descripción"
           />
-          <p>Ingrese la descripción para el suite de prueba</p>
         </nz-form-control>
       </nz-form-item>
-      <button nz-button nzType="primary" [nzLoading]="isOkLoading">
+      <nz-form-item>
+       <nz-form-control> 
+          <nz-form-label> 
+            Proyecto
+          </nz-form-label>
+          <nz-select   formControlName="selectProject"  class="selectins" nzPlaceHolder="Seleccione Proyecto" [nzOptions] = "projects">
+          <nz-option nzValue="project.value" nzLabel="project.label"></nz-option>
+          </nz-select>
+       </nz-form-control>
+      </nz-form-item>
+      <button nz-button nzType="primary" [nzLoading]="isOkLoading" >
         Guardar
       </button>
     </form>
@@ -70,6 +84,7 @@
       <tr>
         <th>Título</th>
         <th>Descripción</th>
+        <th>Proyecto</th>
         <th>Fecha de registro</th>
         <th>Registrado por</th>
       </tr>
@@ -78,6 +93,7 @@
       <tr *ngFor="let data of middleTable.data" (click)="updateSuite(data.id)">
         <td>{{ data.title }}</td>
         <td>{{ data.description }}</td>
+        <td>{{ data.project }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
       </tr>
