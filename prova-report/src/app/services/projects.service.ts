@@ -12,8 +12,8 @@ export class ProjectService {
   private testProject = 'api/projects';
   constructor(private http: HttpClient) {}
 
-  getTestProjects(search: string): Observable<ProjectsResponse> {
-    return this.http.get<ProjectsResponse>(BASE_URL + this.testProject + `?search=${search}`);
+  getTestProjects(page: number, pageSize: number, search: string): Observable<ProjectsResponse> {
+    return this.http.get<ProjectsResponse>(BASE_URL + this.testProject + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
 
   getTestProject(id: number): Observable<SingleProjectResponse> {

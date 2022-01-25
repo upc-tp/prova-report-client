@@ -23,6 +23,9 @@ export class ProyectosComponent implements OnInit {
   id: number;
   saved: boolean = false;
   updated: boolean = false;
+  page: number = 1;
+  pageSize: number = 5;
+  count: number = this.pageSize;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -34,7 +37,7 @@ export class ProyectosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fetchProjects();
+    this.fetchProjects(this.page, this.pageSize);
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
@@ -43,7 +46,7 @@ export class ProyectosComponent implements OnInit {
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
-        this.fetchProjects(search);
+        this.fetchProjects(this.page, this.pageSize, search);
       });
   }
 
@@ -58,7 +61,7 @@ export class ProyectosComponent implements OnInit {
           )
           .subscribe(
             (suite) => {
-              this.fetchProjects();
+              this.fetchProjects(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
               this.id = null;
@@ -80,7 +83,8 @@ export class ProyectosComponent implements OnInit {
           )
           .subscribe(
             (project) => {
-              this.fetchProjects();
+              this.page = 1;
+              this.fetchProjects(this.page, this.pageSize);
               console.log('Response: ', project);
               this.isVisible = false;
               this.saved = true;
@@ -104,18 +108,22 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
-  fetchProjects(search: string = '') {
-    this.projectService.getTestProjects(search).subscribe(
-      (res) =>
-      (this.data = res.result.map((tSuite) => {
-        return {
-          id: tSuite.id,
-          title: tSuite.title,
-          description: tSuite.description,
-          registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
-          registerBy: 'manuel@gmail.com',
-        };
-      }))
+  fetchProjects(page: number, pageSize: number, search: string = '') {
+    this.projectService.getTestProjects(page, pageSize, search).subscribe(
+      (res) => {
+        this.data = res.result.map((tSuite) => {
+          return {
+            id: tSuite.id,
+            title: tSuite.title,
+            description: tSuite.description,
+            registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
+            registerBy: 'manuel@gmail.com',
+          };
+        });
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      }
     );
   }
 
@@ -151,5 +159,10 @@ export class ProyectosComponent implements OnInit {
       this.validateForm.get('description').setValue(res.result.description);
       this.isVisible = true;
     });
+  }
+
+  onPageIndexChange(selectedPage: number) {
+    this.page = selectedPage;
+    this.fetchProjects(this.page, this.pageSize);
   }
 }
