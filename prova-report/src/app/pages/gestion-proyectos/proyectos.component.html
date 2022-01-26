@@ -5,74 +5,41 @@
       <span>Nuevo</span>
     </button>
   </div>
-
-  <nz-modal
-    [(nzVisible)]="isVisible"
-    nzTitle="Proyecto de prueba"
-    (nzOnCancel)="handleCancel()"
-    (nzOnOk)="handleOk()"
-    [nzOkLoading]="isOkLoading"
-  >
-    <form
-      nz-form
-      class="create-form"
-      [formGroup]="validateForm"
-      (ngSubmit)="submitForm()"
-    >
-      <nz-form-item>
-        <nz-form-control>
-          <nz-form-label> 
-            Título
-          </nz-form-label>
-          <input
-            nz-input
-            name="title"
-            formControlName="title"
-            type="text"
-            id="title"
-            placeholder="Título"
-          />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control>
-          <nz-form-label> 
-            Descripción
-          </nz-form-label>
-          <input
-            nz-input
-            name="description"
-            formControlName="description"
-            type="text"
-            id="description"
-            placeholder="Descripción"
-          />
-        </nz-form-control>
-      </nz-form-item>
-      <button nz-button nzType="primary" [nzLoading]="isOkLoading">
-        Guardar
-      </button>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Proyecto de prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading">
+    <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div class="form-item">
+        <div class="form-label">
+          Título
+        </div>
+        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+      </div>
+      <div class="form-item">
+        <div class="form-label">
+          Descripción
+        </div>
+        <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Descripción" />
+      </div>
+      <div class="form-item">
+        <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Guardar
+        </button>
+      </div>
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
 
-  <label for="search">Buscar</label>&nbsp;
-  <input
-    style="font-size: 12px !important; width: 200px;"
-    (change)="inputChanged($event)"
-    name="search"
-    type="text"
-    id="search"
-    placeholder="Buscar por título o descripción"
-  />
-  <hr style="border-color: white;">
-  <nz-alert *ngIf="saved" nzBanner nzMessage="Se ha registrado satisfactoriamente" nzType="success" ></nz-alert>
-  <nz-alert *ngIf="updated" nzBanner nzMessage="Se ha actualizado satisfactoriamente" nzType="success" ></nz-alert>
-  <br>
-  <nz-table #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" 
-  [nzPageIndex]="page" [nzPageSize]="pageSize"
-  [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-  >
+  <div class="filters-container">
+    <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+    <input (change)="inputChanged($event)" name="search" type="text" id="search"
+      placeholder="Buscar por título o descripción" />
+    <nz-alert *ngIf="saved" nzBanner nzMessage="Se ha registrado satisfactoriamente" nzType="success"></nz-alert>
+    <nz-alert *ngIf="updated" nzBanner nzMessage="Se ha actualizado satisfactoriamente" nzType="success"></nz-alert>
+  </div>
+  <nz-table #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" [nzPageIndex]="page"
+    [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
+    (nzPageIndexChange)="onPageIndexChange($event)">
     <thead>
       <tr>
         <th>Título</th>
@@ -89,7 +56,11 @@
         <td>{{ data.registerBy }}</td>
       </tr>
     </tbody>
+    <button class="fab" nz-button nzType="primary" nzSize="large" nzShape="circle" (click)="showModal()">
+      <i nz-icon nzType="plus"></i>
+    </button>
   </nz-table>
+
   <ng-template #rangeTemplate let-range="range" let-total>
     Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
   </ng-template>
