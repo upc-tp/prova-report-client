@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectService } from '../../services/projects.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzPlacementType } from 'ng-zorro-antd/dropdown';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule, NzSelectModule } from 'ng-zorro-antd';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { SuiteRoutingModule } from './suite-routing.module';
 import { SuiteComponent } from './suite.component';
 
@@ -15,6 +16,7 @@ import { SuiteComponent } from './suite.component';
     NzButtonModule,
     NzFormModule,
     NzAlertModule,
+    IconsProviderModule,
     NzSelectModule,
     ReactiveFormsModule
   ],
