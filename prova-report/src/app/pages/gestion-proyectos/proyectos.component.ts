@@ -21,8 +21,6 @@ export class ProyectosComponent implements OnInit {
   isOkLoading = false;
   validateForm!: FormGroup;
   id: number;
-  saved: boolean = false;
-  updated: boolean = false;
   page: number = 1;
   pageSize: number = 10;
   count: number = this.pageSize;
@@ -64,11 +62,6 @@ export class ProyectosComponent implements OnInit {
               console.log('Response: ', suite);
               this.isVisible = false;
               this.id = null;
-              this.updated = true;
-              setTimeout(function () {
-                this.updated = false;
-                console.log('Updated: ', this.updated);
-              }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
             },
@@ -86,11 +79,6 @@ export class ProyectosComponent implements OnInit {
               this.fetchProjects(this.page, this.pageSize);
               console.log('Response: ', project);
               this.isVisible = false;
-              this.saved = true;
-              setTimeout(function () {
-                this.saved = false;
-                console.log('Saved: ', this.saved);
-              }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
             },

@@ -29,8 +29,6 @@ export class SuiteComponent implements OnInit, OnDestroy {
   validateForm!: FormGroup;
   id: number;
   sProject: number = 0;
-  saved: boolean = false;
-  updated: boolean = false;
   page: number = 1;
   pageSize: number = 10;
   count: number = this.pageSize;
@@ -75,11 +73,6 @@ export class SuiteComponent implements OnInit, OnDestroy {
               console.log('Response: ', suite);
               this.isVisible = false;
               this.id = null;
-              this.updated = true;
-              setTimeout(function () {
-                this.updated = false;
-                console.log('Updated: ', this.updated);
-              }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectProject'].setValue(0);
@@ -98,11 +91,6 @@ export class SuiteComponent implements OnInit, OnDestroy {
               this.fetchSuites(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
-              this.saved = true;
-              setTimeout(function () {
-                this.saved = false;
-                console.log('Saved: ', this.saved);
-              }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectProject'].setValue(0);

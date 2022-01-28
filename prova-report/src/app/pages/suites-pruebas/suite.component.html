@@ -44,8 +44,6 @@
     <input (change)="inputChanged($event)" name="search" type="text" id="search"
       placeholder="Buscar por título o descripción" />
     <hr style="border-color: white;">
-    <nz-alert *ngIf="saved" nzBanner nzMessage="Se ha registrado satisfactoriamente" nzType="success"></nz-alert>
-    <nz-alert *ngIf="updated" nzBanner nzMessage="Se ha actualizado satisfactoriamente" nzType="success"></nz-alert>
   </div>
   <nz-table #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" [nzPageIndex]="page"
     [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"

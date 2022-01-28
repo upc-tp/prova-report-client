@@ -14,13 +14,17 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
+import { SpinnerComponent } from './common/spinner/spinner.component';
+import { httpInterceptorProviders } from './interceptors';
+import { SpinnerService } from './common/spinner/spinner.service';
 
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     HttpClientModule 
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [ httpInterceptorProviders, SpinnerService, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
