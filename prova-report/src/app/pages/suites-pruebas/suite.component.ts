@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/projects.service';
-
 import { SuitesService } from '../../services/suites.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-suite',
@@ -39,7 +39,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private suiteService: SuitesService, private projectService: ProjectService, private fb: FormBuilder) { }
+  constructor(private suiteService: SuitesService, private projectService: ProjectService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchSuites(this.page, this.pageSize);
@@ -144,7 +144,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             description: tSuite.description,
             project: tSuite.project.title,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
-            registerBy: 'manuel@gmail.com',
+            registerBy: tSuite.createdBy,
           };
         });
         this.page = res.page;
@@ -179,13 +179,15 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+
   updateSuite(id: number) {
     this.id = id;
     this.suiteService.getTestSuite(id).subscribe((res) => {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
-      this.isVisible = true;
+      // this.isVisible = true;
+      this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});  
     });
   }
 

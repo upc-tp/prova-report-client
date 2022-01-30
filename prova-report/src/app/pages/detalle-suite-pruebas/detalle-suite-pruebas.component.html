@@ -1,0 +1,145 @@
+<div>
+    <div class="banner">
+      <h3>Suite de Prueba</h3>
+    </div>
+    <div class = "container-group">
+     <div class="suite-info">
+        <h3>
+            Título
+        </h3>
+        <span>{{suite.title}}</span>
+        <h3>
+            Descripcion
+        </h3>
+        <span>{{suite.description}}</span>
+        <h3>
+            Proyecto
+        </h3>
+        <span>{{suite.project}}</span>
+    </div>
+    <div class="suite-infor">
+        <h3>
+            Registrado por
+        </h3>
+        <span>{{suite.createdBy}}</span>
+        <h3>
+            Fecha de Registro
+        </h3>
+        <span>{{suite.createdAt}}</span>
+    </div>
+    </div>    
+</div>
+<br>
+<h3>
+  Casos de Prueba
+</h3>
+<div>
+  <div class="container-inputs">
+ <div>
+    <label for="search">Buscar</label>&nbsp;
+    <input
+      style="font-size: 12px !important; width: 200px;"
+      (change)="inputChanged($event)"
+      name="search"
+      type="text"
+      id="search"
+      placeholder="Buscar por título o descripción"
+    />
+  </div>
+  <div>
+    <label>Ingrese un nuevo caso de prueba</label>
+    <button nz-button nzType="primary" (click)="showModal()">
+      <span>Nuevo</span>
+    </button>
+  </div>
+  </div>
+    <nz-table #middleTable nzSize="middle" [nzData]="testCases"
+    [nzFrontPagination]="false" 
+    [nzPageIndex]="page" [nzPageSize]="pageSize"
+    [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
+    >
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Test Suite</th>
+          <th>Estado</th>
+          <th>Fecha de registro</th>
+          <th>Registrado por</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of middleTable.data">
+          <td>{{ data.title }}</td>
+          <td>{{ data.description }}</td>
+          <td>{{ data.testSuite }}</td>
+          <td>{{ data.testStatus }}</td>
+          <td>{{ data.registerDate }}</td>
+          <td>{{ data.registerBy }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #rangeTemplate let-range="range" let-total>
+        Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+      </ng-template>
+</div>
+
+<nz-modal
+[(nzVisible)]="isVisible"
+nzTitle="Caso de Prueba"
+(nzOnCancel)="handleCancel()"
+(nzOnOk)="handleOk()"
+[nzOkLoading]="isOkLoading"
+>
+<form
+  nz-form
+  class="create-form"
+  [formGroup]="validateForm"
+  (ngSubmit)="submitForm()"
+>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-form-label> 
+        Título
+      </nz-form-label>
+      <input
+        nz-input
+        name="title"
+        formControlName="title"
+        type="text"
+        id="title"
+        placeholder="Título"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-form-label> 
+        Descripción
+      </nz-form-label>
+      <input
+        nz-input
+        name="description"
+        formControlName="description"
+        type="text"
+        id="description"
+        placeholder="Descripción"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <!-- <nz-form-item>
+   <nz-form-control> 
+      <nz-form-label> 
+        Test Suite
+      </nz-form-label>
+      <nz-select   formControlName="selectTestSuite"  class="selectins" nzPlaceHolder="Suite Pruebas" [nzOptions] = "suites">
+      </nz-select>
+   </nz-form-control>
+  </nz-form-item> -->
+  <button nz-button nzType="primary" [nzLoading]="isOkLoading" >
+    Guardar
+  </button>
+</form>
+<div *nzModalFooter></div>
+</nz-modal>
+

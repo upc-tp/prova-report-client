@@ -9,6 +9,16 @@ export interface Project {
 	title: string;
 	description: string;
 }
+export interface SuiteView {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	id: number;
+	title: string;
+	description: string;
+	project: string;
+}
 
 export interface Suites {
 	createdAt: string;

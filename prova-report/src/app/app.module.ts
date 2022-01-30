@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 
 
+
 registerLocaleData(en);
 
 @NgModule({
