@@ -19,6 +19,7 @@ import { httpInterceptorProviders } from './interceptors';
 import { SpinnerService } from './common/spinner/spinner.service';
 
 
+
 registerLocaleData(en);
 
 @NgModule({
