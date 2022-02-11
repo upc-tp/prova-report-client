@@ -1,5 +1,6 @@
 <nz-layout class="app-layout">
   <nz-sider
+    *ngIf="currentUser"
     class="menu-sidebar"
     nzCollapsible
     nzWidth="256px"
@@ -16,7 +17,8 @@
       <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
         <h1>Manuel Alvarado Estanga</h1>
         <p>Administrador</p>
-        <p>VER PERFIL</p>
+        <p class="primary-link"><a>Ver perfil</a></p>
+        <p><a (click)="logout()">Cerrar sesión</a></p>
       </div>
     </div>
     <p
@@ -97,7 +99,7 @@
     </ul>
   </nz-sider>
   <nz-layout>
-    <nz-header>
+    <nz-header *ngIf="currentUser">
       <div class="app-header">
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
           <i

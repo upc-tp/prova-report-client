@@ -1,0 +1,44 @@
+input {
+  padding: 0.625rem; // 10px
+  font-size: 1rem; // 16px
+  border: 0.5px solid rgb(218, 218, 218);
+  border-radius: 0.125rem; // 2px
+  outline: none;
+  transition: all .3s;
+
+  &:focus {
+    outline: none;
+    border: 0.5px solid #6f74dd;
+  }
+}
+
+.login-form {
+    background-color: #3849AA;
+    border-radius: 0.125rem; // 2px
+    max-width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  color: white;
+  font-weight: bold;
+}
+
+.form-item {
+  flex: 1 100%;
+  margin: 0.5rem;
+  & input {
+    width: 100%;
+  }
+}
+
+.invalid-feedback {
+    color: #e53935;
+}
+
+.is-invalid {
+    border: 0.5px solid #e53935;
+}
