@@ -1,8 +1,8 @@
 import jwt_decode from 'jwt-decode';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { LoginResponse, User } from 'src/app/interfaces/users';
 import { BASE_URL } from '../urlConstants';
 
@@ -13,6 +13,13 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
   private login_url='api/login';
+  private logout_url = 'api/logout';
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) { 
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -32,14 +39,10 @@ export class AuthService {
   }
 
   login(email, password) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    return this.http.post<LoginResponse>(BASE_URL+this.login_url, { email, password }, httpOptions)
+    return this.http.post<LoginResponse>(BASE_URL+this.login_url, { email, password }, this.httpOptions)
       .pipe(map(res => {
         const decoded = this.getDecodedToken(res.result.accessToken);
+        console.log("Decoded Token =>", decoded);
         const user: User = {
           uid: decoded.uid,
           email: decoded.email,
@@ -58,7 +61,17 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    const user = this.currentUserValue;
+    return this.http.post<LoginResponse>(BASE_URL+this.logout_url, { refreshToken: user.refreshToken }, this.httpOptions).pipe(map(res => {
+      console.log("Logout successfully");
+      localStorage.removeItem('currentUser');
+      this.currentUserSubject.next(null);
+      return res;
+    }), catchError(this.handleErrorObservable));
+  }
+
+  private handleErrorObservable(error: any) {
+    console.error(error.message || error);
+    return throwError(error);
   }
 }

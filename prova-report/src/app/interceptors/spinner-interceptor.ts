@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AuthService } from '../common/auth/auth.service';
 import { SpinnerService } from '../common/spinner/spinner.service';
 
 
@@ -11,7 +12,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
   private message = '';
   private get = false;
 
-  constructor(private spinnerService: SpinnerService) { }
+  constructor(private spinnerService: SpinnerService, private authService: AuthService) { }
 
   removeRequest(req: HttpRequest<any>) {
     const i = this.requests.indexOf(req);
@@ -22,6 +23,15 @@ export class SpinnerInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let currentUser = this.authService.currentUserValue;
+    if (currentUser && currentUser.accessToken) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
+    }
+
     if (req.method === 'GET') {
       this.get = true;
       return next.handle(req); //Si se comenta este return, el spinner funcionaria con el GET
@@ -51,7 +61,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
           event => {
             if (event instanceof HttpResponse) {
               if (!this.get && event.body && event.body.message) {
-                //this.message = event.body.message;
+                this.message = event.body.message;
                 Swal.fire({
                   html: `<h1 style="font-size: 2rem;">${this.message}</h1>`,
                   icon: 'success',
@@ -64,7 +74,6 @@ export class SpinnerInterceptor implements HttpInterceptor {
             }
           },
           err => {
-            alert('error' + err);
             this.removeRequest(req);
             Swal.fire({
               icon: 'error',
