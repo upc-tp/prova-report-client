@@ -19,7 +19,9 @@ export class SpinnerInterceptor implements HttpInterceptor {
     if (i >= 0) {
       this.requests.splice(i, 1);
     }
-    this.spinnerService.isLoading.next(this.requests.length > 0);
+    if (req.method !== 'GET') {
+      this.spinnerService.isLoading.next(this.requests.length > 0);
+    }
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -34,7 +36,6 @@ export class SpinnerInterceptor implements HttpInterceptor {
 
     if (req.method === 'GET') {
       this.get = true;
-      return next.handle(req); //Si se comenta este return, el spinner funcionaria con el GET
     } else {
       this.get = false
     }
@@ -54,7 +55,9 @@ export class SpinnerInterceptor implements HttpInterceptor {
     this.requests.push(req);
 
     console.log("No of requests--->" + this.requests.length);
-    this.spinnerService.isLoading.next(true);
+    if (req.method !== 'GET') {
+      this.spinnerService.isLoading.next(true);
+    }
     return new Observable(observer => {
       const subscription = next.handle(req)
         .subscribe(
@@ -80,7 +83,10 @@ export class SpinnerInterceptor implements HttpInterceptor {
               html: `<p style="font-size: 1.7em;">${err.error.message}</p>`,
               confirmButtonText: "Aceptar",
               //text: error.message,
-            })
+            });
+            if (err.status === 403) {
+              this.authService.logoutSubject.next(true);
+            }
             observer.error(err);
           },
           () => {

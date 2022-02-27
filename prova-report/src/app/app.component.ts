@@ -16,7 +16,15 @@ export class AppComponent {
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.currentUser.subscribe(u => this.currentUser = u);
+    this.authService.currentUser.subscribe(u => {
+      this.currentUser = u;
+    });
+    this.authService.logoutSubject.subscribe(l => {
+      if (l) {
+        this.logout();
+        this.authService.logoutSubject.next(false);
+      }
+    })
   }
 
   logout() {
