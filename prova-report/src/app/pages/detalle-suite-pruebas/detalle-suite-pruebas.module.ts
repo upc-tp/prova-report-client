@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule } from 'ng-zorro-antd';
-import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableModule, NzIconModule } from 'ng-zorro-antd';
 import { DetalleSuitePruebasRoutingModule } from './detalle-suite-pruebas-routing.module';
 import { DetalleSuitePruebasComponent } from './detalle-suite-pruebas.component';
 
@@ -15,7 +14,8 @@ import { DetalleSuitePruebasComponent } from './detalle-suite-pruebas.component'
     NzButtonModule,
     NzSelectModule,
     ReactiveFormsModule,
-    NzModalModule
+    NzModalModule,
+    NzIconModule
   ],
   declarations: [DetalleSuitePruebasComponent],
   exports: [DetalleSuitePruebasComponent],
