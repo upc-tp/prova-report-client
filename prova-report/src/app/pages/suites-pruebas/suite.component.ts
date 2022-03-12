@@ -167,6 +167,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  detailTestSuite(id: number){
+    this.id = id;
+    this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});  
+  }
 
   updateSuite(id: number) {
     this.id = id;
@@ -174,8 +178,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
-      // this.isVisible = true;
-      this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});  
+      this.isVisible = true;
     });
   }
 

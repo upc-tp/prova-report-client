@@ -1,6 +1,32 @@
 .banner h3 {
   color: #fff;
 }
+
+.ant-btn-primary {
+  background-color: #3849AA;
+  border: none;
+}
+.filters-container {
+  width: 100%;
+  display: flex;
+  padding: 0.5rem 0;
+  flex-flow: row wrap;
+
+  & input {
+    width: 50%;
+    border-radius: 1.5rem;
+  }
+
+  & i {
+    color: black;
+    font-size: large;
+  }
+
+  & nz-alert {
+    margin: 1rem auto;
+    flex: 1 100%;
+  }
+}
 .banner {
     text-align: left;
     font-weight: bold;
@@ -11,11 +37,17 @@
     border-radius: 4px;
     margin-bottom: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+  .back-button{
+    margin-right: 20px;
+
   }
 .container-group{
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-right: 5px;
 }
 .container-inputs{
   width: 100%;
@@ -28,11 +60,41 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  
+  & input {
+    width: 50%;
+    border-radius: 1.5rem;
+  }
+
+  & i {
+    color: black;
+    font-size: large;
+  }
 }
 .container-inputs > div:nth-child(2){
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.form-item {
+  flex: 1 100%;
+  margin: 0.5rem;
+  & input {
+    width: 100%;
+  }
+}
+
+button.options{
+  width: 50%;
+  margin:0.5rem;
+}
+
+button.fab {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 4rem;
+  height: 4rem;
 }
 .container-inputs > div:nth-child(1) label,
 .container-inputs > div:nth-child(2) label{

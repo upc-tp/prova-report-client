@@ -55,20 +55,26 @@
         <th>Proyecto</th>
         <th>Fecha de registro</th>
         <th>Registrado por</th>
+        <th>Opciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of middleTable.data" (click)="updateSuite(data.id)">
+      <tr *ngFor="let data of middleTable.data">
         <td>{{ data.title }}</td>
         <td>{{ data.description }}</td>
         <td>{{ data.project }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
+        <td class = "containerbuttons" >
+          <button class="options" nz-button nzType="primary"  (click)="updateSuite(data.id)">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button class="options" nz-button nzType="primary"  (click)="detailTestSuite(data.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
-    <button class="fab" nz-button nzType="primary" nzSize="large" nzShape="circle" (click)="showModal()">
-      <i nz-icon nzType="plus"></i>
-    </button>
   </nz-table>
   <ng-template #rangeTemplate let-range="range" let-total>
     Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados

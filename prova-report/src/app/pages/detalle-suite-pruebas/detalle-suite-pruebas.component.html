@@ -1,5 +1,8 @@
 <div>
     <div class="banner">
+      <button class="back-button" nz-button nzType="text" (click)="backTestSuites()">
+        <i nz-icon nzType="left" nzTheme="outline" (click)="backTestSuites()"></i>
+      </button>
       <h3>Suite de Prueba</h3>
     </div>
     <div class = "container-group">
@@ -36,10 +39,10 @@
 <div>
   <div class="container-inputs">
  <div>
-    <label for="search">Buscar</label>&nbsp;
+  <i nz-icon nzType="search"></i>&nbsp;&nbsp;
     <input
       style="font-size: 12px !important; width: 200px;"
-      (change)="inputChanged($event)"
+      (keyup)="inputChanged($event)"
       name="search"
       type="text"
       id="search"
@@ -98,7 +101,7 @@ nzTitle="Caso de Prueba"
   (ngSubmit)="submitForm()"
 >
   <nz-form-item>
-    <nz-form-control>
+    <nz-form-control class="form-item">
       <nz-form-label> 
         Título
       </nz-form-label>
@@ -113,7 +116,7 @@ nzTitle="Caso de Prueba"
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-control>
+    <nz-form-control class="form-item">
       <nz-form-label> 
         Descripción
       </nz-form-label>
@@ -127,18 +130,11 @@ nzTitle="Caso de Prueba"
       />
     </nz-form-control>
   </nz-form-item>
-  <!-- <nz-form-item>
-   <nz-form-control> 
-      <nz-form-label> 
-        Test Suite
-      </nz-form-label>
-      <nz-select   formControlName="selectTestSuite"  class="selectins" nzPlaceHolder="Suite Pruebas" [nzOptions] = "suites">
-      </nz-select>
-   </nz-form-control>
-  </nz-form-item> -->
-  <button nz-button nzType="primary" [nzLoading]="isOkLoading" >
+  <div class="form-item"> 
+  <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
     Guardar
   </button>
+</div>
 </form>
 <div *nzModalFooter></div>
 </nz-modal>

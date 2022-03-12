@@ -6,7 +6,7 @@ import { debounceTime } from 'rxjs/operators';
 import { SuiteView } from 'src/app/interfaces/suites';
 import { SuitesService } from '../../services/suites.service';
 import { TestCaseService } from '../../services/testcase.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -40,7 +40,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   updated: boolean = false;
   page: number = 1;
   pageSize: number = 10;
-  count: number = this.pageSize;
+  count: number = 0;
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
@@ -48,7 +48,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private route:ActivatedRoute, private suiteService:SuitesService, private testCaseService:TestCaseService, private fb:FormBuilder) { }
+  constructor(private route:ActivatedRoute, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -92,6 +92,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
             };
           }
         );
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
       }
     );
   }
@@ -117,6 +120,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
     }, 3000);
   }
 
+  backTestSuites(){
+    this.router.navigate(['suite-pruebas']);  
+  }
   submitForm(): void {
     if (this.validateForm.valid) {
       if (this.id) {
