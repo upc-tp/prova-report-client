@@ -19,9 +19,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
     if (i >= 0) {
       this.requests.splice(i, 1);
     }
-    if (req.method !== 'GET') {
-      this.spinnerService.isLoading.next(this.requests.length > 0);
-    }
+    this.spinnerService.isLoading.next(this.requests.length > 0);
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
