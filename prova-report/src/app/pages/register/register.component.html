@@ -1,0 +1,60 @@
+<div>
+    <div style="display: flex; justify-content: center">
+        <h1>Prova Report</h1>
+    </div>
+    <form nz-form class="register-form" [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="form-item">
+            <h2 style="color: white;">Registro</h2>
+        </div>
+        <div class="form-item">
+            <div class="form-label">
+                Nombres
+            </div>
+            <input nz-input name="firstName" formControlName="firstName" type="input" id="firstName"
+                placeholder="Nombres" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"/>
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="f.firstName.errors.required">* Este campo es obligatorio</div>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="form-label">
+                Apellidos
+            </div>
+            <input nz-input name="lastName" formControlName="lastName" type="input" id="lastName"
+                placeholder="Apellidos" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"/>
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required">* Este campo es obligatorio</div>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="form-label">
+                Correo electrónico
+            </div>
+            <input nz-input name="email" formControlName="email" type="email" id="email"
+                placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">* Este campo es obligatorio</div>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="form-label">
+                Contraseña
+            </div>
+            <input nz-input name="password" formControlName="password" type="password" id="password"
+                placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">* Este campo es obligatorio</div>
+            </div>
+        </div>
+        <div class="form-item">
+            <button nz-button nzSize="large" nzBlock nzType="link" [nzLoading]="loading" routerLink="/login">
+                ¿Ya tiene una cuenta? Iniciar sesión
+            </button>
+        </div>
+        <div class="form-item">
+            <button nz-button nzSize="large" nzBlock nzType="primary">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>

@@ -11,12 +11,12 @@
     <div class="sidebar-logo">
       <img
         [ngStyle]="{ left: isCollapsed ? '20px' : '15px' }"
-        src="assets/images/manu.jpg"
+        src="assets/images/avatar.png"
         alt="logo"
       />
       <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
-        <h1>Manuel Alvarado Estanga</h1>
-        <p>Administrador</p>
+        <h1>{{ currentUser.firstName}} {{currentUser.lastName}}</h1>
+        <p>{{ currentUser.role === 'Admin' ? 'Administrador' : 'Tester' }}</p>
         <p class="primary-link"><a>Ver perfil</a></p>
         <p><a (click)="logout()">Cerrar sesión</a></p>
       </div>
