@@ -25,3 +25,10 @@ export interface LoginCredentials {
 export interface RefreshResponse {
     accessToken: string;
 }
+
+export interface RegisterRequest {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}

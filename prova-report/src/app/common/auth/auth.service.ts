@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { LoginResponse, RefreshResponse, User } from 'src/app/interfaces/users';
+import { LoginResponse, RefreshResponse, RegisterRequest, User } from 'src/app/interfaces/users';
 import { BASE_URL } from '../urlConstants';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class AuthService {
   public logoutSubject: BehaviorSubject<boolean>;
   public currentUser: Observable<User>;
   private login_url = 'api/login';
+  private register_url = 'api/register';
   private logout_url = 'api/logout';
   private refresh_url = 'api/token';
 
@@ -43,6 +44,28 @@ export class AuthService {
 
   login(email, password) {
     return this.http.post<LoginResponse>(BASE_URL + this.login_url, { email, password }, this.httpOptions)
+      .pipe(map(res => {
+        const decoded = this.getDecodedToken(res.result.accessToken);
+        console.log("Decoded Token =>", decoded);
+        const user: User = {
+          uid: decoded.uid,
+          email: decoded.email,
+          firstName: decoded.firstName,
+          lastName: decoded.lastName,
+          role: decoded.role,
+          iat: decoded.iat,
+          exp: decoded.exp,
+          accessToken: res.result.accessToken,
+          refreshToken: res.result.refreshToken
+        };
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user;
+      }));
+  }
+
+  register(dto: RegisterRequest) {
+    return this.http.post<LoginResponse>(BASE_URL + this.register_url, dto, this.httpOptions)
       .pipe(map(res => {
         const decoded = this.getDecodedToken(res.result.accessToken);
         console.log("Decoded Token =>", decoded);
