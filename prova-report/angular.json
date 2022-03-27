@@ -136,6 +136,6 @@
   },
   "defaultProject": "prova-report",
   "cli": {
-    "analytics": "1341530b-08c1-43df-a984-9bd6067ddea9"
+    "analytics": false
   }
 }

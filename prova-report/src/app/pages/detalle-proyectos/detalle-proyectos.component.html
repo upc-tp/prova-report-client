@@ -1,0 +1,135 @@
+<div>
+    <div class="banner">
+      <button class="back-button" nz-button nzType="text" (click)="backTestProjects()">
+        <i nz-icon nzType="left" nzTheme="outline" (click)="backTestProjects()"></i>
+      </button>
+      <h3>Proyecto</h3>
+    </div>
+    <div class = "container-group">
+     <div class="suite-info">
+        <h3>
+            Título
+        </h3>
+        <span>{{project.title}}</span>
+        <h3>
+            Descripcion
+        </h3>
+        <span>{{project.description}}</span>
+    </div>
+    <div class="suite-infor">
+        <h3>
+            Creado por
+        </h3>
+        <span>{{project.createdBy}}</span>
+        <h3>
+            Fecha de Registro
+        </h3>
+        <span>{{project.createdAt}}</span>
+    </div>
+    </div> 
+</div>
+<br>
+<h3>
+  Colaboradores
+</h3>
+<div>
+  <div class="container-inputs">
+ <div>
+  <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+    <input
+      style="font-size: 12px !important; width: 200px;"
+      (keyup)="inputChanged($event)"
+      name="search"
+      type="text"
+      id="search"
+      placeholder="Buscar por nombre o apellido"
+    />
+  </div>
+  <div>
+    <label>Ingrese un nuevo colaborador</label>
+    <button nz-button nzType="primary" (click)="showModal()">
+      <span>Nuevo</span>
+    </button>
+  </div>
+  </div>
+    <nz-table #middleTable nzSize="middle" [nzData]="testCases"
+    [nzFrontPagination]="false" 
+    [nzPageIndex]="page" [nzPageSize]="pageSize"
+    [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
+    >
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Fecha de registro</th>
+          <th>Registrado por</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of middleTable.data">
+          <td>{{ data.title }}</td>
+          <td>{{ data.description }}</td>
+          <td>{{ data.testStatus }}</td>
+          <td>{{ data.registerDate }}</td>
+          <td>{{ data.registerBy }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #rangeTemplate let-range="range" let-total>
+        Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+      </ng-template>
+</div>
+
+<nz-modal
+[(nzVisible)]="isVisible"
+nzTitle="Colaborador"
+(nzOnCancel)="handleCancel()"
+(nzOnOk)="handleOk()"
+[nzOkLoading]="isOkLoading"
+>
+<form
+  nz-form
+  class="create-form"
+  [formGroup]="validateForm"
+  (ngSubmit)="submitForm()"
+>
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label> 
+        Nombre
+      </nz-form-label>
+      <input
+        nz-input
+        name="title"
+        formControlName="title"
+        type="text"
+        id="title"
+        placeholder="Nombre"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label> 
+        Descripción
+      </nz-form-label>
+      <input
+        nz-input
+        name="description"
+        formControlName="description"
+        type="text"
+        id="description"
+        placeholder="Descripción"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <div class="form-item"> 
+  <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
+    Guardar
+  </button>
+</div>
+</form>
+<div *nzModalFooter></div>
+</nz-modal>
+

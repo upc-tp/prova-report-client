@@ -3,6 +3,7 @@ import { ProjectService } from '../../services/projects.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class ProyectosComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -141,6 +143,11 @@ export class ProyectosComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  detailProject(id: number){
+    this.id = id;
+    this.router.navigate(['detalle-proyectos'],{queryParams:{projectId:this.id}});  
   }
 
   updateProject(id: number) {

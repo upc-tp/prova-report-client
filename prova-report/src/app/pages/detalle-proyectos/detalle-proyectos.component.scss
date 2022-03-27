@@ -1,0 +1,130 @@
+.banner h3 {
+    color: #fff;
+  }
+  
+  .ant-btn-primary {
+    background-color: #3849AA;
+    border: none;
+  }
+  .filters-container {
+    width: 100%;
+    display: flex;
+    padding: 0.5rem 0;
+    flex-flow: row wrap;
+  
+    & input {
+      width: 50%;
+      border-radius: 1.5rem;
+    }
+  
+    & i {
+      color: black;
+      font-size: large;
+    }
+  
+    & nz-alert {
+      margin: 1rem auto;
+      flex: 1 100%;
+    }
+  }
+  .banner {
+      text-align: left;
+      font-weight: bold;
+      font-size: 15px;
+      color: #fff;
+      background: #009EAE;
+      padding: 20px 20px 20px 20px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+    }
+    .back-button{
+      margin-right: 20px;
+  
+    }
+  .container-group{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-right: 5px;
+  }
+  .container-inputs{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 1rem;
+  }
+  .container-inputs > div:nth-child(1){
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+    & input {
+      width: 50%;
+      border-radius: 1.5rem;
+    }
+  
+    & i {
+      color: black;
+      font-size: large;
+    }
+  }
+  .container-inputs > div:nth-child(2){
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .form-item {
+    flex: 1 100%;
+    margin: 0.5rem;
+    & input {
+      width: 100%;
+    }
+  }
+  
+  button.options{
+    width: 50%;
+    margin:0.5rem;
+  }
+  
+  button.fab {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    width: 4rem;
+    height: 4rem;
+  }
+  .container-inputs > div:nth-child(1) label,
+  .container-inputs > div:nth-child(2) label{
+    margin-right: 1rem;
+  }
+    .suite-info{
+        display:table-row-group;
+    }
+    .suite-infor{
+        display:table-row-group;
+        justify-content: flex-end;
+    }
+    .span{
+      font-size:16px ;
+    }
+    input {
+      padding: 10px 10px 10px 10px;
+      font-size: 16px;
+      border: 0.5px solid rgb(218, 218, 218);
+      border-radius: 2px;
+      outline: none;
+      transition: all .3s;
+      &:focus {
+        outline: none;
+        border: 0.5px solid #3849AA;
+      }
+    }
+    tbody {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    

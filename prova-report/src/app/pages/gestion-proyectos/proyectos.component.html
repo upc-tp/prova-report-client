@@ -49,11 +49,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of middleTable.data" (click)="updateProject(data.id)">
+      <!--(click)="updateProject(data.id)"-->
+      <tr *ngFor="let data of middleTable.data">
         <td>{{ data.title }}</td>
         <td>{{ data.description }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
+        <td class="containerbuttons">
+          <button class="options" nz-button nzType="primary"  (click)="detailProject(data.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
     <!--<button class="fab" nz-button nzType="primary" nzSize="large" nzShape="circle" (click)="showModal()">
