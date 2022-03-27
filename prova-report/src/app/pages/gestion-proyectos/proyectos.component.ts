@@ -5,6 +5,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-proyectos',
   templateUrl: './proyectos.component.html',
@@ -18,6 +19,7 @@ export class ProyectosComponent implements OnInit {
     registerDate: string;
     registerBy: string;
   }> = [];
+
   isVisible = false;
   isOkLoading = false;
   validateForm!: FormGroup;
@@ -115,6 +117,8 @@ export class ProyectosComponent implements OnInit {
       }
     );
   }
+
+
 
   showModal(): void {
     this.isVisible = true;

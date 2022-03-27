@@ -30,7 +30,7 @@
         </h3>
         <span>{{suite.createdAt}}</span>
     </div>
-    </div>    
+    </div>
 </div>
 <br>
 <h3>
@@ -57,7 +57,7 @@
   </div>
   </div>
     <nz-table #middleTable nzSize="middle" [nzData]="testCases"
-    [nzFrontPagination]="false" 
+    [nzFrontPagination]="false"
     [nzPageIndex]="page" [nzPageSize]="pageSize"
     [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
     >
@@ -66,6 +66,8 @@
           <th>Título</th>
           <th>Descripción</th>
           <th>Estado</th>
+          <th>Prioridad</th>
+          <th>Severidad</th>
           <th>Fecha de registro</th>
           <th>Registrado por</th>
         </tr>
@@ -75,6 +77,8 @@
           <td>{{ data.title }}</td>
           <td>{{ data.description }}</td>
           <td>{{ data.testStatus }}</td>
+          <td>{{ data.priority }}</td>
+          <td>{{ data.severity }}</td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
         </tr>
@@ -100,7 +104,7 @@ nzTitle="Caso de Prueba"
 >
   <nz-form-item>
     <nz-form-control class="form-item">
-      <nz-form-label> 
+      <nz-form-label>
         Título
       </nz-form-label>
       <input
@@ -115,7 +119,7 @@ nzTitle="Caso de Prueba"
   </nz-form-item>
   <nz-form-item>
     <nz-form-control class="form-item">
-      <nz-form-label> 
+      <nz-form-label>
         Descripción
       </nz-form-label>
       <input
@@ -128,11 +132,49 @@ nzTitle="Caso de Prueba"
       />
     </nz-form-control>
   </nz-form-item>
-  <div class="form-item"> 
-  <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
-    Guardar
-  </button>
-</div>
+
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label>
+        Prioridad
+      </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectPriority" class="select-input" nzPlaceHolder="Seleccione el nivel de prioridad"
+        [nzOptions]="priorities">
+        <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label>
+        Severidad
+      </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectSeverity" class="select-input" nzPlaceHolder="Seleccione el nivel de severidad"
+        [nzOptions]="severities">
+        <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label>
+        Asignar Colaborador
+      </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input" nzPlaceHolder="Seleccione Colaborador"
+        [nzOptions]="collaborators">
+        <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <div class="form-item">
+    <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
+      Guardar
+    </button>
+  </div>
 </form>
 <div *nzModalFooter></div>
 </nz-modal>

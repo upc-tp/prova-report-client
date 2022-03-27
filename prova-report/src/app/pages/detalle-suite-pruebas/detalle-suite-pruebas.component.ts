@@ -7,6 +7,9 @@ import { SuiteView } from 'src/app/interfaces/suites';
 import { SuitesService } from '../../services/suites.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { Router } from '@angular/router';
+import { ProjectService } from 'src/app/services/projects.service';
+import { PriorityService } from 'src/app/services/priority.services';
+import { SeverityService } from 'src/app/services/seveities.services';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -21,8 +24,18 @@ export class DetalleSuitePruebasComponent implements OnInit {
     description: string;
     testStatus:string;
     testSuite: string;
+    priority: string;
+    severity: string;
     registerDate: string;
     registerBy: string;
+  }> = [];
+  priorities: Array<{
+    label: string;
+    value: number;
+  }> = [];
+  severities: Array<{
+    label: string;
+    value: number;
   }> = [];
 
   suite: SuiteView = {
@@ -33,8 +46,15 @@ export class DetalleSuitePruebasComponent implements OnInit {
     modifiedBy: '',
     title: '',
     description: '',
-    project: ''
+    project: '',
+    projectId: 0
   };
+
+  collaborators: Array<{
+    label: string;
+    value: number;
+  }> = [];
+
   id: number;
   saved: boolean = false;
   updated: boolean = false;
@@ -48,7 +68,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private route:ActivatedRoute, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
+  constructor(private route:ActivatedRoute, private projectService:ProjectService,  private priorityService: PriorityService, private seveityService: SeverityService, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -56,11 +76,17 @@ export class DetalleSuitePruebasComponent implements OnInit {
     });
     this.fetchTestCases(this.page, this.pageSize);
     this.getSuite();
+    this.getPriority();
+    this.getSeverity();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
-      description: [null, [Validators.required]]
+      description: [null, [Validators.required]],
+      selectCollaborator: [null, [Validators.required]],
+      selectPriority: [null, [Validators.required]],
+      selectSeverity: [null, [Validators.required]]
     });
-
+  
+    this.getProjectCollaborators();
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
@@ -75,8 +101,38 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.createdBy = res.result.createdBy;
       this.suite.createdAt = res.result.createdAt;
       this.suite.project = res.result.project.title;
+      this.suite.projectId = res.result.project.id;
     });
   }
+
+  getPriority() {
+    this.priorityService.getPriorities(null, null, '').subscribe(
+      (res) => (
+        this.priorities = res.result.map((tPriority) => {
+          return {
+            label: tPriority.name,
+            value: tPriority.id
+          };
+        })
+      )
+
+    );
+  }
+
+  getSeverity() {
+    this.seveityService.getSeverities(null, null, '').subscribe(
+      (res) => (
+        this.severities = res.result.map((tSeverity) => {
+          return {
+            label: tSeverity.name,
+            value: tSeverity.id
+          };
+        })
+      )
+
+    );
+  }
+
   fetchTestCases(page: number, pageSize: number, search: string = ''){
     this.testCaseService.getTestCases(page,pageSize,search,this.suiteId).subscribe(
       res =>{
@@ -87,8 +143,10 @@ export class DetalleSuitePruebasComponent implements OnInit {
               description: tCase.title,
               testStatus: tCase.testState.name,
               testSuite: tCase.testSuite.title,
+              priority: tCase.priority.name,
+              severity: tCase.severity.name,
               registerDate: new Date(tCase.createdAt).toLocaleDateString(),
-              registerBy: tCase.createdBy 
+              registerBy: tCase.createdBy
             };
           }
         );
@@ -120,8 +178,22 @@ export class DetalleSuitePruebasComponent implements OnInit {
     }, 3000);
   }
 
+  getProjectCollaborators(){
+    this.projectService
+      .getCollaborators(null, null, '', this.suite.projectId).subscribe(
+        (res) => (
+          this.collaborators = res.result.map((tcollaborator) => {
+            return {
+              value: tcollaborator.uid,
+              label: tcollaborator.firstName
+            };
+          })
+        )
+      )
+  }
+
   backTestSuites(){
-    this.router.navigate(['suite-pruebas']);  
+    this.router.navigate(['suite-pruebas']);
   }
   submitForm(): void {
     if (this.validateForm.valid) {
@@ -131,7 +203,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
             this.validateForm.controls['title'].value,
             this.validateForm.controls['description'].value,
             this.suiteId,
-            this.id
+            this.id,
+            this.validateForm.controls['selectPriority'].value,
+            this.validateForm.controls['selectSeverity'].value
           )
           .subscribe(
             (testCase) => {
@@ -146,15 +220,19 @@ export class DetalleSuitePruebasComponent implements OnInit {
               }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
+              this.validateForm.controls['selectPriority'].setValue(0);
+              this.validateForm.controls['selectSeverity'].setValue(0);
             },
             (error) => console.log(error)
           );
       } else {
-        
+
         this.testCaseService
           .createTestCase(
             this.validateForm.controls['title'].value,
             this.validateForm.controls['description'].value,
+            this.validateForm.controls['selectPriority'].value,
+            this.validateForm.controls['selectSeverity'].value,
             parseInt(this.suiteId.toString())
           )
           .subscribe(
@@ -169,6 +247,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
               }.bind(this), 10000);
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
+              this.validateForm.controls['selectPriority'].setValue(0);
+              this.validateForm.controls['selectSeverity'].setValue(0);
+
             },
             (error) => console.log(error)
           );
