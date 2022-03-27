@@ -134,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "prova-report"
+  "defaultProject": "prova-report",
+  "cli": {
+    "analytics": false
+  }
 }
