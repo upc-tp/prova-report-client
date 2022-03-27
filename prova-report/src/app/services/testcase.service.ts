@@ -14,17 +14,19 @@ import { TestCaseResponse, TestCaseCreated, TestCaseCreatedResponse, SingleTestC
     getTestCases(page:number,pageSize:number,search: string,testSuiteId: number): Observable<TestCaseResponse>{
         return this.http.get<TestCaseResponse>(BASE_URL + this.testCase +`?page=${page}&pageSize=${pageSize}&search=${search}&testSuiteId=${testSuiteId}`);
     }
-    createTestCase(title: string, description: string, testSuiteId: number):Observable<TestCaseCreated>{
+    createTestCase(title: string, description: string, priorityId:number, severityId:number, testSuiteId: number):Observable<TestCaseCreated>{
         const httpOptions = {
             headers: new HttpHeaders({
               'Content-Type':  'application/json'
             })
           };
-        
+
           return this.http.post<TestCaseCreatedResponse>(BASE_URL + this.testCase,{
             testSuiteId,
             title,
-            description
+            description,
+            priorityId,
+            severityId
            },httpOptions).pipe(
                 map(this.extractData),
                 catchError(this.handleErrorObservable)
@@ -34,7 +36,7 @@ import { TestCaseResponse, TestCaseCreated, TestCaseCreatedResponse, SingleTestC
         return this.http.get<SingleTestCaseResponse>(BASE_URL + this.testCase + `/${id}` );
     }
 
-    updateTestCase(title: string, description: string, testSuiteId: number, id:number):Observable<TestCaseCreated>{
+    updateTestCase(title: string, description: string, testSuiteId: number, id:number, priorityId:number, severityId:number):Observable<TestCaseCreated>{
         const httpOptions = {
             headers: new HttpHeaders({
               'Content-Type':  'application/json'
@@ -44,11 +46,13 @@ import { TestCaseResponse, TestCaseCreated, TestCaseCreatedResponse, SingleTestC
             BASE_URL + this.testCase + `/${id}`,{
                 title,
                 description,
-                testSuiteId
+                testSuiteId,
+                priorityId,
+                severityId
             },httpOptions).pipe(
                 map(this.extractData),
                 catchError(this.handleErrorObservable)
-         );  
+         );
     }
 
 
