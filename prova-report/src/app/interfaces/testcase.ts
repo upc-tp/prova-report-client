@@ -3,6 +3,8 @@ export interface TestCase {
 	createdBy: string;
 	modifiedAt: string;
 	modifiedBy: string;
+  severity: Severities;
+  priority: Priorities;
 	deletedAt?: any;
 	deletedBy?: any;
     id: number;
@@ -17,6 +19,8 @@ export interface TestCaseCreated{
 	createdBy: string;
 	modifiedAt: string;
 	modifiedBy: string;
+  severity: Severities;
+  priority: Priorities;
 	deletedAt?: any;
     id: number;
     title: string;
@@ -58,5 +62,29 @@ export interface TestCaseResponse {
 	count: number;
 	message: string;
 	success: boolean;
+  severity: Severities;
+  priority: Priorities;
 	result: TestCase[];
+}
+
+export interface Severities {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	name: string;
+}
+
+export interface Priorities {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	name: string;
 }

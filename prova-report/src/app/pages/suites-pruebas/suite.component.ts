@@ -169,7 +169,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   detailTestSuite(id: number){
     this.id = id;
-    this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});  
+    this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});
   }
 
   updateSuite(id: number) {
