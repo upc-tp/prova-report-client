@@ -128,11 +128,20 @@ nzTitle="Caso de Prueba"
       />
     </nz-form-control>
   </nz-form-item>
-  <div class="form-item"> 
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label>
+        Asignar Colaborador
+      </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input" nzPlaceHolder="Seleccione Colaborador"
+        [nzOptions]="collaborators">
+        <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
   <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
     Guardar
   </button>
-</div>
 </form>
 <div *nzModalFooter></div>
 </nz-modal>

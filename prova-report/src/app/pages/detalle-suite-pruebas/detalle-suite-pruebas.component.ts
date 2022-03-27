@@ -7,6 +7,7 @@ import { SuiteView } from 'src/app/interfaces/suites';
 import { SuitesService } from '../../services/suites.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { Router } from '@angular/router';
+import { ProjectService } from 'src/app/services/projects.service';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -33,8 +34,15 @@ export class DetalleSuitePruebasComponent implements OnInit {
     modifiedBy: '',
     title: '',
     description: '',
-    project: ''
+    project: '',
+    projectId: 0
   };
+
+  collaborators: Array<{
+    label: string;
+    value: number;
+  }> = [];
+
   id: number;
   saved: boolean = false;
   updated: boolean = false;
@@ -48,7 +56,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private route:ActivatedRoute, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
+  constructor(private route:ActivatedRoute, private projectService:ProjectService,  private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -58,9 +66,11 @@ export class DetalleSuitePruebasComponent implements OnInit {
     this.getSuite();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
-      description: [null, [Validators.required]]
+      description: [null, [Validators.required]],
+      selectCollaborator: [null, [Validators.required]]
     });
-
+  
+    this.getProjectCollaborators();
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
@@ -75,6 +85,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.createdBy = res.result.createdBy;
       this.suite.createdAt = res.result.createdAt;
       this.suite.project = res.result.project.title;
+      this.suite.projectId = res.result.project.id;
     });
   }
   fetchTestCases(page: number, pageSize: number, search: string = ''){
@@ -118,6 +129,20 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);
+  }
+
+  getProjectCollaborators(){
+    this.projectService
+      .getCollaborators(null, null, '', this.suite.projectId).subscribe(
+        (res) => (
+          this.collaborators = res.result.map((tcollaborator) => {
+            return {
+              value: tcollaborator.uid,
+              label: tcollaborator.firstName
+            };
+          })
+        )
+      )
   }
 
   backTestSuites(){
