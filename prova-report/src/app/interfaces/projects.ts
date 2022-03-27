@@ -52,3 +52,20 @@ export interface SingleProjectResponse {
 	success: boolean;
 	result: Project;
 }
+
+export interface Collaborator {
+    uid: number;
+    email: string;
+    role: string;
+    firstName: string;
+    lastName: string;
+}
+
+export interface CollaboratorsResponse {
+    page: number;
+    pageSize: number;
+    count: number;
+    message: string;
+    success: string;
+    result: Collaborator[];
+}

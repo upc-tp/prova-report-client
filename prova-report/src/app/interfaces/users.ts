@@ -32,3 +32,12 @@ export interface RegisterRequest {
     email: string;
     password: string;
 }
+
+export interface CollaboratorsResponse {
+    page: number;
+    pageSize: number;
+    count: number;
+    message: string;
+    success: string;
+    result: User[];
+}

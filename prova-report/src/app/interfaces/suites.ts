@@ -18,6 +18,7 @@ export interface SuiteView {
 	title: string;
 	description: string;
 	project: string;
+	projectId: number;
 }
 
 export interface Suites {

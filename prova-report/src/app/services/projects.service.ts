@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { BASE_URL } from '../common/urlConstants';
-import { ProjectsResponse, ProjectCreatedResponse, SingleProjectResponse } from '../interfaces/projects';
+import { ProjectsResponse, ProjectCreatedResponse, SingleProjectResponse, CollaboratorsResponse } from '../interfaces/projects';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -50,6 +50,10 @@ export class ProjectService {
       map(this.extractData),
       catchError(this.handleErrorObservable)
     );
+  }
+
+  getCollaborators(page: number, pageSize: number, search: string, id: number): Observable<CollaboratorsResponse> {
+    return this.http.get<CollaboratorsResponse>(BASE_URL + this.testProject + `/${id}` + '/collaborators' + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
 
   private extractData(res: any) {
