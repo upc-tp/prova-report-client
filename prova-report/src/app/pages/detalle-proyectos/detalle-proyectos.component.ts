@@ -124,52 +124,52 @@ export class DetalleProyectosComponent implements OnInit {
     submitForm(): void {
       if (this.validateForm.valid) {
         if (this.id) {
-          this.testCaseService
-            .updateTestCase(
-              this.validateForm.controls['title'].value,
-              this.validateForm.controls['description'].value,
-              this.projectId,
-              this.id
-            )
-            .subscribe(
-              (testCase) => {
-                this.fetchTestCases(this.page, this.pageSize);
-                console.log('Response: ', testCase);
-                this.isVisible = false;
-                this.id = null;
-                this.updated = true;
-                setTimeout(function () {
-                  this.updated = false;
-                  console.log('Updated: ', this.updated);
-                }.bind(this), 10000);
-                this.validateForm.controls['title'].setValue('');
-                this.validateForm.controls['description'].setValue('');
-              },
-              (error) => console.log(error)
-            );
+          // this.testCaseService
+          //   .updateTestCase(
+          //     this.validateForm.controls['title'].value,
+          //     this.validateForm.controls['description'].value,
+          //     this.projectId,
+          //     this.id
+          //   )
+          //   .subscribe(
+          //     (testCase) => {
+          //       this.fetchTestCases(this.page, this.pageSize);
+          //       console.log('Response: ', testCase);
+          //       this.isVisible = false;
+          //       this.id = null;
+          //       this.updated = true;
+          //       setTimeout(function () {
+          //         this.updated = false;
+          //         console.log('Updated: ', this.updated);
+          //       }.bind(this), 10000);
+          //       this.validateForm.controls['title'].setValue('');
+          //       this.validateForm.controls['description'].setValue('');
+          //     },
+          //     (error) => console.log(error)
+          //   );
         } else {
           
-          this.testCaseService
-            .createTestCase(
-              this.validateForm.controls['title'].value,
-              this.validateForm.controls['description'].value,
-              parseInt(this.projectId.toString())
-            )
-            .subscribe(
-              (suite) => {
-                this.fetchTestCases(this.page, this.pageSize);
-                console.log('Response: ', suite);
-                this.isVisible = false;
-                this.saved = true;
-                setTimeout(function () {
-                  this.saved = false;
-                  console.log('Saved: ', this.saved);
-                }.bind(this), 10000);
-                this.validateForm.controls['title'].setValue('');
-                this.validateForm.controls['description'].setValue('');
-              },
-              (error) => console.log(error)
-            );
+          // this.testCaseService
+          //   .createTestCase(
+          //     this.validateForm.controls['title'].value,
+          //     this.validateForm.controls['description'].value,
+          //     parseInt(this.projectId.toString())
+          //   )
+          //   .subscribe(
+          //     (suite) => {
+          //       this.fetchTestCases(this.page, this.pageSize);
+          //       console.log('Response: ', suite);
+          //       this.isVisible = false;
+          //       this.saved = true;
+          //       setTimeout(function () {
+          //         this.saved = false;
+          //         console.log('Saved: ', this.saved);
+          //       }.bind(this), 10000);
+          //       this.validateForm.controls['title'].setValue('');
+          //       this.validateForm.controls['description'].setValue('');
+          //     },
+          //     (error) => console.log(error)
+          //   );
         }
       } else {
         Object.values(this.validateForm.controls).forEach((control) => {
