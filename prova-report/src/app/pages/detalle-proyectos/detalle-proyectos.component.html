@@ -52,27 +52,25 @@
     </button>
   </div>
   </div>
-    <nz-table #middleTable nzSize="middle" [nzData]="testCases"
+    <nz-table #middleTable nzSize="middle" [nzData]="collaborators"
     [nzFrontPagination]="false" 
     [nzPageIndex]="page" [nzPageSize]="pageSize"
     [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
     >
       <thead>
         <tr>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Estado</th>
-          <th>Fecha de registro</th>
-          <th>Registrado por</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Rol</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of middleTable.data">
-          <td>{{ data.title }}</td>
-          <td>{{ data.description }}</td>
-          <td>{{ data.testStatus }}</td>
-          <td>{{ data.registerDate }}</td>
-          <td>{{ data.registerBy }}</td>
+          <td>{{ data.firstName }}</td>
+          <td>{{ data.lastName }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.role }}</td>
         </tr>
       </tbody>
     </nz-table>
@@ -101,10 +99,10 @@ nzTitle="Colaborador"
       </nz-form-label>
       <input
         nz-input
-        name="title"
-        formControlName="title"
+        name="firstName"
+        formControlName="firstName"
         type="text"
-        id="title"
+        id="firstName"
         placeholder="Nombre"
       />
     </nz-form-control>
@@ -112,15 +110,60 @@ nzTitle="Colaborador"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label> 
-        Descripción
+        Apellido
       </nz-form-label>
       <input
         nz-input
-        name="description"
-        formControlName="description"
+        name="lastName"
+        formControlName="lastName"
         type="text"
-        id="description"
-        placeholder="Descripción"
+        id="lastName"
+        placeholder="Apellido"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label> 
+        Email
+      </nz-form-label>
+      <input
+        nz-input
+        name="email"
+        formControlName="email"
+        type="text"
+        id="email"
+        placeholder="Email"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label> 
+        Contraseña
+      </nz-form-label>
+      <input
+        nz-input
+        name="password"
+        formControlName="password"
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control class="form-item">
+      <nz-form-label> 
+        Rol
+      </nz-form-label>
+      <input
+        nz-input
+        name="role"
+        formControlName="role"
+        type="text"
+        id="role"
+        placeholder="Rol"
       />
     </nz-form-control>
   </nz-form-item>

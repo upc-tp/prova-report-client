@@ -7,6 +7,7 @@ import { Project } from 'src/app/interfaces/projects';
 import { ProjectService } from '../../services/projects.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { Router } from '@angular/router';
+import { tick } from '@angular/core/testing';
 @Component({
   selector: 'app-detalle-proyectos',
   templateUrl: './detalle-proyectos.component.html',
@@ -24,7 +25,14 @@ export class DetalleProyectosComponent implements OnInit {
       registerDate: string;
       registerBy: string;
     }> = [];
-  
+    collaborators: Array<{
+      uid: number;
+      email: string;
+      role: string;
+      firstName: string;
+      lastName: string;
+      password: string;
+    }> = [];
     project: Project = {
       id: 0,
       createdAt: '',
@@ -53,13 +61,16 @@ export class DetalleProyectosComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
       this.projectId = params.projectId;
       });
-      this.fetchTestCases(this.page, this.pageSize);
+      //this.fetchTestCases(this.page, this.pageSize);
       this.getProject();
       this.validateForm = this.fb.group({
-        title: [null, [Validators.required]],
-        description: [null, [Validators.required]]
+        firstName: [null, [Validators.required]],
+        lastName: [null, [Validators.required]],
+        email: [null, [Validators.required]],
+        role: [null, [Validators.required]],
+        password: [null, [Validators.required]]
       });
-  
+      this.getProjectCollaborators();
       this.subscription = this.modelChanged
         .pipe(debounceTime(this.debounceTime))
         .subscribe((search: string) => {
@@ -96,6 +107,7 @@ export class DetalleProyectosComponent implements OnInit {
         }
       );
     }
+    
     inputChanged(event) {
       this.modelChanged.next(event.target.value);
     }
@@ -121,56 +133,53 @@ export class DetalleProyectosComponent implements OnInit {
     backTestProjects(){
       this.router.navigate(['gestion-proyectos']);  
     }
+    getProjectCollaborators(){
+      this.projectService
+        .getCollaborators(null, null, '', this.projectId).subscribe(
+          (res) => (
+            this.collaborators = res.result.map((tcollaborator) => {
+              return {
+                uid: tcollaborator.uid,
+                email: tcollaborator.email,
+                role: tcollaborator.role,
+                firstName: tcollaborator.firstName,
+                lastName: tcollaborator.lastName,
+                password: tcollaborator.password
+              };
+            })
+          )
+        )
+    }
+    
     submitForm(): void {
       if (this.validateForm.valid) {
-        if (this.id) {
-          this.testCaseService
-            .updateTestCase(
-              this.validateForm.controls['title'].value,
-              this.validateForm.controls['description'].value,
-              this.projectId,
-              this.id
-            )
-            .subscribe(
-              (testCase) => {
-                this.fetchTestCases(this.page, this.pageSize);
-                console.log('Response: ', testCase);
-                this.isVisible = false;
-                this.id = null;
-                this.updated = true;
-                setTimeout(function () {
-                  this.updated = false;
-                  console.log('Updated: ', this.updated);
-                }.bind(this), 10000);
-                this.validateForm.controls['title'].setValue('');
-                this.validateForm.controls['description'].setValue('');
-              },
-              (error) => console.log(error)
-            );
-        } else {
-          
-          this.testCaseService
-            .createTestCase(
-              this.validateForm.controls['title'].value,
-              this.validateForm.controls['description'].value,
+          this.projectService
+            .createCollaborator(
+              this.validateForm.controls['firstName'].value,
+              this.validateForm.controls['lastName'].value,
+              this.validateForm.controls['email'].value,
+              this.validateForm.controls['role'].value,
+              this.validateForm.controls['password'].value,
               parseInt(this.projectId.toString())
             )
             .subscribe(
-              (suite) => {
-                this.fetchTestCases(this.page, this.pageSize);
-                console.log('Response: ', suite);
+              (project) => {
+                this.getProjectCollaborators();
+                console.log('Response: ', project);
                 this.isVisible = false;
                 this.saved = true;
                 setTimeout(function () {
                   this.saved = false;
                   console.log('Saved: ', this.saved);
                 }.bind(this), 10000);
-                this.validateForm.controls['title'].setValue('');
-                this.validateForm.controls['description'].setValue('');
+                this.validateForm.controls['firstName'].setValue('');
+                this.validateForm.controls['lastName'].setValue('');
+                this.validateForm.controls['email'].setValue('');
+                this.validateForm.controls['role'].setValue('');
+                this.validateForm.controls['password'].setValue('');
               },
               (error) => console.log(error)
             );
-        }
       } else {
         Object.values(this.validateForm.controls).forEach((control) => {
           if (control.invalid) {
@@ -180,6 +189,7 @@ export class DetalleProyectosComponent implements OnInit {
         });
       }
     }
+
     ngOnDestroy(): void {
       this.subscription.unsubscribe();
     }
