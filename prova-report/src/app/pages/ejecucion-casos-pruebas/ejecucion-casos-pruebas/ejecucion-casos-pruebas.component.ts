@@ -84,14 +84,15 @@ export class EjecucionCasosPruebasComponent implements OnInit {
       this.iconRegistry.addSvgIconLiteral('NoTest',this._sanitizer.bypassSecurityTrustHtml(NoTest));
     }
   testCaseSelected: TestCase;
-  @ViewChild('paginatorTestCase') paginatorTestCase: MatPaginator;
-  @ViewChild('sortTestCase') sortTestCase: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   headerColumn: string[] = [
     'title',
     'description',
     'state',
     'priority',
+    'severity',
     'registerDate',
     'registerBy',
     'responsable'
@@ -104,7 +105,10 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     });
     this.getProjects();
   }
-
+  Pagination() {
+    this.dataSourceTestCase.paginator = this.paginator;
+    this.dataSourceTestCase.sort = this.sort;
+  }
   getProjects(){
     this.ProjectService.getTestProjects(null,null,'').subscribe(
       (res) => (
@@ -131,12 +135,15 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     if (!this.filterFormGroup.invalid) {
       this.testCaseService.getTestCases(null,null,'',this.filterFormGroup.controls['testSuite'].value).subscribe(
         res => {
+          console.log(res.result)
           this.listTestCase = res.result.map(
             (tCase) => {
                 const testCase = new TestCase();
                 testCase.id = tCase.id,
                 testCase.title = tCase.title,
                 testCase.description = tCase.description,
+                testCase.priority = tCase.priority,
+                testCase.severity = tCase.severity,
                 testCase.testState = tCase.testState,
                 testCase.testSuite = tCase.testSuite,
                 testCase.createdAt = new Date(tCase.createdAt).toLocaleDateString(),
@@ -154,11 +161,9 @@ export class EjecucionCasosPruebasComponent implements OnInit {
             );
         }  
         this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
-        this.dataSourceTestCase.paginator = this.paginatorTestCase;
+        this.Pagination();
         }
       );
-     
-
     }
   }
 
