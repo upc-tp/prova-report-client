@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
+  {path: 'ejecucion-casos-pruebas', canActivate:[AuthGuard], loadChildren: () => import('./pages/ejecucion-casos-pruebas/ejecucion-casos-pruebas/ejecucion-casos-pruebas.module').then(m=>m.EjecucionCasosPruebasModule)},
   { path: 'dashboard', canActivate: [AuthGuard], loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
   { path: 'suite-pruebas', canActivate: [AuthGuard], loadChildren: () => import('./pages/suites-pruebas/suite.module').then(m => m.SuiteModule) },
   { path: 'gestion-proyectos', canActivate: [AuthGuard], loadChildren: () => import('./pages/gestion-proyectos/proyectos.module').then(m => m.ProyectosModule) },
