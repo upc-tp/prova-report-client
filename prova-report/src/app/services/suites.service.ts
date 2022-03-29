@@ -15,6 +15,9 @@ export class SuitesService {
   getTestSuites(page: number, pageSize: number, search: string): Observable<SuiteResponse> {
     return this.http.get<SuiteResponse>(BASE_URL + this.testSuite + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
+  getTestSuitesByProject(page: number, pageSize: number, search: string, projectId:number): Observable<SuiteResponse>{
+    return this.http.get<SuiteResponse>(BASE_URL + this.testSuite + `?page=${page}&pageSize=${pageSize}&search=${search}&projectId=${projectId}`);
+  }
 
   getTestSuite(id: number): Observable<SingleSuiteResponse> {
     return this.http.get<SingleSuiteResponse>(BASE_URL + this.testSuite + `/${id}`)

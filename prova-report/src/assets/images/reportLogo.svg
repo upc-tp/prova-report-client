@@ -1,10 +1,4 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './common/auth/auth.service';
-import { User } from './interfaces/users';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
-const provaLogo = `<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0" standalone="yes"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
 <path style="fill:#ffffff; stroke:none;" d="M0 0L0 512L234 512C226.218 508.727 215.415 509.245 207 507.551C191.998 504.532 177.143 499.984 163 494.139C92.8988 465.164 38.1101 403.495 18.7346 330C5.2731 278.938 8.85068 223.994 28.4491 175C33.136 163.283 38.933 151.804 45.4498 141C48.6769 135.65 52.9786 130.619 55.6975 125C57.6111 121.046 57 116.268 57 112L57 87C57 82.7375 55.7665 75.8618 59.4336 72.7423C61.9813 70.5751 65.895 71.0052 69 71L92 71C92 63.3337 91.9603 55.6662 92.0008 48C92.0204 44.2735 91.9672 40.121 95.2284 37.6034C97.9317 35.5165 101.8 36.0014 105 36L125 36C125 24.419 122.697 10.5492 128 0L0 0z"/>
 <path style="fill:#c3ddf4; stroke:none;" d="M148 388C144.31 379.291 146 368.32 146 359L146 301L146 98L146 32C146 21.8717 143.995 9.45193 148 0C142.674 0 131.681 -2.08734 127.434 1.60339C123.178 5.30182 125 14.9674 125 20C125 37.6658 126 55.2863 126 73L126 306L126 365C126 370.101 123.748 382.541 127.603 386.397C131.356 390.149 143.027 388 148 388z"/>
@@ -389,39 +383,4 @@ const provaLogo = `<?xml version="1.0" standalone="yes"?>
 <path style="fill:#978260; stroke:none;" d="M102 458L103 459L102 458z"/>
 <path style="fill:#827970; stroke:none;" d="M384 458L385 459L384 458z"/>
 <path style="fill:#cb9838; stroke:none;" d="M104 459C110.919 461.903 121.52 460 129 460L186 460L383 460C376.081 457.097 365.48 459 358 459L301 459L104 459z"/>
-</svg>`
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
-})
-
-export class AppComponent {
-  isCollapsed = false;
-  currentUser: User;
-
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private _sanitizer: DomSanitizer,
-    private iconRegistry: MatIconRegistry
-  ) {
-    this.authService.currentUser.subscribe(u => {
-      this.currentUser = u;
-    });
-    this.authService.logoutSubject.subscribe(l => {
-      if (l) {
-        this.logout();
-        this.authService.logoutSubject.next(false);
-      }
-    })
-    this.iconRegistry.addSvgIconLiteral('provaLogo',this._sanitizer.bypassSecurityTrustHtml(provaLogo));
-  }
-
-  logout() {
-    this.authService.logout().subscribe(res => {
-      this.router.navigate(['/login']);
-    });
-  }
-}
+</svg>
