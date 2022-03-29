@@ -96,6 +96,18 @@
       <i nz-icon nzType="form"></i>
       <span>Detalle Suite de Pruebas</span>
     </li> -->
+    <li
+    nz-menu-item
+    nz-tooltip
+    nzTooltipPlacement="right"
+    [nzTooltipTitle]="isCollapsed ? 'Ejecucion Casos de Pruebas' : ''"
+    style="text-align: left"
+    routerLink="/ejecucion-casos-pruebas"
+    routerLinkActive="ant-menu-item-selected"
+  >
+    <i nz-icon nzType="form"></i>
+    <span>Ejecucion Casos de Prueba</span>
+  </li>
     </ul>
   </nz-sider>
   <nz-layout>
@@ -107,7 +119,9 @@
             nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
           ></i>
-          <span>Prova Report</span>
+          <span>
+            <mat-icon svgIcon="provaLogo" class="provaLogo"></mat-icon>
+            Prova Report</span>
         </span>
       </div>
     </nz-header>

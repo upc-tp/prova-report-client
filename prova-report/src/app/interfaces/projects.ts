@@ -59,6 +59,7 @@ export interface Collaborator {
     role: string;
     firstName: string;
     lastName: string;
+	password: string;
 }
 
 export interface CollaboratorsResponse {
@@ -68,4 +69,19 @@ export interface CollaboratorsResponse {
     message: string;
     success: string;
     result: Collaborator[];
+}
+
+export interface CollaboratorCreated {
+	firstName: string;
+	lastName: string;
+	email: string;
+	role: string;
+	password: string;
+	id: number;
+}
+
+export interface CollaboratorCreatedResponse {
+	message: string;
+	success: boolean;
+	result: CollaboratorCreated;
 }

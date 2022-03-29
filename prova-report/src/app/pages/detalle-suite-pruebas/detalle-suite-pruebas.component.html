@@ -79,8 +79,8 @@
           <td>{{ data.title }}</td>
           <td>{{ data.description }}</td>
           <td>{{ data.testStatus }}</td>
-          <td>{{ data.priority }}</td>
-          <td>{{ data.severity }}</td>
+          <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }} </td>
+          <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }} </td>
           <td>
             <div *ngIf="data.collaborator == null; else elseBlock"> - </div>
             <ng-template #elseBlock> {{data.collaborator.firstName}}
