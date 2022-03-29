@@ -68,8 +68,10 @@
           <th>Estado</th>
           <th>Prioridad</th>
           <th>Severidad</th>
+          <th>Responsable</th>
           <th>Fecha de registro</th>
           <th>Registrado por</th>
+          <th>Opciones</th>
         </tr>
       </thead>
       <tbody>
@@ -79,8 +81,18 @@
           <td>{{ data.testStatus }}</td>
           <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }} </td>
           <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }} </td>
+          <td>
+            <div *ngIf="data.collaborator == null; else elseBlock"> - </div>
+            <ng-template #elseBlock> {{data.collaborator.firstName}}
+            </ng-template>
+          </td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
+          <td class = "containerbuttons" >
+            <button class="edit" nz-button nzType="primary"  (click)="updateCase(data.id)">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+        </td>
         </tr>
       </tbody>
     </nz-table>
@@ -160,9 +172,9 @@ nzTitle="Caso de Prueba"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label>
-        Asignar Colaborador
+        Asignar Responsable
       </nz-form-label>
-      <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input" nzPlaceHolder="Seleccione Colaborador"
+      <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input" nzPlaceHolder="Seleccione Responsable"
         [nzOptions]="collaborators">
         <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
       </nz-select>

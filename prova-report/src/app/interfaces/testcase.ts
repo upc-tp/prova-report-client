@@ -1,10 +1,13 @@
+import { User } from "./users";
+
 export interface TestCase {
 	createdAt: string;
 	createdBy: string;
 	modifiedAt: string;
 	modifiedBy: string;
-  severity: Severities;
-  priority: Priorities;
+  	severity: Severities;
+  	priority: Priorities;
+	userInCharge: User;
 	deletedAt?: any;
 	deletedBy?: any;
     id: number;

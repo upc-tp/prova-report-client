@@ -142,13 +142,14 @@ export class DetalleSuitePruebasComponent implements OnInit {
             return{
               id: tCase.id,
               title: tCase.title,
-              description: tCase.title,
+              description: tCase.description,
               testStatus: tCase.testState.name,
               testSuite: tCase.testSuite.title,
               priority: tCase.priority.name,
               priorityIcon: tCase.priority.name === "Baja" ? '/assets/images/low-priority.png'  : tCase.priority.name === "Media" ? '/assets/images/middle-priority.png' : '/assets/images/high-priority.png',
               severityIcon: tCase.severity.name === "Trivial" ? '/assets/images/trivial.png'  : tCase.severity.name === "Normal" ? '/assets/images/normal.png' : '/assets/images/critico.png',
               severity: tCase.severity.name,
+              collaborator: tCase.userInCharge,
               registerDate: new Date(tCase.createdAt).toLocaleDateString(),
               registerBy: tCase.createdBy
             };
@@ -188,8 +189,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
         (res) => (
           this.collaborators = res.result.map((tcollaborator) => {
             return {
-              value: tcollaborator.uid,
-              label: tcollaborator.firstName
+              label: tcollaborator.firstName,
+              value: tcollaborator.uid
+              
             };
           })
         )
@@ -209,7 +211,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
             this.suiteId,
             this.id,
             this.validateForm.controls['selectPriority'].value,
-            this.validateForm.controls['selectSeverity'].value
+            this.validateForm.controls['selectSeverity'].value,
+            parseInt(this.validateForm.controls['selectCollaborator'].value)
           )
           .subscribe(
             (testCase) => {
@@ -226,6 +229,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectPriority'].setValue(0);
               this.validateForm.controls['selectSeverity'].setValue(0);
+              this.validateForm.controls['selectCollaborator'].setValue(0);
             },
             (error) => console.log(error)
           );
@@ -237,7 +241,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
             this.validateForm.controls['description'].value,
             this.validateForm.controls['selectPriority'].value,
             this.validateForm.controls['selectSeverity'].value,
-            parseInt(this.suiteId.toString())
+            parseInt(this.suiteId.toString()),
+            parseInt(this.validateForm.controls['selectCollaborator'].value)
           )
           .subscribe(
             (suite) => {
@@ -253,9 +258,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectPriority'].setValue(0);
               this.validateForm.controls['selectSeverity'].setValue(0);
-
+              this.validateForm.controls['selectCollaborator'].setValue(0);
             },
-            (error) => console.log(error)
+            (error) => console.log(error)  
           );
       }
     } else {
@@ -267,6 +272,21 @@ export class DetalleSuitePruebasComponent implements OnInit {
       });
     }
   }
+
+  updateCase(id:number){
+    this.id = id;
+    this.testCaseService.getTestCase(id).subscribe((res) => {
+      this.validateForm.get('title').setValue(res.result.title);
+      this.validateForm.get('description').setValue(res.result.description);
+      if(res.result.userInCharge != null){
+        this.validateForm.get('selectCollaborator').setValue(res.result.userInCharge.uid);
+      }
+      this.validateForm.get('selectSeverity').setValue(res.result.severity.id);
+      this.validateForm.get('selectPriority').setValue(res.result.priority.id);
+      this.isVisible = true; 
+    });
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
