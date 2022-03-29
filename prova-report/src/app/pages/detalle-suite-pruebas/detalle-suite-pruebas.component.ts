@@ -25,6 +25,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
     testStatus:string;
     testSuite: string;
     priority: string;
+    priorityIcon: string;
+    severityIcon: string;
     severity: string;
     registerDate: string;
     registerBy: string;
@@ -144,6 +146,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
               testStatus: tCase.testState.name,
               testSuite: tCase.testSuite.title,
               priority: tCase.priority.name,
+              priorityIcon: tCase.priority.name === "Baja" ? '/assets/images/low-priority.png'  : tCase.priority.name === "Media" ? '/assets/images/middle-priority.png' : '/assets/images/high-priority.png',
+              severityIcon: tCase.severity.name === "Trivial" ? '/assets/images/trivial.png'  : tCase.severity.name === "Normal" ? '/assets/images/normal.png' : '/assets/images/critico.png',
               severity: tCase.severity.name,
               registerDate: new Date(tCase.createdAt).toLocaleDateString(),
               registerBy: tCase.createdBy
