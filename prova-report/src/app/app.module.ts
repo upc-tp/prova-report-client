@@ -17,6 +17,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { SpinnerComponent } from './common/spinner/spinner.component';
 import { httpInterceptorProviders } from './interceptors';
 import { SpinnerService } from './common/spinner/spinner.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -39,7 +40,8 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    HttpClientModule 
+    HttpClientModule ,
+    MatIconModule
   ],
   providers: [ httpInterceptorProviders, SpinnerService, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

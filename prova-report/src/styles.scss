@@ -3,3 +3,171 @@
     box-sizing: border-box;
     margin: 0;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.button-global {
+    height: 48px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.7px !important;
+    transition: background-color 0.5s ease;
+    box-shadow: 0px 4px 16px rgba(27, 27, 27, 0.08);
+}
+
+.button-text {
+    display: inline-block;
+}
+.text-w-bold {
+    font-weight: bold;
+}
+
+.text-fs-12 {
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.text-fs-14 {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.text-fs-16 {
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.text-fs-20 {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+
+/* 24 pa arriba */
+
+.text-fs-24 {
+    font-size: 24px;
+    line-height: 29px;
+}
+
+.text-fs-32 {
+    font-size: 32px;
+    line-height: 38px;
+}
+
+.text-black {
+    color: #222222 !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+.text-gray {
+    color: #868686 !important;
+}
+
+.text-purple {
+    color: #7f46f1 !important;
+}
+
+.text-red {
+    color: #fe5050 !important;
+}
+
+.text-green {
+    color: #38c976 !important;
+}
+
+.text-yellow {
+    color: #ffa23a !important;
+}
+
+.text-click-black {
+    color: #222222 !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-black:hover {
+    color: #868686 !important;
+}
+
+.text-click-white {
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-white:hover {
+    color: #f9f9f9 !important;
+}
+
+.text-click-gray {
+    color: #868686 !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-gray:hover {
+    color: #222222 !important;
+}
+
+.text-click-purple {
+    color: #7f46f1 !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-purple:hover {
+    color: #ae85ff !important;
+}
+
+.text-click-red {
+    color: #fe5050 !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-red:hover {
+    color: #fe8484 !important;
+}
+
+.text-click-green {
+    color: #38c976 !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-green:hover {
+    color: #73d99f !important;
+}
+
+.text-click-yellow {
+    color: #ffa23a !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-yellow:hover {
+    color: #ffbe75 !important;
+}
+
+.text-click-blue {
+    color: #3eaeff !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.text-click-blue:hover {
+    color: #2c7ab3 !important;
+}
