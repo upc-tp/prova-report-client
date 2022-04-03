@@ -1,22 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/common/auth/auth.service';
 import { RegisterRequest } from 'src/app/interfaces/users';
+
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit{
 
   registerForm: FormGroup;
   returnUrl: string;
+  passwordVisible = false;
+  password?: string;
   submitted = false;
   loading = false;
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -34,7 +37,8 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required, Validators.minLength(8)],
+      checkPassword: ['', [Validators.required, this.confirmationValidator]],
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -62,5 +66,19 @@ export class RegisterComponent implements OnInit {
         this.loading = false;
       });
   }
+
+  updateConfirmValidator(): void {
+    /** wait for refresh value */
+    Promise.resolve().then(() => this.registerForm.controls.checkPassword.updateValueAndValidity());
+  }
+
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.registerForm.controls.password.value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  };
 
 }

@@ -1,0 +1,105 @@
+<div>
+    <div class="banner">
+        <span>Validacion de Bugs</span>
+      </div>
+      <form [formGroup]="filterFormGroup">
+        <div class="row d-flex">
+          <div class="col-md-4">
+            <span>Proyecto</span>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Seleccionar</mat-label>
+              <mat-select
+                formControlName="projects"
+                (selectionChange)="updateFilter($event)"
+              >
+              <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
+                {{pro.value}}
+              </mat-option>
+              </mat-select>
+              <!--<mat-hint
+                *ngIf="validaciones('projects')"
+                class="form-text text-danger animate__animated animate__headShake"
+                >Seleccione uno</mat-hint
+              >-->
+            </mat-form-field>
+          </div>
+    
+          <div class="col-md-4">
+              <span>Suite</span>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Seleccionar</mat-label>
+              <mat-select
+                formControlName="testSuite"
+                (selectionChange)="updateFilter($event)"
+              >
+              <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
+                {{tSuite.value}}
+              </mat-option>
+              </mat-select>
+              <mat-hint
+                *ngIf="validaciones('testSuite')"
+                class="form-text text-danger animate__animated animate__headShake"
+                >Seleccione uno</mat-hint
+              >
+            </mat-form-field>
+          </div>
+          
+          <div class="col-md-4">
+            <span>Caso de Prueba</span>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Seleccionar</mat-label>
+            <mat-select
+              formControlName="testSuite"
+              (selectionChange)="updateFilter($event)"
+            >
+            <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
+              {{tSuite.value}}
+            </mat-option>
+            </mat-select>
+            <mat-hint
+              *ngIf="validaciones('testSuite')"
+              class="form-text text-danger animate__animated animate__headShake"
+              >Seleccione uno</mat-hint
+            >
+          </mat-form-field>
+        </div>
+          <div class="col-md-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="button-global ps-3 pe-3"
+              style="margin-top: 0.5rem"
+              (click)="search()"
+            >
+              <span
+                class="iconify"
+                data-icon="charm:paper-plane"
+                style="color: white"
+                data-width="24"
+                data-height="24"
+              ></span>
+              <span>Aplicar Filtros</span>
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              class="button-global mx-5"
+              style="margin-top: 0.5rem"
+              (click)="search()"
+              disabled
+            >
+              <span
+                class="iconify"
+                data-icon="charm:paper-plane"
+                style="color: white"
+                data-width="24"
+                data-height="24"
+              ></span>
+              <span>Enviar</span>
+            </button>
+          </div>
+        </div>
+      </form>
+      <br>
+      <span class="my-2">Manuel tienes 5 bugs por validar</span>
+</div>

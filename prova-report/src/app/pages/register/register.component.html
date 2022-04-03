@@ -1,12 +1,12 @@
 <div>
-    <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center" class = "mt-2">
         <h1>Prova Report</h1>
     </div>
-    <form nz-form class="register-form" [formGroup]="registerForm" (ngSubmit)="register()">
-        <div class="form-item">
+    <form nz-form class="register-form mt-1 mb-1" [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="form-item mt-2 mx-4">
             <h2 style="color: white;">Registro</h2>
         </div>
-        <div class="form-item">
+        <div class="form-item mb-2 mx-4">
             <div class="form-label">
                 Nombres
             </div>
@@ -16,7 +16,7 @@
                 <div *ngIf="f.firstName.errors.required">* Este campo es obligatorio</div>
             </div>
         </div>
-        <div class="form-item">
+        <div class="form-item my-2 mx-4">
             <div class="form-label">
                 Apellidos
             </div>
@@ -26,7 +26,7 @@
                 <div *ngIf="f.lastName.errors.required">* Este campo es obligatorio</div>
             </div>
         </div>
-        <div class="form-item">
+        <div class="form-item my-2 mx-4">
             <div class="form-label">
                 Correo electrónico
             </div>
@@ -36,24 +36,82 @@
                 <div *ngIf="f.email.errors.required">* Este campo es obligatorio</div>
             </div>
         </div>
-        <div class="form-item">
+        <!--<div class="form-item my-2 mx-4">
             <div class="form-label">
                 Contraseña
             </div>
             <input nz-input name="password" formControlName="password" type="password" id="password"
-                placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+                placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" (ngModelChange)="updateConfirmValidator()"/>
             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                 <div *ngIf="f.password.errors.required">* Este campo es obligatorio</div>
             </div>
-        </div>
-        <div class="form-item">
+        </div><div class="form-item my-2 mx-4">
+            <div class="form-label">
+                Confirmar Contraseña
+            </div>
+            <input nz-input name="checkPassword" nzFor="checkPassword" formControlName="checkPassword" type="password" id="checkPassword"
+                placeholder="Confirmar contraseña" [ngClass]="{ 'is-invalid':f.confirmPassword.errors }"/>
+                <ng-template #errorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">Please confirm your password!</ng-container>
+                    <ng-container *ngIf="control.hasError('confirm')">
+                      Two passwords that you enter is inconsistent!
+                    </ng-container>
+                  </ng-template>
+        </div>-->
+        <nz-form-item class="form-item my-2 mx-4">
+            <div class="form-label" nzfor="password">
+                Contraseña
+            </div>
+                <nz-input-group [nzSuffix]="suffixEye1">
+                <input
+                nz-input
+                [type]="passwordVisible ? 'text' : 'password'"
+                id="password"
+                ng-pattern = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/"
+                formControlName="password"
+                placeholder="Contraseña"
+                (ngModelChange)="updateConfirmValidator()"
+                nzErrorTip="Introduzca su contraseña!"
+                required
+                >
+            </nz-input-group>
+              <ng-template #suffixEye1>
+                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+              </ng-template>
+          </nz-form-item>
+          <nz-form-item class="form-item my-2 mx-4">
+            <div class="form-label" nzfor="checkPassword">
+                Confirmar Contraseña
+            </div>
+            <nz-form-control [nzErrorTip]="errorTpl">
+                <nz-input-group [nzSuffix] ="suffixEye2">
+              <input 
+              nz-input 
+              [type]="passwordVisible ? 'text' : 'password'"
+              formControlName="checkPassword" 
+              id="checkPassword" 
+              placeholder="Confirmar contraseña"
+              >
+            </nz-input-group>
+            <ng-template #suffixEye2>
+                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+              </ng-template>
+            </nz-form-control>
+              <ng-template #errorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Confirme su contraseña</ng-container>
+                <ng-container *ngIf="control.hasError('confirm')">
+                  Las contraseñas no coinciden!
+                </ng-container>
+              </ng-template>
+          </nz-form-item>
+        <div class="form-item my-2 mx-4">
             <button nz-button nzSize="large" nzBlock nzType="link" [nzLoading]="loading" routerLink="/login">
-                ¿Ya tiene una cuenta? Iniciar sesión
+                <strong>¿Ya tiene una cuenta? Iniciar sesión</strong>
             </button>
         </div>
-        <div class="form-item">
+        <div class="form-item mb-4 mx-4">
             <button nz-button nzSize="large" nzBlock nzType="primary">
-                Guardar
+               <strong>Registrarse</strong>
             </button>
         </div>
     </form>
