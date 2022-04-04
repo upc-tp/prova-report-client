@@ -42,6 +42,13 @@ export class DetalleProyectosComponent implements OnInit {
       title: '',
       description: '',
     };
+    roles: Array<{
+      label: string;
+      value: number;
+    }> = [
+      {label: "Tester", value: 1},
+      {label: "Admin", value: 2}
+    ];
     id: number;
     saved: boolean = false;
     updated: boolean = false;
@@ -67,7 +74,7 @@ export class DetalleProyectosComponent implements OnInit {
         firstName: [null, [Validators.required]],
         lastName: [null, [Validators.required]],
         email: [null, [Validators.required]],
-        role: [null, [Validators.required]],
+        selectRole: [null, [Validators.required]],
         password: [null, [Validators.required]]
       });
       this.getProjectCollaborators();
@@ -158,8 +165,8 @@ export class DetalleProyectosComponent implements OnInit {
               this.validateForm.controls['firstName'].value,
               this.validateForm.controls['lastName'].value,
               this.validateForm.controls['email'].value,
-              this.validateForm.controls['role'].value,
               this.validateForm.controls['password'].value,
+              this.validateForm.controls['selectRole'].value,
               parseInt(this.projectId.toString())
             )
             .subscribe(
@@ -175,8 +182,8 @@ export class DetalleProyectosComponent implements OnInit {
                 this.validateForm.controls['firstName'].setValue('');
                 this.validateForm.controls['lastName'].setValue('');
                 this.validateForm.controls['email'].setValue('');
-                this.validateForm.controls['role'].setValue('');
                 this.validateForm.controls['password'].setValue('');
+                this.validateForm.controls['selectRole'].setValue(0);
               },
               (error) => console.log(error)
             );

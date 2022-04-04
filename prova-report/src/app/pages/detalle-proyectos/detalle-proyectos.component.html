@@ -157,14 +157,10 @@ nzTitle="Colaborador"
       <nz-form-label> 
         Rol
       </nz-form-label>
-      <input
-        nz-input
-        name="role"
-        formControlName="role"
-        type="text"
-        id="role"
-        placeholder="Rol"
-      />
+      <nz-select nzSize="large" formControlName="selectRole" class="select-input" nzPlaceHolder="Seleccione el rol"
+        [nzOptions]="roles">
+        <nz-option nzValue="roles.value" nzLabel="roles.label"></nz-option>
+      </nz-select>
     </nz-form-control>
   </nz-form-item>
   <div class="form-item"> 

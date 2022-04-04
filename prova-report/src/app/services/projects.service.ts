@@ -67,8 +67,8 @@ export class ProjectService {
       firstName,
       lastName,
       email,
-      role,
-      password
+      password,
+      role
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
