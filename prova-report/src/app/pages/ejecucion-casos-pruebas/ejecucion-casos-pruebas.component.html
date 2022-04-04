@@ -474,7 +474,7 @@
             <ng-container matColumnDef="duration">
               <th mat-header-cell *matHeaderCellDef>Duración</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.duration }}
+                {{ utils.formatTime(element.duration) }}
               </td>
             </ng-container>
 
@@ -514,7 +514,7 @@
               Registra una Ejecucion
             </div>
             <div class="text-w-400 text-fs-14 text-center text-gray">
-              Para poder mostrarte los Test Steps de la última ejecución
+              Para poder mostrarte los pasos de la última ejecución
             </div>
           </div>
         </div>
