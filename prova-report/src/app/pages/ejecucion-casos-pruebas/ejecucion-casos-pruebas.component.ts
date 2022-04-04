@@ -25,7 +25,7 @@ export class EjecucionCasosPruebasComponent implements OnInit {
   listTestSuite: Filter[] = [];
   listTestCase: TestCase[] = [];
   listTestCaseSteps: TestCaseSteps[] = [];
-  file:any;
+  file: any;
   xmlData: string[] = [];
   formulario: FormGroup;
   dataSourceTestSteps = new MatTableDataSource<TestCaseSteps>();
@@ -84,28 +84,28 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     this.dataSourceTestCase.paginator = this.paginator;
     this.dataSourceTestCase.sort = this.sort;
   }
-  PaginationTestCase(){
+  PaginationTestCase() {
     this.dataSourceTestSteps.paginator = this.paginatorTestCase;
   }
   getProjects() {
     this.ProjectService.getTestProjects(null, null, '').subscribe(
       (res) =>
-        (this.listProjects = res.result.map((project) => {
-          const filtProject = new Filter();
-          filtProject.group = 0;
-          filtProject.key = project.id;
-          filtProject.value = project.title;
-          return filtProject;
-        }))
+      (this.listProjects = res.result.map((project) => {
+        const filtProject = new Filter();
+        filtProject.group = 0;
+        filtProject.key = project.id;
+        filtProject.value = project.title;
+        return filtProject;
+      }))
     );
   }
 
   enterTestCase(element: any) {
     this.nivelPositionTest++;
     this.testCaseSelected = element;
-    if(this.testCaseSelected.lastExecution>0){
+    if (this.testCaseSelected.lastExecution > 0) {
       this.getTestSteps();
-    }else{
+    } else {
       // Swal.fire({
       //   title: 'El Proyecto no Cuenta con Pasos de Ejecución',
       //   showCloseButton: true,
@@ -145,9 +145,9 @@ export class EjecucionCasosPruebasComponent implements OnInit {
               (testCase.testSuite = tCase.testSuite),
               (testCase.lastExecution = tCase.lastExecution),
               (testCase.userInCharge = tCase.userInCharge);
-            (testCase.createdAt = new Date(
+            (testCase.createdAt = this.utils.formatDateTime(new Date(
               tCase.createdAt
-            ).toLocaleDateString()),
+            ))),
               (testCase.createdBy = tCase.createdBy);
             return testCase;
           });
@@ -194,9 +194,9 @@ export class EjecucionCasosPruebasComponent implements OnInit {
 
   enviarEjecucion() {
     console.log(this.xmlData[0]);
-    if(this.file){
-      this.testCaseService.addExecutionTestCase(this.testCaseSelected.id,this.xmlData[0],this.formulario.controls['commentary'].value).subscribe(
-        (res)=>{
+    if (this.file) {
+      this.testCaseService.addExecutionTestCase(this.testCaseSelected.id, this.xmlData[0], this.formulario.controls['commentary'].value).subscribe(
+        (res) => {
           console.log(res.result);
         }
       );
@@ -204,21 +204,22 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     }
   }
 
-  getTestSteps(){
+  getTestSteps() {
     this.testCaseService.getTestCaseLastExecution(this.testCaseSelected.id).subscribe(
       (res) => {
-        this.listTestCaseSteps = res.result.testExecutionSteps.map((tCaseStep) =>{
-            const testCaseStep = new TestCaseSteps();
-            testCaseStep.id = tCaseStep.id;
-            testCaseStep.name = tCaseStep.name;
-            const startTime = new Date(tCaseStep.startTime);
-            testCaseStep.start_time = this.utils.formatDateTime(startTime);
-            const endTime = new Date(tCaseStep.endTime);
-            testCaseStep.end_time = this.utils.formatDateTime(endTime);
-            testCaseStep.duration = tCaseStep.duration;
-            testCaseStep.created_at = tCaseStep.createdAt;
-            testCaseStep.created_by = tCaseStep.createdBy;
-            return testCaseStep;
+        this.listTestCaseSteps = res.result.testExecutionSteps.map((tCaseStep) => {
+          const testCaseStep = new TestCaseSteps();
+          testCaseStep.id = tCaseStep.id;
+          testCaseStep.name = tCaseStep.name;
+          const startTime = new Date(tCaseStep.startTime);
+          testCaseStep.start_time = this.utils.formatDateTime(startTime);
+          const endTime = new Date(tCaseStep.endTime);
+          testCaseStep.end_time = this.utils.formatDateTime(endTime);
+          testCaseStep.duration = tCaseStep.duration;
+          const createDate = new Date(tCaseStep.createdAt);
+          testCaseStep.created_at = this.utils.formatDateTime(createDate);
+          testCaseStep.created_by = tCaseStep.createdBy;
+          return testCaseStep;
         }
         )
         this.dataSourceTestSteps = new MatTableDataSource(this.listTestCaseSteps);
@@ -226,26 +227,26 @@ export class EjecucionCasosPruebasComponent implements OnInit {
       }
     );
   }
-  fileChanged(e){
+  fileChanged(e) {
     this.file = e.target.files[0];
     let fileReader = new FileReader();
     fileReader.readAsText(this.file);
     fileReader.onload = (e) => {
-        if(e.target.readyState == FileReader.DONE){
-          let xmlData = e.target.result as string;
-          this.xmlData.push(xmlData);
-        }
+      if (e.target.readyState == FileReader.DONE) {
+        let xmlData = e.target.result as string;
+        this.xmlData.push(xmlData);
+      }
     }
   }
 
-  backtestCase(){
+  backtestCase() {
     this.nivelPositionTest--;
     this.testCaseSelected = null;
     this.listTestCaseSteps = [];
     this.Pagination();
     // this.PaginationTestCase();
   }
-  deleteFile(){
+  deleteFile() {
     this.file = null;
     this.xmlData = null;
   }

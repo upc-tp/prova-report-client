@@ -122,7 +122,12 @@
       <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef>Estado</th>
         <td mat-cell *matCellDef="let element" (click)="enterTestCase(element)">
-          {{ element.testState.name }}
+          <span [ngClass]="{
+            'test-state-passed': element.testState.name == 'Superado',
+            'test-state-non-executed': element.testState.name == 'No ejecutado',
+            'test-state-skipped': element.testState.name == 'Omitido',
+            'test-state-failed': element.testState.name == 'Fallido'
+          }">{{ element.testState.name }}</span>
         </td>
       </ng-container>
 
