@@ -56,6 +56,7 @@ export class EjecucionCasosPruebasComponent implements OnInit {
   nivelPositionTest = 0;
 
   headerColumn: string[] = [
+    'id',
     'title',
     'description',
     'state',
