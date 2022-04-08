@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit{
   registerForm: FormGroup;
   returnUrl: string;
   passwordVisible = false;
+  passwordVisible2 = false;
   password?: string;
   submitted = false;
   loading = false;

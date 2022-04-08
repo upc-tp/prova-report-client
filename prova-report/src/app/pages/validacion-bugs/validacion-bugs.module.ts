@@ -9,7 +9,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableModule, NzIconModule } from 'ng-zorro-antd';
+import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableModule, NzIconModule, NzAlertModule, NzPaginationModule } from 'ng-zorro-antd';
+import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { ValidacionBugsRoutingModule } from './validacion-bugs-routing.module';
 import { ValidacionBugsComponent } from './validacion-bugs.component';
 
@@ -21,12 +22,19 @@ import { ValidacionBugsComponent } from './validacion-bugs.component';
       MatIconModule,
       MatPaginatorModule,
       MatSortModule,
+      NzModalModule,
+      IconsProviderModule,
+      NzTableModule,
+      NzButtonModule,
       FormsModule,
       CommonModule,
       MatSelectModule,
       MatInputModule,
       MatTableModule,
       MatButtonModule,
+      NzFormModule,
+      NzAlertModule,
+      NzPaginationModule,
     ],
     declarations: [ValidacionBugsComponent],
     exports: [ValidacionBugsComponent],

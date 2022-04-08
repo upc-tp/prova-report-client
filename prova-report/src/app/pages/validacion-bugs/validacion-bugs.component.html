@@ -1,7 +1,48 @@
 <div>
     <div class="banner">
         <span>Validacion de Bugs</span>
+        <button nz-button nzType="primary" (click)="showModal()">
+          <span>Agregar Bug</span>
+        </button>
       </div>
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Agregar Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading">
+    <form nz-form class="create-form" [formGroup]="validateForm">
+      <div class="form-item">
+        <div class="form-label">
+          Título
+        </div>
+        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+      </div>
+      <div class="form-item">
+        <div class="form-label">
+          Repro Steps
+        </div>
+        <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Ingresar pasos" />
+      </div>
+      <div class="form-item">
+        <div class="form-label">
+          Severidad
+        </div>
+        <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Severidad" />
+      </div>
+      <div class="form-item">
+        <div class="form-label">
+          Prioridad
+        </div>
+        <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Prioridad" />
+      </div>
+      <div class="form-item">
+        <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Guardar
+        </button>
+      </div>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
       <form [formGroup]="filterFormGroup">
         <div class="row d-flex">
           <div class="col-md-4">

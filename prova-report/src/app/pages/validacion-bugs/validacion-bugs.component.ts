@@ -12,6 +12,7 @@ import { ProjectService } from 'src/app/services/projects.service';
 import { TestCaseService } from 'src/app/services/testcase.service';
 import Swal from 'sweetalert2';
 import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.model';
+import { Subject, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-validacion-bugs',
@@ -20,11 +21,22 @@ import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.mo
   })
 
   export class ValidacionBugsComponent implements OnInit {
+    isVisible = false;
+    isOkLoading = false;
+    validateForm!: FormGroup;
+    id: number;
+    page: number = 1;
+    pageSize: number = 10;
+    count: number = this.pageSize;
+    private modelChanged: Subject<string> = new Subject<string>();
+    private subscription: Subscription;
+    debounceTime = 500;
+    
       filterFormGroup: FormGroup;
       listProjects: Filter[] = [];
       listTestSuite: Filter[] = [];
-      listTestCase: Filter[] = [];
-      listBugs: Defects[] = [];
+      listTestCase: TestCase[] = [];
+      //listBugs: Defects[] = [];
       dataSourceTestCase = new MatTableDataSource<TestCase>();
       constructor(private _fb: FormBuilder,
         private suiteService:SuitesService,
@@ -135,6 +147,31 @@ import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.mo
             }
           )
         }
+      }
+
+      showModal(): void {
+        this.isVisible = true;
+      }
+    
+      handleOk(): void {
+        this.isOkLoading = true;
+        setTimeout(() => {
+          this.isVisible = false;
+          this.isOkLoading = false;
+        }, 3000);
+      }
+    
+      handleCancel(): void {
+        this.isVisible = false;
+        this.id = null;
+      }
+    
+      inputChanged(event) {
+        this.modelChanged.next(event.target.value);
+      }
+    
+      ngOnDestroy(): void {
+        this.subscription.unsubscribe();
       }
 
   }

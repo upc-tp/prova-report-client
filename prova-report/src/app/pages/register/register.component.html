@@ -58,7 +58,7 @@
                     </ng-container>
                   </ng-template>
         </div>-->
-        <nz-form-item class="form-item my-2 mx-4">
+        <div class="form-item my-2 mx-4">
             <div class="form-label" nzfor="password">
                 Contraseña
             </div>
@@ -78,8 +78,8 @@
               <ng-template #suffixEye1>
                 <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
               </ng-template>
-          </nz-form-item>
-          <nz-form-item class="form-item my-2 mx-4">
+            </div>
+          <div class="form-item my-2 mx-4">
             <div class="form-label" nzfor="checkPassword">
                 Confirmar Contraseña
             </div>
@@ -87,23 +87,25 @@
                 <nz-input-group [nzSuffix] ="suffixEye2">
               <input 
               nz-input 
-              [type]="passwordVisible ? 'text' : 'password'"
+              [type]="passwordVisible2 ? 'text' : 'password'"
               formControlName="checkPassword" 
               id="checkPassword" 
               placeholder="Confirmar contraseña"
               >
             </nz-input-group>
             <ng-template #suffixEye2>
-                <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+                <i nz-icon [nzType]="passwordVisible2 ? 'eye-invisible' : 'eye'" (click)="passwordVisible2 = !passwordVisible2"></i>
               </ng-template>
             </nz-form-control>
               <ng-template #errorTpl let-control>
-                <ng-container *ngIf="control.hasError('required')">Confirme su contraseña</ng-container>
+                <ng-container *ngIf="control.hasError('required')">
+                    <span style="color: red;">Confirme su contraseña</span>
+                </ng-container>
                 <ng-container *ngIf="control.hasError('confirm')">
-                  Las contraseñas no coinciden!
+                  <span style="color: red;">Las contraseñas no coinciden!</span>
                 </ng-container>
               </ng-template>
-          </nz-form-item>
+            </div>
         <div class="form-item my-2 mx-4">
             <button nz-button nzSize="large" nzBlock nzType="link" [nzLoading]="loading" routerLink="/login">
                 <strong>¿Ya tiene una cuenta? Iniciar sesión</strong>
