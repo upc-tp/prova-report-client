@@ -33,6 +33,37 @@ export class DetalleProyectosComponent implements OnInit {
       lastName: string;
       password: string;
     }> = [];
+    Versions: Array<{
+      uid: number;
+      orden: string;
+      version: string;
+      description: string;
+      registerDate: string;
+      registerBy: string;
+    }> = [{
+      uid: 1,
+      orden: '3',
+      version: '2.0',
+      description: 'Realese',
+      registerDate: '31-03-2022',
+      registerBy: 'manuel@gmail.com',
+    },
+    {
+      uid: 2,
+      orden: '2',
+      version: '1.6',
+      description: 'Realese',
+      registerDate: '31-03-2022',
+      registerBy: 'manuel@gmail.com',
+    },
+    {
+      uid: 3,
+      orden: '1',
+      version: '1.5',
+      description: 'Realese',
+      registerDate: '31-03-2022',
+      registerBy: 'manuel@gmail.com',
+    }];
     project: Project = {
       id: 0,
       createdAt: '',
@@ -49,14 +80,16 @@ export class DetalleProyectosComponent implements OnInit {
     pageSize: number = 10;
     count: number = 0;
     isVisible = false;
+    isVisibleVersion = false;
     isOkLoading = false;
     validateForm!: FormGroup;
+    validateFormVersion!: FormGroup;
     private modelChanged: Subject<string> = new Subject<string>();
     private subscription: Subscription;
     debounceTime = 500;
-  
+
     constructor(private route:ActivatedRoute, private projectService:ProjectService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
-  
+
     ngOnInit(): void {
       this.route.queryParams.subscribe(params => {
       this.projectId = params.projectId;
@@ -69,6 +102,10 @@ export class DetalleProyectosComponent implements OnInit {
         email: [null, [Validators.required]],
         role: [null, [Validators.required]],
         password: [null, [Validators.required]]
+      });
+      this.validateFormVersion = this.fb.group({
+        version: [null, [Validators.required]],
+        descripcion: [null, [Validators.required]]
       });
       this.getProjectCollaborators();
       this.subscription = this.modelChanged
@@ -97,7 +134,7 @@ export class DetalleProyectosComponent implements OnInit {
                 testStatus: tCase.testState.name,
                 testSuite: tCase.testSuite.title,
                 registerDate: new Date(tCase.createdAt).toLocaleDateString(),
-                registerBy: tCase.createdBy 
+                registerBy: tCase.createdBy
               };
             }
           );
@@ -107,7 +144,7 @@ export class DetalleProyectosComponent implements OnInit {
         }
       );
     }
-    
+
     inputChanged(event) {
       this.modelChanged.next(event.target.value);
     }
@@ -117,10 +154,14 @@ export class DetalleProyectosComponent implements OnInit {
     }
     handleCancel(): void {
       this.isVisible = false;
+      this.isVisibleVersion = false;
       this.id = null;
     }
     showModal(): void {
       this.isVisible = true;
+    }
+    showModalVersion(): void {
+      this.isVisibleVersion  = true;
     }
     handleOk(): void {
       this.isOkLoading = true;
@@ -129,9 +170,9 @@ export class DetalleProyectosComponent implements OnInit {
         this.isOkLoading = false;
       }, 3000);
     }
-  
+
     backTestProjects(){
-      this.router.navigate(['gestion-proyectos']);  
+      this.router.navigate(['gestion-proyectos']);
     }
     getProjectCollaborators(){
       this.projectService
@@ -150,7 +191,7 @@ export class DetalleProyectosComponent implements OnInit {
           )
         )
     }
-    
+
     submitForm(): void {
       if (this.validateForm.valid) {
           this.projectService
@@ -193,7 +234,7 @@ export class DetalleProyectosComponent implements OnInit {
     ngOnDestroy(): void {
       this.subscription.unsubscribe();
     }
-  
-  
-  
+
+
+
   }

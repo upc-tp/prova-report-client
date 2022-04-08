@@ -17,7 +17,7 @@
       <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
         <h1>{{ currentUser.firstName}} {{currentUser.lastName}}</h1>
         <p>{{ currentUser.role === 'Admin' ? 'Administrador' : 'Tester' }}</p>
-        <p class="primary-link"><a>Ver perfil</a></p>
+        <p class="primary-link"><a :href="/Perfil">Ver perfil</a></p>
         <p><a (click)="logout()">Cerrar sesión</a></p>
       </div>
     </div>
