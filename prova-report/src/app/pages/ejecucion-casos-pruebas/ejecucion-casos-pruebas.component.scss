@@ -1,0 +1,87 @@
+
+
+.banner {
+    text-align: left;
+    font-weight: bold;
+    color: #fff;
+    background: #009EAE;
+    padding: 1.25rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+  .back-button{
+    margin-right: 20px;
+  }
+  .fileUpload{
+    margin-top: 2.5rem;
+    width: 88.41px;
+    height: 51.2px;
+  }
+  .noFileUpload{
+    margin-top: 2.5rem;
+    width: 88.41px;
+    height: 51.2px;
+  }
+  .fileUploadBackground{
+    background-color:#F4FFFC;
+    min-height: 205px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px dashed #BAFEEC;
+    color: #BAFEEC;
+    margin-top: 0.7rem;
+    padding-top: 1rem;
+  }
+  .noFileUploadBackground{
+    background-color:#FFE7E7;
+    min-height: 205px;
+    margin-left: 1rem;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px dashed #FFBABA;
+    color: #FFE7E7;
+    margin-top: 0.7rem;
+    padding-top: 1rem;
+  }
+  .centerItems {
+    display: flex;
+    align-items: center;
+    height: 300px;
+    justify-content: center;
+  }
+  .filePrev{
+    height: 41px;
+    background:#fff;
+    border-radius: 12px;
+    width: 50%;
+    margin-left: 8rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items:baseline;
+  }
+  .bugIcon .mat-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: #5AFE73;
+    width: 47px;
+    height: 36.53px;
+}
+
+  .NoTest{
+    width: 181px;
+    height: 141px;
+  }
+  .fileSection{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .title-table-photo {
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }

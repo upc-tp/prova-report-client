@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/projects.service';
 import { PriorityService } from 'src/app/services/priority.services';
 import { SeverityService } from 'src/app/services/seveities.services';
+import { UtilsService } from 'src/app/common/UtilsService';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -70,7 +71,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private route:ActivatedRoute, private projectService:ProjectService,  private priorityService: PriorityService, private seveityService: SeverityService, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
+  constructor(private route:ActivatedRoute, public utils: UtilsService, private projectService:ProjectService,  private priorityService: PriorityService, private seveityService: SeverityService, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -101,7 +102,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.title = res.result.title;
       this.suite.description = res.result.description;
       this.suite.createdBy = res.result.createdBy;
-      this.suite.createdAt = res.result.createdAt;
+      this.suite.createdAt = this.utils.formatDateTime(new Date(res.result.createdAt));
       this.suite.project = res.result.project.title;
       this.suite.projectId = res.result.project.id;
     });
@@ -150,7 +151,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               severityIcon: tCase.severity.name === "Trivial" ? '/assets/images/trivial.png'  : tCase.severity.name === "Normal" ? '/assets/images/normal.png' : '/assets/images/critico.png',
               severity: tCase.severity.name,
               collaborator: tCase.userInCharge,
-              registerDate: new Date(tCase.createdAt).toLocaleDateString(),
+              registerDate: this.utils.formatDateTime(new Date(tCase.createdAt)),
               registerBy: tCase.createdBy
             };
           }

@@ -18,6 +18,7 @@ import { SpinnerComponent } from './common/spinner/spinner.component';
 import { httpInterceptorProviders } from './interceptors';
 import { SpinnerService } from './common/spinner/spinner.service';
 import { MatIconModule } from '@angular/material/icon';
+import { UtilsService } from './common/UtilsService';
 
 
 
@@ -43,7 +44,7 @@ registerLocaleData(en);
     HttpClientModule ,
     MatIconModule
   ],
-  providers: [ httpInterceptorProviders, SpinnerService, { provide: NZ_I18N, useValue: en_US }],
+  providers: [ httpInterceptorProviders, SpinnerService, { provide: NZ_I18N, useValue: en_US }, UtilsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
