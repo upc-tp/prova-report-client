@@ -55,6 +55,7 @@
     (nzPageIndexChange)="onPageIndexChange($event)">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Título</th>
         <th>Descripción</th>
         <th>Estado</th>
@@ -68,6 +69,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of middleTable.data">
+        <td># {{ data.id }}</td>
         <td>{{ data.title }}</td>
         <td>{{ data.description }}</td>
         <td>
