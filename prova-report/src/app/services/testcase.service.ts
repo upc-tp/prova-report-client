@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BASE_URL } from '../common/urlConstants';
-import { TestCaseExecutionResponse } from '../interfaces/testcase';
+import { TestExecutionResponse, SingleTestExecutionResponse} from '../interfaces/testcase';
 import {
   TestCaseResponse,
   TestCaseCreated,
@@ -64,13 +64,13 @@ export class TestCaseService {
     id: number,
     xml: string,
     comments: string
-  ): Observable<TestCaseExecutionResponse> {
+  ): Observable<SingleTestExecutionResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml',
       }),
     };
-    return this.http.post<TestCaseExecutionResponse>(
+    return this.http.post<SingleTestExecutionResponse>(
       BASE_URL + this.testCase + `/${id}/test-executions?comments=${comments}`,
       xml,
       httpOptions
@@ -113,10 +113,14 @@ export class TestCaseService {
       .pipe(map(this.extractData), catchError(this.handleErrorObservable));
   }
 
-  getTestCaseLastExecution(id: number): Observable<TestCaseExecutionResponse> {
-    return this.http.get<TestCaseExecutionResponse>(
+  getTestCaseLastExecution(id: number): Observable<SingleTestExecutionResponse> {
+    return this.http.get<SingleTestExecutionResponse>(
       BASE_URL + this.testCase + `/${id}/last-execution`
     );
+  }
+
+  getTestExecutions(page: number, pageSize: number, search: string, id: number): Observable<TestExecutionResponse> {
+    return this.http.get<TestExecutionResponse>(BASE_URL + this.testCase + `/${id}/test-executions` + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
 
   private extractData(res: any) {

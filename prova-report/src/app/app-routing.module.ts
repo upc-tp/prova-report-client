@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'Perfil', canActivate: [AuthGuard], loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)},
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)},
   { path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)},
+  { path:'detalles-ejecucion-caso-prueba', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalles-ejecucion-caso-prueba/detalles-ejecucion-caso-prueba.module').then(m => m.DetallesEjecucionCasoPruebaModule)},
   // otherwise redirect to home
   { path: '**', redirectTo: ''}
 ];

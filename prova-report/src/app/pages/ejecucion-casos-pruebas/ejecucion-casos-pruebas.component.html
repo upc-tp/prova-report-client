@@ -120,6 +120,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="opciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button class="details" nz-button nzType="primary" (click)="detailsExecutionTestCase(element.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="headerColumn"></tr>
       <tr mat-row *matRowDef="let row; columns: headerColumn"></tr>
       <tr class="mat-row text-center" *matNoDataRow>
