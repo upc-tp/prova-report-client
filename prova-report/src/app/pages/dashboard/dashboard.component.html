@@ -1,6 +1,31 @@
 <div style="text-align: center">
   <div class="banner">Dashboard</div>
-  <div class="gutter-example">
+  <form [formGroup]="filterFormGroup">
+    <div class="row d-flex">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Proyectos</mat-label>
+          <mat-select formControlName="projects" >
+            <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
+              {{ pro.name }}
+            </mat-option>
+          </mat-select> 
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
+          style="margin-top: 0.5rem" (click)="selectProject()">
+          <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
+            data-height="24"></span>
+          <span>Aplicar Filtros</span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+
+  <div class="gutter-example" *ngIf="this.projectId != null">
     <div nz-row [nzGutter]="[hGutter, vGutter]">
       <div nz-col class="gutter-row" [nzSpan]="24 / count">
         <apx-chart
