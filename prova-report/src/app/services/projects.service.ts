@@ -74,6 +74,7 @@ export class ProjectService {
       catchError(this.handleErrorObservable)
     );
   }
+
   private extractData(res: any) {
     let body = res;
     return body;
