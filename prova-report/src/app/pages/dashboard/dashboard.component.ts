@@ -66,6 +66,8 @@ export class DashboardComponent implements OnInit {
     states: number[];
   }> = [];
 
+  statusFilter: Array<number> = [];
+
   stackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
 
 
@@ -162,7 +164,7 @@ export class DashboardComponent implements OnInit {
         offsetX: 40,
       },
     };
-   
+
     this.stackedBarVerticalOptions = {
       series: [
         {
@@ -277,8 +279,8 @@ export class DashboardComponent implements OnInit {
     };
 
     this.donutOptions = {
-      series: [44, 55, 13, 33],
-      labels: ["No ejecutadas", "Superadas", "Omitidas", "Fallidas"],
+      series: this.statusFilter,
+      labels: ["No ejecutadas", "Superadas", "Fallidas", "Omitidas"],
       chart: {
         width: 380,
         type: 'donut'
@@ -315,10 +317,10 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-   
+
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.filterFormGroup = this._fb.group({
       projects: ['',[Validators.required]]
     });
@@ -334,6 +336,11 @@ export class DashboardComponent implements OnInit {
           })
         }
       });
+      this.statusFilter = res.result.testsByStatus.map( (stat) => {
+        return Number(stat.num_tests);
+      });
+      this.donutOptions.series = this.statusFilter;
+      console.log(this.statusFilter);
       this.loadDateStackecVerticalBars();
     });
   }
@@ -344,7 +351,7 @@ export class DashboardComponent implements OnInit {
         this.stackedVerticalData[j-1][i] = this.severityFilter[i].states[j];
       }
     }
-    this.stackedBarVerticalOptions.series = [ 
+    this.stackedBarVerticalOptions.series = [
         {
           name: 'Superado',
           data: this.stackedVerticalData[0],
