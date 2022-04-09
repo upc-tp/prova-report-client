@@ -14,7 +14,7 @@ export class DashboardService {
 
 
   getDashboard(projectId: number): Observable<DashboardResponse> {
-    return this.http.get<DashboardResponse>(BASE_URL + this.dashboard + `?page=${projectId}`);
+    return this.http.get<DashboardResponse>(BASE_URL + this.dashboard + `?projectId=${projectId}`);
   }
 
 
