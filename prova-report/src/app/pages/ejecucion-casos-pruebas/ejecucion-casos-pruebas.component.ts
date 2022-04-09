@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -13,7 +19,7 @@ import { ProjectService } from '../../services/projects.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -29,6 +35,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   listTestCaseSteps: TestCaseSteps[] = [];
   file: any;
   xmlData: string[] = [];
+  chargeTestSteps = 0;
   formulario: FormGroup;
   dataSourceTestSteps = new MatTableDataSource<TestCaseSteps>();
   dataSourceTestCase = new MatTableDataSource<TestCase>();
@@ -45,6 +52,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     private suiteService: SuitesService,
     private ProjectService: ProjectService,
     private testCaseService: TestCaseService,
+    private spinnerService: SpinnerService,
     public utils: UtilsService
   ) {
     this.iconRegistry.addSvgIcon(
@@ -72,7 +80,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     'severity',
     'registerDate',
     'responsable',
-    'opciones'
+    'opciones',
   ];
 
   headerColumnTestCaseSteps: string[] = [
@@ -80,14 +88,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     'executed_by',
     'start_time',
     'end_time',
-    'duration'
+    'duration',
   ];
 
   ngOnInit(): void {
-    
     this.getProjects();
     console.log(localStorage.getItem('filterItems'));
-    if (localStorage.getItem('filterItems')){
+    if (localStorage.getItem('filterItems')) {
       this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
       this.filterFormGroup = this._fb.group({
         projects: [this.filterItems[1], [Validators.required]],
@@ -107,9 +114,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void { 
-    if(!this.toExecutionPage)
-      localStorage.removeItem('filterItems');
+  ngOnDestroy(): void {
+    if (!this.toExecutionPage) localStorage.removeItem('filterItems');
   }
 
   Pagination() {
@@ -122,13 +128,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   getProjects() {
     this.ProjectService.getTestProjects(null, null, '').subscribe(
       (res) =>
-      (this.listProjects = res.result.map((project) => {
-        const filtProject = new Filter();
-        filtProject.group = 0;
-        filtProject.key = project.id;
-        filtProject.value = project.title;
-        return filtProject;
-      }))
+        (this.listProjects = res.result.map((project) => {
+          const filtProject = new Filter();
+          filtProject.group = 0;
+          filtProject.key = project.id;
+          filtProject.value = project.title;
+          return filtProject;
+        }))
     );
   }
 
@@ -147,8 +153,6 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     // this.PaginationTestCase();
     console.log(this.testCaseSelected);
   }
-
-  
 
   validaciones(campo: string): boolean {
     return (
@@ -181,9 +185,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
               (testCase.testSuite = tCase.testSuite),
               (testCase.lastExecution = tCase.lastExecution),
               (testCase.userInCharge = tCase.userInCharge);
-            (testCase.createdAt = this.utils.formatDateTime(new Date(
-              tCase.createdAt
-            ))),
+            (testCase.createdAt = this.utils.formatDateTime(
+              new Date(tCase.createdAt)
+            )),
               (testCase.createdBy = tCase.createdBy);
             return testCase;
           });
@@ -196,11 +200,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           }
           this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
           this.Pagination();
-        });  
-      this.actualFilterTestSuite =  this.filterFormGroup.controls['testSuite'].value;
-      this.actualFilterProject =  this.filterFormGroup.controls['projects'].value;
-      console.log(this.filterFormGroup.controls['testSuite'].value)
-      console.log(this.filterFormGroup.controls['projects'].value)
+        });
+      this.actualFilterTestSuite =
+        this.filterFormGroup.controls['testSuite'].value;
+      this.actualFilterProject =
+        this.filterFormGroup.controls['projects'].value;
+      console.log(this.filterFormGroup.controls['testSuite'].value);
+      console.log(this.filterFormGroup.controls['projects'].value);
     }
   }
 
@@ -235,36 +241,52 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   enviarEjecucion() {
     console.log(this.xmlData[0]);
     if (this.file) {
-      this.testCaseService.addExecutionTestCase(this.testCaseSelected.id, this.xmlData[0], this.formulario.controls['commentary'].value).subscribe(
-        (res) => {
+      this.testCaseService
+        .addExecutionTestCase(
+          this.testCaseSelected.id,
+          this.xmlData[0],
+          this.formulario.controls['commentary'].value
+        )
+        .subscribe((res) => {
           console.log(res.result);
-        }
-      );
+          this.getTestSteps();
+        });
+    } else {
+      Swal.fire({
+        title: 'Debes cargar un archivo para registrar la ejecución',
+        showCloseButton: true,
+        icon: 'info',
+      });
     }
   }
 
   getTestSteps() {
-    this.testCaseService.getTestCaseLastExecution(this.testCaseSelected.id).subscribe(
-      (res) => {
-        this.listTestCaseSteps = res.result.testExecutionSteps.map((tCaseStep) => {
-          const testCaseStep = new TestCaseSteps();
-          testCaseStep.id = tCaseStep.id;
-          testCaseStep.name = tCaseStep.name;
-          const startTime = new Date(tCaseStep.startTime);
-          testCaseStep.start_time = this.utils.formatDateTime(startTime);
-          const endTime = new Date(tCaseStep.endTime);
-          testCaseStep.end_time = this.utils.formatDateTime(endTime);
-          testCaseStep.duration = tCaseStep.duration;
-          const createDate = new Date(tCaseStep.createdAt);
-          testCaseStep.created_at = this.utils.formatDateTime(createDate);
-          testCaseStep.created_by = tCaseStep.createdBy;
-          return testCaseStep;
-        }
-        )
-        this.dataSourceTestSteps = new MatTableDataSource(this.listTestCaseSteps);
+    this.spinnerService.isLoading.next(true);
+    this.testCaseService
+      .getTestCaseLastExecution(this.testCaseSelected.id)
+      .subscribe((res) => {
+        this.listTestCaseSteps = res.result.testExecutionSteps.map(
+          (tCaseStep) => {
+            const testCaseStep = new TestCaseSteps();
+            testCaseStep.id = tCaseStep.id;
+            testCaseStep.name = tCaseStep.name;
+            const startTime = new Date(tCaseStep.startTime);
+            testCaseStep.start_time = this.utils.formatDateTime(startTime);
+            const endTime = new Date(tCaseStep.endTime);
+            testCaseStep.end_time = this.utils.formatDateTime(endTime);
+            testCaseStep.duration = tCaseStep.duration;
+            const createDate = new Date(tCaseStep.createdAt);
+            testCaseStep.created_at = this.utils.formatDateTime(createDate);
+            testCaseStep.created_by = tCaseStep.createdBy;
+            return testCaseStep;
+          }
+        );
+        this.dataSourceTestSteps = new MatTableDataSource(
+          this.listTestCaseSteps
+        );
+        this.chargeTestSteps = 1;
         // this.PaginationTestCase();
-      }
-    );
+      });
   }
   fileChanged(e) {
     this.file = e.target.files[0];
@@ -275,26 +297,30 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         let xmlData = e.target.result as string;
         this.xmlData.push(xmlData);
       }
-      console.log(this.xmlData)
-    }
+      console.log(this.xmlData);
+    };
   }
 
   backtestCase() {
     this.nivelPositionTest--;
     this.testCaseSelected = null;
     this.listTestCaseSteps = [];
+    this.dataSourceTestSteps = new MatTableDataSource(); 
+    this.chargeTestSteps = 0;
     this.Pagination();
     // this.PaginationTestCase();
   }
 
-  detailsExecutionTestCase(id: number){
+  detailsExecutionTestCase(id: number) {
     this.addFilterItem(this.actualFilterTestSuite);
     this.addFilterItem(this.actualFilterProject);
-    if(this.filterItems.length > 0) {
+    if (this.filterItems.length > 0) {
       localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     }
     this.toExecutionPage = true;
-    this.router.navigate(['detalles-ejecucion-caso-prueba'],{queryParams:{testCaseId:id}});
+    this.router.navigate(['detalles-ejecucion-caso-prueba'], {
+      queryParams: { testCaseId: id },
+    });
   }
 
   addFilterItem(item: string) {
@@ -302,17 +328,17 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       this.filterItems = [...this.filterItems, item];
     }
   }
-  
+
   removeFilterItem(item: string) {
     if (this.filterItems.includes(item)) {
-      this.filterItems = this.filterItems.filter(currentItem => currentItem !== item);
+      this.filterItems = this.filterItems.filter(
+        (currentItem) => currentItem !== item
+      );
     }
   }
 
   deleteFile() {
     this.file = null;
-    this.xmlData = null;
+    this.xmlData = [];
   }
-
-
 }

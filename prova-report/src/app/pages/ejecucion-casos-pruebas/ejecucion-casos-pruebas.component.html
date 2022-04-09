@@ -265,7 +265,7 @@
                       {{ file?.name }}
                     </h4>
                   </div>
-                  <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
+                  <button mat-flat-button class="button-global ps-3 pe-3"
                     (click)="deleteFile()">
                     <span class="iconify" data-icon="ant-design:delete-filled" data-width="24px" data-height="24px"
                       style="color: #f10000"></span>
@@ -274,7 +274,7 @@
               </div>
               <div *ngIf="file == null" class="text-center">
                 <span class="text-fs-16 text-black">Solo se permiten archivos en formato XML</span><br />
-                <input #FileClick id="FileClick" type="file" style="display: none" (change)="fileChanged($event)" />
+                <input #FileClick id="FileClick" type="file" style="display: none" accept="text/xml" (change)="fileChanged($event)" />
                 <a href="javascript:void(0)" (click)="FileClick.click()" for="FileClick">Busca en tu ordenador</a>
               </div>
             </div>
@@ -305,7 +305,7 @@
 
       <div style="margin-left: 3rem">
         <mat-label class="text-fs-24 text-w-bold col-12">Test Steps</mat-label>
-        <div [hidden]="listTestCaseSteps.length == 0">
+        <div [hidden]="chargeTestSteps == 0">
           <table mat-table class="table-hover" style="width: 100%" [dataSource]="dataSourceTestSteps">
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Título</th>
@@ -341,7 +341,7 @@
             <tr mat-header-row *matHeaderRowDef="headerColumnTestCaseSteps"></tr>
             <tr mat-row *matRowDef="let row; columns: headerColumnTestCaseSteps"></tr>
             <tr class="mat-row text-center" *matNoDataRow>
-              <td class="mat-cell" colspan="3">
+              <td class="mat-cell" colspan="5">
                 No se encontraron TestSteps <i class="bi bi-journals"></i>
               </td>
             </tr>
