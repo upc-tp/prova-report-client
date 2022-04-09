@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -12,6 +12,8 @@ import { SuitesService } from '../../services/suites.service';
 import { ProjectService } from '../../services/projects.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { UtilsService } from 'src/app/common/UtilsService';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -19,7 +21,7 @@ import { UtilsService } from 'src/app/common/UtilsService';
   styleUrls: ['./ejecucion-casos-pruebas.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class EjecucionCasosPruebasComponent implements OnInit {
+export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   filterFormGroup: FormGroup;
   listProjects: Filter[] = [];
   listTestSuite: Filter[] = [];
@@ -30,7 +32,13 @@ export class EjecucionCasosPruebasComponent implements OnInit {
   formulario: FormGroup;
   dataSourceTestSteps = new MatTableDataSource<TestCaseSteps>();
   dataSourceTestCase = new MatTableDataSource<TestCase>();
+  filterItems: string[];
+  actualFilterTestSuite: string;
+  actualFilterProject: string;
+  toExecutionPage: boolean = false;
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
     private iconRegistry: MatIconRegistry,
@@ -64,6 +72,7 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     'severity',
     'registerDate',
     'responsable',
+    'opciones'
   ];
 
   headerColumnTestCaseSteps: string[] = [
@@ -75,12 +84,34 @@ export class EjecucionCasosPruebasComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.filterFormGroup = this._fb.group({
-      projects: ['', [Validators.required]],
-      testSuite: ['', [Validators.required]],
-    });
+    
     this.getProjects();
+    console.log(localStorage.getItem('filterItems'));
+    if (localStorage.getItem('filterItems')){
+      this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
+      this.filterFormGroup = this._fb.group({
+        projects: [this.filterItems[1], [Validators.required]],
+        testSuite: [this.filterItems[0], [Validators.required]],
+      });
+      this.search();
+      this.filterFormGroup = this._fb.group({
+        projects: ['', [Validators.required]],
+        testSuite: ['', [Validators.required]],
+      });
+    } else {
+      this.filterFormGroup = this._fb.group({
+        projects: ['', [Validators.required]],
+        testSuite: ['', [Validators.required]],
+      });
+      this.filterItems = [];
+    }
   }
+
+  ngOnDestroy(): void { 
+    if(!this.toExecutionPage)
+      localStorage.removeItem('filterItems');
+  }
+
   Pagination() {
     this.dataSourceTestCase.paginator = this.paginator;
     this.dataSourceTestCase.sort = this.sort;
@@ -117,6 +148,10 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     console.log(this.testCaseSelected);
   }
 
+  enterTestCasesExecutions(element: any){
+
+  }
+
   validaciones(campo: string): boolean {
     return (
       this.filterFormGroup.get(campo).invalid &&
@@ -125,6 +160,8 @@ export class EjecucionCasosPruebasComponent implements OnInit {
   }
 
   search() {
+    this.filterItems = [];
+    localStorage.removeItem('filterItems');
     if (!this.filterFormGroup.invalid) {
       this.testCaseService
         .getTestCases(
@@ -161,7 +198,11 @@ export class EjecucionCasosPruebasComponent implements OnInit {
           }
           this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
           this.Pagination();
-        });
+        });  
+      this.actualFilterTestSuite =  this.filterFormGroup.controls['testSuite'].value;
+      this.actualFilterProject =  this.filterFormGroup.controls['projects'].value;
+      console.log(this.filterFormGroup.controls['testSuite'].value)
+      console.log(this.filterFormGroup.controls['projects'].value)
     }
   }
 
@@ -203,6 +244,7 @@ export class EjecucionCasosPruebasComponent implements OnInit {
       );
 
     }
+    this.ngOnInit();
   }
 
   getTestSteps() {
@@ -237,6 +279,7 @@ export class EjecucionCasosPruebasComponent implements OnInit {
         let xmlData = e.target.result as string;
         this.xmlData.push(xmlData);
       }
+      console.log(this.xmlData)
     }
   }
 
@@ -247,6 +290,29 @@ export class EjecucionCasosPruebasComponent implements OnInit {
     this.Pagination();
     // this.PaginationTestCase();
   }
+
+  detailsExecutionTestCase(id: number){
+    this.addFilterItem(this.actualFilterTestSuite);
+    this.addFilterItem(this.actualFilterProject);
+    if(this.filterItems.length > 0) {
+      localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
+    }
+    this.toExecutionPage = true;
+    this.router.navigate(['detalles-ejecucion-caso-prueba'],{queryParams:{testCaseId:id}});
+  }
+
+  addFilterItem(item: string) {
+    if (!this.filterItems.includes(item)) {
+      this.filterItems = [...this.filterItems, item];
+    }
+  }
+  
+  removeFilterItem(item: string) {
+    if (this.filterItems.includes(item)) {
+      this.filterItems = this.filterItems.filter(currentItem => currentItem !== item);
+    }
+  }
+
   deleteFile() {
     this.file = null;
     this.xmlData = null;

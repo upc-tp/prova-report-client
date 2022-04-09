@@ -18,11 +18,27 @@ export interface TestCase {
     testSuite: TestSuite;
 }
 
-export interface TestCaseExecutionResponse{
+export interface TestCaseView {
+	createdAt: string;
+	description: string;
+	title: string;
+	id: number;
+	lastExecution: number;
+	userInCharge: string;
+}
+
+export interface TestExecutionResponse{
+    message: string;
+	success: boolean;
+    result: TestExecution[];
+}
+
+export interface SingleTestExecutionResponse{
     message: string;
 	success: boolean;
     result: TestExecution;
 }
+
 export interface LogMsg{
 	level:string;
 	timestamp: string;

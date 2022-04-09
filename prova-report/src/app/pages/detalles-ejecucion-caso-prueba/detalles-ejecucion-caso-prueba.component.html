@@ -1,0 +1,83 @@
+<div>
+  <div class="banner">
+    <button class="back-button" nz-button nzType="text" (click)="backTestCaseExecution()">
+      <i nz-icon nzType="left" nzTheme="outline" (click)="backTestCaseExecution()"></i>
+    </button>
+    <h3>Ejecuciones de Caso de Prueba</h3>
+  </div>
+  <div class="container-group">
+    <div class="case-info">
+      <h2>
+        <b>Título</b>
+      </h2>
+      <span>{{testCase.title}}</span>
+      <h2>
+        <b>Descripcion</b>
+      </h2>
+      <span>{{testCase.description}}</span>
+    </div>
+    <div class="case-infor">
+      <h2>
+        <b>Responsable</b>
+      </h2>
+      <span>{{testCase.userInCharge}}</span>
+      <h2>
+        <b>Fecha de Registro</b>
+      </h2>
+      <span>{{testCase.createdAt}}</span>
+    </div>
+  </div>
+</div>
+
+<div  style="margin-top: 3rem">
+    
+    <table mat-table class="table-hover" [dataSource]="dataSource"  style="width: 100%">
+      
+      <ng-container matColumnDef="order">
+        <th mat-header-cell *matHeaderCellDef>Order</th>
+        <td mat-cell *matCellDef="let element" >
+          #{{ element.order }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdBy">
+        <th mat-header-cell *matHeaderCellDef>Ejecutado por</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.createdBy }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef>Comentarios</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.comments }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startTime">
+        <th mat-header-cell *matHeaderCellDef>Fecha de Inicio</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.startTime }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endTime">
+        <th mat-header-cell *matHeaderCellDef>Fecha de Fin</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.endTime }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>Duracion</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.duration }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+</div>
