@@ -101,7 +101,7 @@
         <tbody>
           <tr *ngFor="let data of middleTableVersion.data">
             <td>{{ data.orden }}</td>
-            <td>{{ data.version }}</td>
+            <td>{{ data.title }}</td>
             <td>{{ data.description }}</td>
             <td>{{ data.registerDate }}</td>
             <td>{{ data.registerBy }}</td>
@@ -216,14 +216,14 @@ nzTitle="Colaborador"
 [(nzVisible)]="isVisibleVersion"
 nzTitle="Resgistro de versión"
 (nzOnCancel)="handleCancel()"
-(nzOnOk)="handleOk()"
-[nzOkLoading]="isOkLoading"
+(nzOnOk)="handleOkVersion()"
+[nzOkLoading]="isOkLoadingVersion"
 >
 <form
   nz-form
   class="create-form"
   [formGroup]="validateFormVersion"
-  (ngSubmit)="showModalVersion()"
+  (ngSubmit)="submitFormVersion()"
 >
   <nz-form-item>
     <nz-form-control class="form-item">
@@ -257,10 +257,10 @@ nzTitle="Resgistro de versión"
   </nz-form-item>
 
   <div class="form-item">
-  <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
-    Guardar
-  </button>
-</div>
+    <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
+      Guardar
+    </button>
+  </div>
 </form>
 <div *nzModalFooter></div>
 </nz-modal>
