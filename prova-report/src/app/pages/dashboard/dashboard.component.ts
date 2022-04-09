@@ -258,9 +258,10 @@ export class DashboardComponent implements OnInit {
 
     this.donutOptions = {
       series: [44, 55, 13, 33],
+      labels: ["No ejecutadas", "Superadas", "Omitidas", "Fallidas"],
       chart: {
         width: 380,
-        type: 'donut',
+        type: 'donut'
       },
       title: {
         text: 'Indicador de éxito de las pruebas',
@@ -273,9 +274,28 @@ export class DashboardComponent implements OnInit {
         offsetY: 0,
         height: 230,
       },
-      labels: ["Omitidas", "Aprobadas", "Interrumpidas", "Fallidas"]
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
+                // formatter: function (w) {
+                //   const total = w.globals.seriesTotals.reduce((a, b) => {
+                //     return a + b
+                //   }, 0);
+                //   return `${total} pruebas`;
+                // }
+              }
+            }
+          }
+        }
+      }
     };
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
