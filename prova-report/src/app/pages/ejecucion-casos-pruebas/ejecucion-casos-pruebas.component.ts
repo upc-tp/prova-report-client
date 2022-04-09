@@ -148,9 +148,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     console.log(this.testCaseSelected);
   }
 
-  enterTestCasesExecutions(element: any){
-
-  }
+  
 
   validaciones(campo: string): boolean {
     return (
@@ -242,9 +240,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           console.log(res.result);
         }
       );
-
     }
-    this.ngOnInit();
   }
 
   getTestSteps() {
