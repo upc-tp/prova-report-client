@@ -1,7 +1,81 @@
 <div>
     <div class="banner">
         <span>Validacion de Bugs</span>
+        <button nz-button nzType="primary" (click)="addDefect()">
+          <span>Agregar Bug</span>
+        </button>
       </div>
+      <!--AGREGAR BUG-->
+      <nz-modal [(nzVisible)]="isAddVisible" nzTitle="Añadir Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+        <form nz-form class="create-form" [formGroup]="validateAddForm" (ngSubmit)="addForm()">
+        <nz-form-item>
+          <nz-form-control class="form-item">
+            <nz-form-label>
+              Título
+            </nz-form-label>
+            <input nz-input type="text" name="title" id="title" formControlName="title" placeholder="Título" >
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control class="form-item">
+            <nz-form-label>
+              Repro Steps
+            </nz-form-label>
+            <input
+              nz-input
+              name="repro_steps"
+              formControlName="repro_steps"
+              type="text"
+              id="repro_steps"
+              placeholder="Ingrese los pasos a reproducir"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control class="form-item">
+            <nz-form-label>
+              Prioridad
+            </nz-form-label>
+            <nz-select nzSize="large" formControlName="selectPriority" class="select-input" nzPlaceHolder="Seleccione el nivel de prioridad"
+              [nzOptions]="priorities">
+              <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-control class="form-item">
+            <nz-form-label>
+              Severidad
+            </nz-form-label>
+            <nz-select nzSize="large" formControlName="selectSeverity" class="select-input" nzPlaceHolder="Seleccione el nivel de severidad"
+              [nzOptions]="severities">
+              <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control class="form-item">
+            <nz-form-label>
+              Caso de Prueba
+            </nz-form-label>
+            <nz-select nzSize="large" formControlName="selectTestCase" class="select-input" nzPlaceHolder="Seleccione el caso de prueba"
+              [nzOptions]="testCases">
+              <nz-option nzValue="testCases.value" nzLabel="testCases.label"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="form-item">
+          <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
+            Registrar Bug +
+          </button>
+        </div>
+      </form>
+        <div *nzModalFooter></div>
+      </nz-modal>
+      <!--VALIDAR BUG-->
       <nz-modal [(nzVisible)]="isVisible" nzTitle="Validar Bugs" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
     [nzOkLoading]="isOkLoading">
     <form nz-form class="create-form" [formGroup]="validateForm">
@@ -16,6 +90,54 @@
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
+  <!--DETALLE BUG-->
+  <nz-modal [(nzVisible)]="isDetailVisible" nzTitle = "Detalle Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div>
+      <div>
+        <span>Título</span>
+        <h3>{{defecto.title}}</h3>
+        <span>ReproSteps</span>
+        <div>
+        <h3>{{defecto.repro_steps}}</h3>
+        <span>Severidad</span>
+        <h3><img style="width: 1rem;" [src]="defecto.severityIcon" /> {{defecto.severity}}</h3>
+        <span>Prioridad</span>
+        <h3><img style="width: 1rem;" [src]="defecto.priorityIcon" /> {{defecto.priority}}</h3>
+        </div>
+      </div>
+    </div>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <!--ACTUALIZAR BUG-->
+  <nz-modal [(nzVisible)]="isUpdateVisible" nzTile = "Actualizar Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <form nz-form class="create-form" [formGroup]="validateUpdateForm" (ngSubmit)="updateForm()">
+      <div class="form-item">
+        <nz-form-label>
+          Severidad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectSeverity" class="select-input" nzPlaceHolder="Seleccione Severidad"
+          [nzOptions]="severities">
+          <nz-option nzValue="severity.value" nzLabel="severity.label"></nz-option>
+        </nz-select>
+      </div>
+      <div class="form-item">
+        <nz-form-label>
+          Prioridad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectPriority" class="select-input" nzPlaceHolder="Seleccione Prioridad"
+          [nzOptions]="priorities">
+          <nz-option nzValue="priority.value" nzLabel="priority.label"></nz-option>
+        </nz-select>
+      </div>
+      <div class="form-item">
+        <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Guardar
+        </button>
+      </div>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <!--FILTROS-->
       <form [formGroup]="filterFormGroup">
         <div class="row d-flex">
           <div class="col-md-4">
@@ -92,14 +214,14 @@
                 data-width="24"
                 data-height="24"
               ></span>
-              <span>Aplicar Filtros</span>
+              <span> Aplicar Filtros</span>
             </button>
             <button
               mat-flat-button
               color="primary"
               class="button-global mx-5"
               style="margin-top: 0.5rem"
-              (click)="send()"
+              (click)="showModal()"
             >
               <span
                 class="iconify"
@@ -108,7 +230,7 @@
                 data-width="24"
                 data-height="24"
               ></span>
-              <span>Enviar</span>
+              <span> Enviar</span>
             </button>
           </div>
         </div>
@@ -130,15 +252,26 @@
         <th>Prioridad</th>
         <th>Severidad</th>
         <th>StepsRepro</th>
+        <th>Estado</th>
+        <th>Opciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of middleTable.data">
         <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id,$event)"></td>
         <td>{{ data.title }}</td>
-        <td>{{ data.severity }}</td>
-        <td>{{ data.priority }}</td>
+        <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }}</td>
+        <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }}</td>
         <td>{{ data.repro_steps }}</td>
+        <td>{{ data.defectState }}</td>
+        <td class="containerbuttons">
+          <button class="options" nz-button nzType="primary"  (click)="detailDefect(data.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+          <button class="options" nz-button nzType="primary"  (click)="updateDefect(data.id)">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </nz-table>

@@ -16,6 +16,18 @@ export interface Defect {
     testCase: TestCase;
     testExecution: TestExecution;
 }
+
+export interface DefectView {
+	id: number;
+	title: string;
+	repro_steps: string;
+	severity: string;
+	severityId: number;
+	severityIcon: string;
+	priority: string;
+	priorityId: number;
+	priorityIcon: string;
+}
 export interface DefectResponse {
 	page: number;
 	pageSize: number;
@@ -84,4 +96,40 @@ export interface DefectData {
 	title: string;
 	repro_steps: string;
 	
+}
+
+export interface SingleDefectResponse {
+	message: string;
+	success: boolean;
+	result: Defect;
+}
+export interface Severity {
+	id: number;
+	name: string;
+}
+
+export interface Priority {
+	id: number;
+	name: string;
+}
+export interface DefectCreated {
+	severityId: number;
+	severity: Severity;
+	priorityId: number;
+	priority: Priority;
+	title: string;
+	repro_steps: string;
+	is_fixed: number;
+	defectState: DefectState;
+	testCase: TestCase;
+	testExecution: TestExecution;
+	createdBy: string;
+	deletedAt?: any;
+	createdAt: string;
+	modifiedAt: string;
+}
+export interface DefectCreatedResponse {
+	message: string;
+	success: boolean;
+	result: DefectCreated;
 }

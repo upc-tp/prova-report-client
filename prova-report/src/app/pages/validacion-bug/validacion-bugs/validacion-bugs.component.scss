@@ -39,6 +39,12 @@ h4 {
   }
 }
 
+.select-input{
+  font-size: 1rem;
+  width: 100%;
+  transition: all .3s;
+}
+
 .filters-container {
   width: 100%;
   display: flex;
@@ -89,4 +95,14 @@ tbody {
   &:hover {
     cursor: pointer;
   }
+}
+
+button.options{
+  width: 25%;
+  margin:0.25rem;
+}
+
+.containerbuttons{
+  display: block;
+  width: 100%;
 }

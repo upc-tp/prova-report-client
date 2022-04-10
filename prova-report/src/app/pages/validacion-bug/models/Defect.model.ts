@@ -14,7 +14,7 @@ export class Defect {
     priority: Priorities;
     severity: Severities;
     testCase: TestCase;
-    testExecution: TestExecution;
+    //testExecution: TestExecution;
 }
 
 export interface Priorities {

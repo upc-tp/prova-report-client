@@ -34,6 +34,7 @@ import { ValidacionBugsComponent } from './validacion-bugs.component';
       MatButtonModule,
       NzFormModule,
       NzAlertModule,
+      NzSelectModule,
       NzPaginationModule,
     ],
     declarations: [ValidacionBugsComponent],
