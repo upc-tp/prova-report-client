@@ -334,7 +334,7 @@
             <ng-container matColumnDef="duration">
               <th mat-header-cell *matHeaderCellDef>Duración</th>
               <td mat-cell *matCellDef="let element">
-                {{ utils.formatTime(element.duration) }}
+                {{ utils.msToTime(element.duration) }}
               </td>
             </ng-container>
 

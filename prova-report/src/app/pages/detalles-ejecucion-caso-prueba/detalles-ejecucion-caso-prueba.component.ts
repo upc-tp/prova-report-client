@@ -38,7 +38,11 @@ export class DetallesEjecucionCasoPruebaComponent implements OnInit {
   displayedColumns: string[] = ['order', 'createdBy', 'comments', 'startTime', 'endTime', 'duration'];
   dataSource = new MatTableDataSource<any>(); 
   
-  constructor(private route: ActivatedRoute, private utils: UtilsService, private router: Router, private testCaseService: TestCaseService ) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private utils: UtilsService, 
+    private router: Router, 
+    private testCaseService: TestCaseService ) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -70,7 +74,7 @@ export class DetallesEjecucionCasoPruebaComponent implements OnInit {
           startTime: tExecution.startTime = (tExecution.startTime == null) ? '-': this.utils.formatDateTime(new Date(tExecution.startTime)),
           endTime: tExecution.endTime = (tExecution.endTime == null) ? '-' : this.utils.formatDateTime(new Date(tExecution.endTime)),
           comments: tExecution.comments,
-          duration: this.msToTime(tExecution.duration)
+          duration: this.utils.msToTime(tExecution.duration)
         };
       });
       console.log(this.testExecutions);
@@ -81,19 +85,5 @@ export class DetallesEjecucionCasoPruebaComponent implements OnInit {
 
   backTestCaseExecution(){
     this.router.navigate(['ejecucion-casos-pruebas']);
-  }
-
-
-  msToTime(duration) {
-    var milliseconds = Math.floor((duration % 1000) / 100),
-      seconds = Math.floor((duration / 1000) % 60),
-      minutes = Math.floor((duration / (1000 * 60)) % 60),
-      hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-    var thours = (hours < 10) ? "0" + hours : hours,
-    tminutes = (minutes < 10) ? "0" + minutes : minutes,
-    tseconds = (seconds < 10) ? "0" + seconds : seconds;
-
-    return thours + "h " + tminutes + "m " + tseconds + "s " + milliseconds + 'ms';
   }
 }
