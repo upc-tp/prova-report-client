@@ -54,7 +54,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
@@ -65,8 +65,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "30mb"
                 },
                 {
                   "type": "anyComponentStyle",
