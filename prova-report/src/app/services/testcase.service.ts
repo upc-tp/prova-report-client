@@ -37,6 +37,10 @@ import { TestCaseResponse, TestCaseCreated, TestCaseCreatedResponse, SingleTestC
         return this.http.get<SingleTestCaseResponse>(BASE_URL + this.testCase + `/${id}` );
     }
 
+    getTestCasesBySuite(page: number, pageSize: number, search: string, suiteId:number): Observable<TestCaseResponse>{
+      return this.http.get<TestCaseResponse>(BASE_URL + this.testCase + `?page=${page}&pageSize=${pageSize}&search=${search}&suiteId=${suiteId}`);
+    }
+    
     updateTestCase(title: string, description: string, testSuiteId: number, id:number, priorityId:number, severityId:number, userId:number):Observable<TestCaseCreated>{
         const httpOptions = {
             headers: new HttpHeaders({

@@ -1,43 +1,16 @@
 <div>
     <div class="banner">
         <span>Validacion de Bugs</span>
-        <button nz-button nzType="primary" (click)="showModal()">
-          <span>Agregar Bug</span>
-        </button>
       </div>
-      <nz-modal [(nzVisible)]="isVisible" nzTitle="Agregar Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Validar Bugs" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
     [nzOkLoading]="isOkLoading">
     <form nz-form class="create-form" [formGroup]="validateForm">
-      <div class="form-item">
-        <div class="form-label">
-          Título
-        </div>
-        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+      <div class="form-item my-2">
+        ¿Quieres validar este bug?
       </div>
       <div class="form-item">
-        <div class="form-label">
-          Repro Steps
-        </div>
-        <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Ingresar pasos" />
-      </div>
-      <div class="form-item">
-        <div class="form-label">
-          Severidad
-        </div>
-        <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Severidad" />
-      </div>
-      <div class="form-item">
-        <div class="form-label">
-          Prioridad
-        </div>
-        <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Prioridad" />
-      </div>
-      <div class="form-item">
-        <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
-          Guardar
+        <button class="mt-2" nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Aceptar
         </button>
       </div>
     </form>
@@ -57,11 +30,11 @@
                 {{pro.value}}
               </mat-option>
               </mat-select>
-              <!--<mat-hint
+              <mat-hint
                 *ngIf="validaciones('projects')"
                 class="form-text text-danger animate__animated animate__headShake"
                 >Seleccione uno</mat-hint
-              >-->
+              >
             </mat-form-field>
           </div>
     
@@ -90,15 +63,15 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Seleccionar</mat-label>
             <mat-select
-              formControlName="testSuite"
+              formControlName="testCase"
               (selectionChange)="updateFilter($event)"
             >
-            <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
-              {{tSuite.value}}
+            <mat-option *ngFor="let tCase of listTestCase" [value]="tCase.key">
+              {{tCase.value}}
             </mat-option>
             </mat-select>
             <mat-hint
-              *ngIf="validaciones('testSuite')"
+              *ngIf="validaciones('testCase')"
               class="form-text text-danger animate__animated animate__headShake"
               >Seleccione uno</mat-hint
             >
@@ -126,8 +99,7 @@
               color="primary"
               class="button-global mx-5"
               style="margin-top: 0.5rem"
-              (click)="search()"
-              disabled
+              (click)="send()"
             >
               <span
                 class="iconify"
@@ -141,6 +113,34 @@
           </div>
         </div>
       </form>
-      <br>
-      <span class="my-2">Manuel tienes 5 bugs por validar</span>
+    <br>
+  
+      <span class="my-2">Manuel tienes {{setOfCheckedId.size}} bugs por validar</span>
+      <div style="margin-top: 3rem;">
+        <nz-table #rowSelectionTable #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" [nzPageIndex]="page"
+    [nzTotal]="count" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th
+          [(nzChecked)] = "checked"
+          [nzIndeterminate] = "indeterminate"
+          (nzCheckedChange) = "onAllChecked($event)"
+        ></th>
+        <th>Defecto</th>
+        <th>Prioridad</th>
+        <th>Severidad</th>
+        <th>StepsRepro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id,$event)"></td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.severity }}</td>
+        <td>{{ data.priority }}</td>
+        <td>{{ data.repro_steps }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+      </div>
 </div>

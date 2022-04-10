@@ -1,18 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatIconRegistry } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { Filter } from 'src/app/interfaces/global.model';
 import { SuitesService } from 'src/app/services/suites.service';
 import { ProjectService } from 'src/app/services/projects.service';
 import { TestCaseService } from 'src/app/services/testcase.service';
 import Swal from 'sweetalert2';
-import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.model';
 import { Subject, Subscription } from 'rxjs';
+import { Defect } from '../models/Defect.model';
+import { DefectService } from 'src/app/services/defect.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DefectData } from 'src/app/interfaces/defect';
+
 
 @Component({
     selector: 'app-validacion-bugs',
@@ -21,6 +23,7 @@ import { Subject, Subscription } from 'rxjs';
   })
 
   export class ValidacionBugsComponent implements OnInit {
+    
     isVisible = false;
     isOkLoading = false;
     validateForm!: FormGroup;
@@ -35,28 +38,29 @@ import { Subject, Subscription } from 'rxjs';
       filterFormGroup: FormGroup;
       listProjects: Filter[] = [];
       listTestSuite: Filter[] = [];
-      listTestCase: TestCase[] = [];
-      //listBugs: Defects[] = [];
-      dataSourceTestCase = new MatTableDataSource<TestCase>();
+      listTestCase: Filter[] = [];
+      listDefect: Defect[] = [];
+      dataSourceDefect = new MatTableDataSource<Defect>();
       constructor(private _fb: FormBuilder,
+        private _sanitizer: DomSanitizer,
+        private iconRegistry: MatIconRegistry,
         private suiteService:SuitesService,
         private ProjectService:ProjectService,
-        private testCaseService:TestCaseService
+        private testCaseService:TestCaseService,
+        private defectService:DefectService
         ) {}
-      testCaseSelected: TestCase;
+      defectSelected: Defect;
       @ViewChild(MatPaginator) paginator: MatPaginator;
       @ViewChild(MatSort) sort: MatSort;
-    
-      headerColumn: string[] = [
-        'title',
-        'repro_steps',
-        'defect_state',
-        'priority',
-        'severity',
-        'testcase',
-        'testexecution',
-        'isfixed'
-      ];
+
+      data: Array<{
+        id: number;
+        title: string;
+        repro_steps: string;
+        priority: string;
+        severity: string;
+      }> = [];
+
       ngOnInit(): void {
           this.filterFormGroup = this._fb.group({
               projects: ['', [Validators.required]],
@@ -65,10 +69,7 @@ import { Subject, Subscription } from 'rxjs';
           });
           this.getProjects();
       }
-      Pagination() {
-        this.dataSourceTestCase.paginator = this.paginator;
-        this.dataSourceTestCase.sort = this.sort;
-      }
+      
       getProjects(){
         this.ProjectService.getTestProjects(null,null,'').subscribe(
           (res) => (
@@ -89,45 +90,28 @@ import { Subject, Subscription } from 'rxjs';
           this.filterFormGroup.get(campo).touched
         );
       }
+      
       search() {
         if (!this.filterFormGroup.invalid) {
-          this.testCaseService.getTestCases(null,null,'',this.filterFormGroup.controls['testSuite'].value).subscribe(
+          this.defectService.getDefects(null,null,'',this.filterFormGroup.controls['testCase'].value).subscribe(
             res => {
-              console.log(res.result)
-              this.listTestCase = res.result.map(
-                (tCase) => {
-                    const testCase = new TestCase();
-                    testCase.id = tCase.id,
-                    testCase.title = tCase.title,
-                    testCase.description = tCase.description,
-                    testCase.priority = tCase.priority,
-                    testCase.severity = tCase.severity,
-                    testCase.testState = tCase.testState,
-                    testCase.testSuite = tCase.testSuite,
-                    testCase.createdAt = new Date(tCase.createdAt).toLocaleDateString(),
-                    testCase.createdBy = tCase.createdBy;
-                    return testCase;
-                }
-              )
-              if(res.result.length == 0){
-                Swal.fire(
-                  {
-                    title:'El Proyecto no Cuenta con Casos de Prueba',
-                    showCloseButton:true,
-                    icon:'info'
-                  }
-                );
-            }  
-            this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
-            this.Pagination();
+              this.data = res.result.map((defect) => {
+                return {
+                  id: defect.id,
+                  title: defect.title,
+                  repro_steps: defect.repro_steps,
+                  priority: defect.priority.name,
+                  severity: defect.severity.name,
+                };
+              });
             }
           );
         }
       }
     
-      filterTableTestCase(e:Event){
+      filterTableDefect(e:Event){
         const filterValue = (e.target as HTMLInputElement).value;
-        this.dataSourceTestCase.filter = filterValue
+        this.dataSourceDefect.filter = filterValue
         .trim()
         .toLowerCase();
       }
@@ -147,8 +131,24 @@ import { Subject, Subscription } from 'rxjs';
             }
           )
         }
+        if(e.source.ngControl.name == 'testSuite') {
+          this.testCaseService.getTestCasesBySuite(null, null, '', e.value).subscribe(
+            res => {
+              console.log(res);
+              this.listTestCase = res.result.map((testCase) => {
+                const filtTestCase = new Filter();
+                filtTestCase.group = 1;
+                filtTestCase.key = testCase.id;
+                filtTestCase.value = testCase.title;
+                return filtTestCase;
+              });
+            }
+          )}
       }
 
+      send(): void {
+        this.isVisible = true;
+      }
       showModal(): void {
         this.isVisible = true;
       }
@@ -174,4 +174,37 @@ import { Subject, Subscription } from 'rxjs';
         this.subscription.unsubscribe();
       }
 
+      checked = false;
+      indeterminate = false;
+      listOfCurrentPageData: readonly DefectData[] = [];
+      listOfData: readonly DefectData[] = [];
+      setOfCheckedId = new Set<number>();
+
+      updateCheckedSet(id: number, checked: boolean): void {
+        if (checked) {
+          this.setOfCheckedId.add(id);
+        } else {
+          this.setOfCheckedId.delete(id);
+        }
+      }
+    
+      onItemChecked(id: number, checked: boolean): void {
+        this.updateCheckedSet(id, checked);
+        this.refreshCheckedStatus();
+      }
+    
+      onAllChecked(value: boolean): void {
+        this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item.id, value));
+        this.refreshCheckedStatus();
+      }
+    
+      onCurrentPageDataChange($event: readonly DefectData[]): void {
+        this.listOfCurrentPageData = $event;
+        this.refreshCheckedStatus();
+      }
+    
+      refreshCheckedStatus(): void {
+        this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
+        this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
+      }
   }
