@@ -1,7 +1,7 @@
 .banner h3 {
     color: #fff;
   }
-  
+
   .ant-btn-primary {
     background-color: #3849AA;
     border: none;
@@ -11,17 +11,17 @@
     display: flex;
     padding: 0.5rem 0;
     flex-flow: row wrap;
-  
+
     & input {
       width: 50%;
       border-radius: 1.5rem;
     }
-  
+
     & i {
       color: black;
       font-size: large;
     }
-  
+
     & nz-alert {
       margin: 1rem auto;
       flex: 1 100%;
@@ -42,7 +42,7 @@
     }
     .back-button{
       margin-right: 20px;
-  
+
     }
   .container-group{
     display: grid;
@@ -60,12 +60,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    
+
     & input {
       width: 50%;
       border-radius: 1.5rem;
     }
-  
+
     & i {
       color: black;
       font-size: large;
@@ -83,12 +83,12 @@
       width: 100%;
     }
   }
-  
+
   button.options{
     width: 50%;
     margin:0.5rem;
   }
-  
+
   button.fab {
     position: absolute;
     right: 1rem;
@@ -127,4 +127,3 @@
         cursor: pointer;
       }
     }
-    

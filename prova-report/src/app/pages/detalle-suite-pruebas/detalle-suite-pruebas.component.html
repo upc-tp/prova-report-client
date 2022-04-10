@@ -1,36 +1,36 @@
 <div>
-    <div class="banner">
-      <button class="back-button" nz-button nzType="text" (click)="backTestSuites()">
-        <i nz-icon nzType="left" nzTheme="outline" (click)="backTestSuites()"></i>
-      </button>
-      <h3>Suite de Prueba</h3>
-    </div>
-    <div class = "container-group">
-     <div class="suite-info">
-        <h3>
-            Título
-        </h3>
-        <span>{{suite.title}}</span>
-        <h3>
-            Descripcion
-        </h3>
-        <span>{{suite.description}}</span>
-        <h3>
-            Proyecto
-        </h3>
-        <span>{{suite.project}}</span>
+  <div class="banner">
+    <button class="back-button" nz-button nzType="text" (click)="backTestSuites()">
+      <i nz-icon nzType="left" nzTheme="outline" (click)="backTestSuites()"></i>
+    </button>
+    <h3>Suite de Prueba</h3>
+  </div>
+  <div class="container-group">
+    <div class="suite-info">
+      <h3>
+        Título
+      </h3>
+      <span>{{suite.title}}</span>
+      <h3>
+        Descripcion
+      </h3>
+      <span>{{suite.description}}</span>
+      <h3>
+        Proyecto
+      </h3>
+      <span>{{suite.project}}</span>
     </div>
     <div class="suite-infor">
-        <h3>
-            Registrado por
-        </h3>
-        <span>{{suite.createdBy}}</span>
-        <h3>
-            Fecha de Registro
-        </h3>
-        <span>{{suite.createdAt}}</span>
+      <h3>
+        Registrado por
+      </h3>
+      <span>{{suite.createdBy}}</span>
+      <h3>
+        Fecha de Registro
+      </h3>
+      <span>{{suite.createdAt}}</span>
     </div>
-    </div>
+  </div>
 </div>
 <br>
 <h3>
@@ -38,156 +38,135 @@
 </h3>
 <div>
   <div class="container-inputs">
- <div>
-  <i nz-icon nzType="search"></i>&nbsp;&nbsp;
-    <input
-      style="font-size: 12px !important; width: 200px;"
-      (keyup)="inputChanged($event)"
-      name="search"
-      type="text"
-      id="search"
-      placeholder="Buscar por título o descripción"
-    />
+    <div>
+      <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+      <input style="font-size: 12px !important; width: 200px;" (keyup)="inputChanged($event)" name="search" type="text"
+        id="search" placeholder="Buscar por título o descripción" />
+    </div>
+    <div>
+      <label>Ingrese un nuevo caso de prueba</label>
+      <button nz-button nzType="primary" (click)="showModal()">
+        <span>Nuevo</span>
+      </button>
+    </div>
   </div>
-  <div>
-    <label>Ingrese un nuevo caso de prueba</label>
-    <button nz-button nzType="primary" (click)="showModal()">
-      <span>Nuevo</span>
-    </button>
-  </div>
-  </div>
-    <nz-table #middleTable nzSize="middle" [nzData]="testCases"
-    [nzFrontPagination]="false"
-    [nzPageIndex]="page" [nzPageSize]="pageSize"
-    [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-    >
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Estado</th>
-          <th>Prioridad</th>
-          <th>Severidad</th>
-          <th>Responsable</th>
-          <th>Fecha de registro</th>
-          <th>Registrado por</th>
-          <th>Opciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of middleTable.data">
-          <td>{{ data.title }}</td>
-          <td>{{ data.description }}</td>
-          <td>{{ data.testStatus }}</td>
-          <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }} </td>
-          <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }} </td>
-          <td>
-            <div *ngIf="data.collaborator == null; else elseBlock"> - </div>
-            <ng-template #elseBlock> {{data.collaborator.firstName}}
-            </ng-template>
-          </td>
-          <td>{{ data.registerDate }}</td>
-          <td>{{ data.registerBy }}</td>
-          <td class = "containerbuttons" >
-            <button class="edit" nz-button nzType="primary"  (click)="updateCase(data.id)">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </button>
+  <nz-table #middleTable nzSize="middle" [nzData]="testCases" [nzFrontPagination]="false" [nzPageIndex]="page"
+    [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
+    (nzPageIndexChange)="onPageIndexChange($event)">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Prioridad</th>
+        <th>Severidad</th>
+        <th>Responsable</th>
+        <th>Fecha de registro</th>
+        <th>Registrado por</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td># {{ data.id }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.description }}</td>
+        <td>
+          <span [ngClass]="{
+            'test-state-passed': data.testStatus == 'Superado',
+            'test-state-non-executed': data.testStatus == 'No ejecutado',
+            'test-state-skipped': data.testStatus == 'Omitido',
+            'test-state-failed': data.testStatus == 'Fallido'
+          }">
+            {{ data.testStatus }}
+          </span>
         </td>
-        </tr>
-      </tbody>
-    </nz-table>
-    <ng-template #rangeTemplate let-range="range" let-total>
-        Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-      </ng-template>
+        <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }} </td>
+        <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }} </td>
+        <td>
+          <div *ngIf="data.collaborator == null; else elseBlock"> - </div>
+          <ng-template #elseBlock> {{data.collaborator.firstName}}
+          </ng-template>
+        </td>
+        <td>{{ data.registerDate }}</td>
+        <td>{{ data.registerBy }}</td>
+        <td class="containerbuttons">
+          <button class="edit" nz-button nzType="primary" (click)="updateCase(data.id)">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+  </ng-template>
 </div>
 
-<nz-modal
-[(nzVisible)]="isVisible"
-nzTitle="Caso de Prueba"
-(nzOnCancel)="handleCancel()"
-(nzOnOk)="handleOk()"
-[nzOkLoading]="isOkLoading"
->
-<form
-  nz-form
-  class="create-form"
-  [formGroup]="validateForm"
-  (ngSubmit)="submitForm()"
->
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Título
-      </nz-form-label>
-      <input
-        nz-input
-        name="title"
-        formControlName="title"
-        type="text"
-        id="title"
-        placeholder="Título"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Descripción
-      </nz-form-label>
-      <input
-        nz-input
-        name="description"
-        formControlName="description"
-        type="text"
-        id="description"
-        placeholder="Descripción"
-      />
-    </nz-form-control>
-  </nz-form-item>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Caso de Prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Título
+        </nz-form-label>
+        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Descripción
+        </nz-form-label>
+        <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Descripción" />
+      </nz-form-control>
+    </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Prioridad
-      </nz-form-label>
-      <nz-select nzSize="large" formControlName="selectPriority" class="select-input" nzPlaceHolder="Seleccione el nivel de prioridad"
-        [nzOptions]="priorities">
-        <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Prioridad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectPriority" class="select-input"
+          nzPlaceHolder="Seleccione el nivel de prioridad" [nzOptions]="priorities">
+          <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Severidad
-      </nz-form-label>
-      <nz-select nzSize="large" formControlName="selectSeverity" class="select-input" nzPlaceHolder="Seleccione el nivel de severidad"
-        [nzOptions]="severities">
-        <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Asignar Responsable
-      </nz-form-label>
-      <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input" nzPlaceHolder="Seleccione Responsable"
-        [nzOptions]="collaborators">
-        <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Severidad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectSeverity" class="select-input"
+          nzPlaceHolder="Seleccione el nivel de severidad" [nzOptions]="severities">
+          <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Asignar Responsable
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input"
+          nzPlaceHolder="Seleccione Responsable" [nzOptions]="collaborators">
+          <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
 
 
-  <div class="form-item">
-    <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
-      Guardar
-    </button>
-  </div>
-</form>
-<div *nzModalFooter></div>
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
 </nz-modal>
-

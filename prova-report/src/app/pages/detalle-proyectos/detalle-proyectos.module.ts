@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableModule, NzIconModule } from 'ng-zorro-antd';
+import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableModule, NzIconModule, NgZorroAntdModule } from 'ng-zorro-antd';
 import { DetalleProyectosRoutingModule } from './detalle-proyectos-routing.module';
 import { DetalleProyectosComponent } from './detalle-proyectos.component';
 
@@ -15,7 +15,8 @@ import { DetalleProyectosComponent } from './detalle-proyectos.component';
       NzSelectModule,
       ReactiveFormsModule,
       NzModalModule,
-      NzIconModule
+      NzIconModule,
+      NgZorroAntdModule
     ],
     declarations: [DetalleProyectosComponent],
     exports: [DetalleProyectosComponent],

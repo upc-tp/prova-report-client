@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -12,6 +13,9 @@ import {
   ApexLegend,
   ApexDataLabels,
 } from 'ng-apexcharts';
+import { Dashboard } from 'src/app/interfaces/dashboard';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { ProjectService } from 'src/app/services/projects.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -44,13 +48,31 @@ export class DashboardComponent implements OnInit {
   public stackedBarVerticalOptions: Partial<ChartOptions>;
   public lineColumnOptions: Partial<ChartOptions>;
   public donutOptions: Partial<ChartOptions>;
+  filterFormGroup: FormGroup;
+
 
   hGutter = 16;
   vGutter = 16;
   count = 2;
   array = new Array(this.count);
+  projectId: number;
+  listProjects: Array<{
+    id: number;
+    name: string;
+  }> = [];
 
-  constructor() {
+  dashboardData: Dashboard;
+  severityFilter: Array<{
+    states: number[];
+  }> = [];
+
+  statusFilter: Array<number> = [];
+
+  stackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
+
+
+
+  constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService) {
     this.chartOptions = {
       series: [
         {
@@ -146,20 +168,19 @@ export class DashboardComponent implements OnInit {
     this.stackedBarVerticalOptions = {
       series: [
         {
-          name: 'Omitida', //Azul
-          data: [3, 2, 3],
+          name: 'Superado', //Azul
+          data: this.stackedVerticalData[0],
+          color: '#48b337',
         },
         {
-          name: 'Aprobada', //Verde
-          data: [20, 30, 27],
+          name: 'Fallido', //Verde
+          data: this.stackedVerticalData[1],
+          color: '#f50000',
         },
         {
-          name: 'Interrumpida', //Amarillo
-          data: [5, 3, 4],
-        },
-        {
-          name: 'Fallida', //Rojo
-          data: [3, 5, 7],
+          name: 'Omitido', //Amarillo
+          data: this.stackedVerticalData[2],
+          color: '#f5a700',
         },
       ],
       chart: {
@@ -196,6 +217,7 @@ export class DashboardComponent implements OnInit {
       },
       colors: ['#48b337', '#f5a700', '#f50000'],
     };
+
 
     this.lineColumnOptions = {
       series: [
@@ -257,10 +279,11 @@ export class DashboardComponent implements OnInit {
     };
 
     this.donutOptions = {
-      series: [44, 55, 13, 33],
+      series: this.statusFilter,
+      labels: ["No ejecutadas", "Superadas", "Fallidas", "Omitidas"],
       chart: {
         width: 380,
-        type: 'donut',
+        type: 'donut'
       },
       title: {
         text: 'Indicador de éxito de las pruebas',
@@ -273,9 +296,93 @@ export class DashboardComponent implements OnInit {
         offsetY: 0,
         height: 230,
       },
-      labels: ["Omitidas", "Aprobadas", "Interrumpidas", "Fallidas"]
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
+                // formatter: function (w) {
+                //   const total = w.globals.seriesTotals.reduce((a, b) => {
+                //     return a + b
+                //   }, 0);
+                //   return `${total} pruebas`;
+                // }
+              }
+            }
+          }
+        }
+      }
     };
+
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.filterFormGroup = this._fb.group({
+      projects: ['',[Validators.required]]
+    });
+    this.getProjects();
+  }
+
+  getDashboardData(){
+    this.dashboardService.getDashboard(this.projectId).subscribe( (res) => {
+      this.severityFilter = res.result.testsBySeverity.map( (stat) => {
+        return{
+          states: stat.statuses.map((yes) => {
+            return yes.num_tests;
+          })
+        }
+      });
+      this.statusFilter = res.result.testsByStatus.map( (stat) => {
+        return Number(stat.num_tests);
+      });
+      this.donutOptions.series = this.statusFilter;
+      console.log(this.statusFilter);
+      this.loadDateStackecVerticalBars();
+    });
+  }
+
+  loadDateStackecVerticalBars(){
+    for(var i = 0; i < 3; i++){
+      for(var j = 1; j < 4; j++){
+        this.stackedVerticalData[j-1][i] = this.severityFilter[i].states[j];
+      }
+    }
+    this.stackedBarVerticalOptions.series = [
+        {
+          name: 'Superado',
+          data: this.stackedVerticalData[0],
+          color: '#48b337',
+        },
+        {
+          name: 'Fallido',
+          data: this.stackedVerticalData[1],
+          color: '#f50000',
+        },
+        {
+          name: 'Omitido',
+          data: this.stackedVerticalData[2],
+          color: '#f5a700',
+        },
+      ]
+  }
+  getProjects() {
+    this.projectService.getTestProjects(null, null, '').subscribe(
+      (res) =>
+      (this.listProjects = res.result.map((project) => {
+        return{
+          id: project.id,
+          name: project.title
+        }
+      }))
+    );
+  }
+  selectProject(){
+    this.projectId = this.filterFormGroup.controls['projects'].value;
+    this.getDashboardData();
+  }
+
 }

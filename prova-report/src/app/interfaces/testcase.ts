@@ -10,12 +10,82 @@ export interface TestCase {
 	userInCharge: User;
 	deletedAt?: any;
 	deletedBy?: any;
+	lastExecution:number;
     id: number;
     title: string;
     description: string;
     testState: TestState;
     testSuite: TestSuite;
 }
+
+export interface TestCaseView {
+	createdAt: string;
+	description: string;
+	title: string;
+	id: number;
+	lastExecution: number;
+	userInCharge: string;
+}
+
+export interface TestExecutionResponse{
+    message: string;
+	success: boolean;
+    result: TestExecution[];
+}
+
+export interface SingleTestExecutionResponse{
+    message: string;
+	success: boolean;
+    result: TestExecution;
+}
+
+export interface LogMsg{
+	level:string;
+	timestamp: string;
+	description: string;
+}
+export interface LogStatus{
+	endTime:string;
+	duration:number;
+	startTime:string;
+}
+export interface Log {
+	name:string;
+	status: LogStatus;
+	library:string;
+	msgs: LogMsg[];
+}
+export interface TestExecutionStep{
+	createdAt: string;
+    createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	name:string;
+	startTime: string;
+	endTime: string;
+	duration:number
+	logs: Log[];
+}
+export interface TestExecution {
+	createdAt: string;
+    createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	order: number;
+	startTime: string;
+	endTime: string;
+	comments:string;
+	duration:number;
+	testState: TestState;
+	testExecutionSteps: TestExecutionStep[];
+}
+
 export interface TestCaseCreated{
     testSuiteId:number;
     createdAt: string;

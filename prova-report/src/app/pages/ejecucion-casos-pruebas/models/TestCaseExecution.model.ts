@@ -13,6 +13,8 @@ export class TestCase {
     severity: Severities;
     testState: TestState;
     testSuite: TestSuite;
+	userInCharge: userInCharge;
+	lastExecution: number;
 }
 
 export interface Priorities {
@@ -51,4 +53,20 @@ export class TestSuite{
     id: number;
     title: string;
     description: string
+}
+
+export class userInCharge{
+	firstName: string;
+	lastName: string;
+}
+
+export class TestCaseSteps{
+	id:number;
+	testState: TestState
+	name:string;
+	start_time:string;
+	end_time:string;
+	duration:number;
+	created_at:string;
+	created_by:string;
 }

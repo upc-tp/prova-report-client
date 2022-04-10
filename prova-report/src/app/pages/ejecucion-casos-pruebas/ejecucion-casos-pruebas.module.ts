@@ -11,6 +11,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
+import { NzButtonModule } from 'ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
 imports:[
@@ -25,7 +27,9 @@ ReactiveFormsModule,
 MatFormFieldModule,
 MatIconModule,
 MatPaginatorModule,
-MatSortModule
+MatSortModule,
+NzButtonModule,
+NzIconModule
 ],
 declarations: [EjecucionCasosPruebasComponent],
 exports: [EjecucionCasosPruebasComponent],

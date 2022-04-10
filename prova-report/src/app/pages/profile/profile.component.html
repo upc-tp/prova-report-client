@@ -1,0 +1,124 @@
+<div>
+  <div class="banner">
+    <span>Perfil</span>
+  </div>
+
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Cambio de contraseña" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+    <div class="form-item">
+      <nz-form-label>
+        Contraseña actual
+      </nz-form-label>
+      <nz-input-group [nzSuffix]="suffixTemplate">
+        <input
+          [type]="passwordVisible ? 'text' : 'password'"
+          nz-input
+          placeholder="Contraseña actual"
+          id="oldPassword"
+          name="oldPassword" formControlName="oldPassword"
+          autocomplete="off"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate>
+        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+      </ng-template>
+    </div>
+
+    <div class="form-item">
+      <nz-form-label>
+        Nueva Contraseña
+      </nz-form-label>
+      <nz-input-group [nzSuffix]="suffixTemplate1">
+        <input
+          [type]="passwordVisible1 ? 'text' : 'password'"
+          nz-input
+          placeholder="Nueva Contraseña"
+          id="newPassword"
+          name="newPassword" formControlName="newPassword"
+          autocomplete="off"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate1>
+        <i nz-icon [nzType]="passwordVisible1 ? 'eye-invisible' : 'eye'" (click)="passwordVisible1 = !passwordVisible1"></i>
+      </ng-template>
+    </div>
+
+    <div class="form-item">
+      <nz-form-label>
+        Nueva Contraseña
+      </nz-form-label>
+      <nz-input-group [nzSuffix]="suffixTemplate2">
+        <input
+          [type]="passwordVisible2 ? 'text' : 'password'"
+          nz-input
+          placeholder="Nueva Contraseña"
+          id="newPasswordR"
+          name="newPasswordR" formControlName="newPasswordR"
+          autocomplete="off"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate2>
+        <i nz-icon [nzType]="passwordVisible2 ? 'eye-invisible' : 'eye'" (click)="passwordVisible2 = !passwordVisible2"></i>
+      </ng-template>
+    </div>
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
+  </nz-modal>
+
+  <div class = "row d-flex profile-area">
+     <div class="col-md-4">
+        <img
+          class="profile-img"
+          [ngStyle]="{ left: isCollapsed ? '20px' : '15px' }"
+          src="assets/images/avatar.png"
+          alt="logo"
+        />
+     </div>
+     <div class="col-md-8">
+        <div class = "row d-flex">
+          <div class="col-md-2">
+            <h3>
+                <strong>Nombre: </strong>
+            </h3>
+          </div>
+          <div class="col-md-10">
+            <span>{{currentUser.firstName}}</span>
+          </div>
+
+          <div class="col-md-2">
+            <h3>
+                <strong>Apellido: </strong>
+            </h3>
+          </div>
+          <div class="col-md-10">
+            <span>{{currentUser.lastName}}</span>
+          </div>
+
+          <div class="col-md-2">
+            <h3>
+                <strong>Email: </strong>
+            </h3>
+          </div>
+          <div class="col-md-10">
+            <span>{{currentUser.email}}</span>
+          </div>
+        </div>
+        <div class="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ">
+          <button nz-button nzType="primary" (click)="showModal()">
+            <span>Cambiar Contraseña</span>
+          </button>
+        </div>
+
+      </div>
+  </div>
+
+
+
+</div>

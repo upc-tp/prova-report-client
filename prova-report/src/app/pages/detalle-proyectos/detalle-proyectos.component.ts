@@ -8,6 +8,7 @@ import { ProjectService } from '../../services/projects.service';
 import { TestCaseService } from '../../services/testcase.service';
 import { Router } from '@angular/router';
 import { tick } from '@angular/core/testing';
+import { VersionService } from 'src/app/services/versions.services';
 @Component({
   selector: 'app-detalle-proyectos',
   templateUrl: './detalle-proyectos.component.html',
@@ -33,6 +34,14 @@ export class DetalleProyectosComponent implements OnInit {
       lastName: string;
       password: string;
     }> = [];
+    Versions: Array<{
+      uid: number;
+      orden: number;
+      title: string;
+      description: string;
+      registerDate: string;
+      registerBy: string;
+    }> = [];
     project: Project = {
       id: 0,
       createdAt: '',
@@ -44,31 +53,40 @@ export class DetalleProyectosComponent implements OnInit {
     };
     id: number;
     saved: boolean = false;
+    savedVersion: boolean = false;
     updated: boolean = false;
     page: number = 1;
     pageSize: number = 10;
     count: number = 0;
     isVisible = false;
+    isVisibleVersion = false;
     isOkLoading = false;
+    isOkLoadingVersion = false;
     validateForm!: FormGroup;
+    validateFormVersion!: FormGroup;
     private modelChanged: Subject<string> = new Subject<string>();
     private subscription: Subscription;
     debounceTime = 500;
-  
-    constructor(private route:ActivatedRoute, private projectService:ProjectService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
-  
+
+    constructor(private route:ActivatedRoute, private versionService:VersionService, private projectService:ProjectService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
+
     ngOnInit(): void {
       this.route.queryParams.subscribe(params => {
-      this.projectId = params.projectId;
+      this.projectId = Number(params.projectId);
       });
       //this.fetchTestCases(this.page, this.pageSize);
       this.getProject();
+      this.getVersions();
       this.validateForm = this.fb.group({
         firstName: [null, [Validators.required]],
         lastName: [null, [Validators.required]],
         email: [null, [Validators.required]],
         role: [null, [Validators.required]],
         password: [null, [Validators.required]]
+      });
+      this.validateFormVersion = this.fb.group({
+        version: [null, [Validators.required]],
+        descripcion: [null, [Validators.required]]
       });
       this.getProjectCollaborators();
       this.subscription = this.modelChanged
@@ -86,6 +104,25 @@ export class DetalleProyectosComponent implements OnInit {
         this.project.createdAt = res.result.createdAt;
       });
     }
+
+    getVersions(){
+      this.versionService
+        .getVersions(null, null, this.projectId).subscribe(
+          (res) => (
+            this.Versions = res.result.map((tversion) => {
+              return {
+                uid: tversion.id,
+                orden: tversion.order,
+                title: tversion.title,
+                description: tversion.description,
+                registerDate: tversion.createdAt,
+                registerBy: tversion.createdBy
+              };
+            })
+          )
+        )
+    }
+
     fetchTestCases(page: number, pageSize: number, search: string = ''){
       this.testCaseService.getTestCases(page,pageSize,search,this.projectId).subscribe(
         res =>{
@@ -97,7 +134,7 @@ export class DetalleProyectosComponent implements OnInit {
                 testStatus: tCase.testState.name,
                 testSuite: tCase.testSuite.title,
                 registerDate: new Date(tCase.createdAt).toLocaleDateString(),
-                registerBy: tCase.createdBy 
+                registerBy: tCase.createdBy
               };
             }
           );
@@ -107,7 +144,7 @@ export class DetalleProyectosComponent implements OnInit {
         }
       );
     }
-    
+
     inputChanged(event) {
       this.modelChanged.next(event.target.value);
     }
@@ -119,8 +156,15 @@ export class DetalleProyectosComponent implements OnInit {
       this.isVisible = false;
       this.id = null;
     }
+    handleCancelVersion(): void {
+      this.isVisibleVersion = false;
+      this.id = null;
+    }
     showModal(): void {
       this.isVisible = true;
+    }
+    showModalVersion(): void {
+      this.isVisibleVersion  = true;
     }
     handleOk(): void {
       this.isOkLoading = true;
@@ -129,9 +173,16 @@ export class DetalleProyectosComponent implements OnInit {
         this.isOkLoading = false;
       }, 3000);
     }
-  
+    handleOkVersion(): void {
+      this.isOkLoadingVersion = true;
+      setTimeout(() => {
+        this.isVisibleVersion = false;
+        this.isOkLoadingVersion = false;
+      }, 3000);
+    }
+
     backTestProjects(){
-      this.router.navigate(['gestion-proyectos']);  
+      this.router.navigate(['gestion-proyectos']);
     }
     getProjectCollaborators(){
       this.projectService
@@ -150,7 +201,7 @@ export class DetalleProyectosComponent implements OnInit {
           )
         )
     }
-    
+
     submitForm(): void {
       if (this.validateForm.valid) {
           this.projectService
@@ -189,11 +240,42 @@ export class DetalleProyectosComponent implements OnInit {
         });
       }
     }
+    submitFormVersion(): void {
+      console.log("ejecutando")
+      if (this.validateFormVersion.valid) {
+          this.versionService
+            .createVersion(
+              this.projectId,
+              this.validateFormVersion.controls['descripcion'].value,
+              this.validateFormVersion.controls['version'].value
+
+
+            )
+            .subscribe(
+              (project) => {
+                this.getVersions();
+                console.log('Response: ', project);
+                this.isVisibleVersion = false;
+                this.savedVersion = true;
+                this.validateFormVersion.controls['version'].setValue('');
+                this.validateFormVersion.controls['descripcion'].setValue('');
+              },
+              (error) => console.log(error)
+            );
+      } else {
+        Object.values(this.validateFormVersion.controls).forEach((control) => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+    }
 
     ngOnDestroy(): void {
       this.subscription.unsubscribe();
     }
-  
-  
-  
+
+
+
   }

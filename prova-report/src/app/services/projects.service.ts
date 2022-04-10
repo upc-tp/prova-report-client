@@ -55,7 +55,7 @@ export class ProjectService {
   getCollaborators(page: number, pageSize: number, search: string, id: number): Observable<CollaboratorsResponse> {
     return this.http.get<CollaboratorsResponse>(BASE_URL + this.testProject + `/${id}` + '/collaborators' + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
-  
+
   createCollaborator(firstName: string, lastName: string, email: string, role: string, password: string, id: number): Observable<CollaboratorCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -74,6 +74,7 @@ export class ProjectService {
       catchError(this.handleErrorObservable)
     );
   }
+
   private extractData(res: any) {
     let body = res;
     return body;
