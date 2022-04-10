@@ -214,8 +214,8 @@ nzTitle="Colaborador"
 </nz-modal>
 <nz-modal
 [(nzVisible)]="isVisibleVersion"
-nzTitle="Resgistro de versión"
-(nzOnCancel)="handleCancel()"
+nzTitle="Registro de versión"
+(nzOnCancel)="handleCancelVersion()"
 (nzOnOk)="handleOkVersion()"
 [nzOkLoading]="isOkLoadingVersion"
 >
@@ -247,6 +247,7 @@ nzTitle="Resgistro de versión"
       </nz-form-label>
       <textarea rows="4"
         nz-input
+        style="resize: none;"
         name="descripcion"
         formControlName="descripcion"
         type="text"

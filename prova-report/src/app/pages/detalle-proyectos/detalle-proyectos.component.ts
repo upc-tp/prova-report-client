@@ -243,7 +243,6 @@ export class DetalleProyectosComponent implements OnInit {
     submitFormVersion(): void {
       console.log("ejecutando")
       if (this.validateFormVersion.valid) {
-          console.log("paso if")
           this.versionService
             .createVersion(
               this.projectId,
@@ -258,10 +257,6 @@ export class DetalleProyectosComponent implements OnInit {
                 console.log('Response: ', project);
                 this.isVisibleVersion = false;
                 this.savedVersion = true;
-                setTimeout(function () {
-                  this.saved = false;
-                  console.log('Saved: ', this.saved);
-                }.bind(this), 10000);
                 this.validateFormVersion.controls['version'].setValue('');
                 this.validateFormVersion.controls['descripcion'].setValue('');
               },
