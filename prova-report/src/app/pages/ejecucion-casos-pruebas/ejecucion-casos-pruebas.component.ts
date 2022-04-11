@@ -250,6 +250,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           console.log(res.result);
           this.getTestSteps();
+          this.deleteFile();
+          this.crearFormulario();
         });
     } else {
       Swal.fire({
