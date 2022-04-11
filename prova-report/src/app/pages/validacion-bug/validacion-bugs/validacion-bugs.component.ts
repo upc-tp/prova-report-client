@@ -28,7 +28,6 @@ import { SeverityService } from 'src/app/services/seveities.services';
   export class ValidacionBugsComponent implements OnInit {
     isDetailVisible= false;
     isUpdateVisible= false;
-    isAddVisible = false;
     isVisible = false;
     isOkLoading = false;
     validateForm!: FormGroup;
@@ -44,7 +43,6 @@ import { SeverityService } from 'src/app/services/seveities.services';
     testCaseId: number;
       filterFormGroup: FormGroup;
       validateUpdateForm: FormGroup;
-      validateAddForm: FormGroup;
       listProjects: Filter[] = [];
       listTestSuite: Filter[] = [];
       listTestCase: Filter[] = [];
@@ -117,13 +115,6 @@ import { SeverityService } from 'src/app/services/seveities.services';
           this.validateUpdateForm = this._fb.group({
             selectPriority: [null, [Validators.required]],
             selectSeverity: [null, [Validators.required]]
-          });
-          this.validateAddForm = this._fb.group({
-            title: [null, [Validators.required]],
-            description: [null, [Validators.required]],
-            selectPriority: [null, [Validators.required]],
-            selectSeverity: [null, [Validators.required]],
-            selectTestCase: [null, [Validators.required]]
           });
 
           this.listOfData = new Array(100);
@@ -262,40 +253,7 @@ import { SeverityService } from 'src/app/services/seveities.services';
         })
         this.isDetailVisible = true;
       }
-      addForm(): void{
-        if(this.validateAddForm.valid) {
-          if(this.id) {
-            this.defectService
-            .createDefect(
-              this.validateAddForm.controls['title'].value,
-              this.validateAddForm.controls['repro_steps'].value,
-              this.validateAddForm.controls['selectPriority'].value,
-              this.validateAddForm.controls['selectSeverity'].value,
-              this.validateAddForm.controls['selectTestCase'].value
-            )
-            .subscribe(
-              (defect) => {
-                this.fetchDefects(this.page, this.pageSize);
-                console.log('Response: ', defect);
-                this.isAddVisible = false;
-                this.validateAddForm.controls['title'].setValue('');
-                this.validateAddForm.controls['repro_steps'].setValue('');
-                this.validateAddForm.controls['selectPriority'].setValue(0);
-                this.validateAddForm.controls['selectSeverity'].setValue(0);
-                this.validateAddForm.controls['selectTestCase'].setValue(0);
-              },
-              (error) => console.log(error)
-            );
-          }
-        } else {
-          Object.values(this.validateAddForm.controls).forEach((control) => {
-            if(control.invalid) {
-              control.markAsDirty();
-              control.updateValueAndValidity({ onlySelf: true})
-            }
-          });
-        }
-      }
+    
       updateForm(): void {
         if(this.validateUpdateForm.valid) {
           if(this.id) {
@@ -368,7 +326,6 @@ import { SeverityService } from 'src/app/services/seveities.services';
           this.isOkLoading = false;
           this.isDetailVisible = false;
           this.isUpdateVisible = false;
-          this.isAddVisible = false;
         }, 3000);
       }
     
@@ -376,7 +333,6 @@ import { SeverityService } from 'src/app/services/seveities.services';
         this.isVisible = false;
         this.isDetailVisible = false;
         this.isUpdateVisible = false;
-        this.isAddVisible = false;
         this.id = null;
       }
     
@@ -432,7 +388,4 @@ import { SeverityService } from 'src/app/services/seveities.services';
           })
       }*/
 
-      addDefect() {
-        this.isAddVisible = true;
-      }
   }
