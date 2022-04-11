@@ -14,11 +14,12 @@ input {
 
 .login-form {
     background-color: #3849AA;
-    border-radius: 0.125rem; // 2px
-    max-width: 50%;
+    border-radius: 0.25rem; // 2px
+    max-width: 40%;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
+
 }
 
 .form-label {
