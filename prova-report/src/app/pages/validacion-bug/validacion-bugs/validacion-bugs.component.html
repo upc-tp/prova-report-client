@@ -1,0 +1,206 @@
+<div>
+    <div class="banner">
+        <span>Validacion de Bugs</span>
+      </div>
+      <!--VALIDAR BUG-->
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="Validar Bugs" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading">
+    <form nz-form class="create-form" [formGroup]="validateForm">
+      <div class="form-item my-2">
+        ¿Quieres validar este bug?
+      </div>
+      <div class="form-item">
+        <button class="mt-2" nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Aceptar
+        </button>
+      </div>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <!--DETALLE BUG-->
+  <nz-modal [(nzVisible)]="isDetailVisible" nzTitle = "Detalle Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <div>
+      <div>
+        <span>Título</span>
+        <h3>{{defecto.title}}</h3>
+        <span>ReproSteps</span>
+        <div>
+        <h3>{{defecto.repro_steps}}</h3>
+        <span>Severidad</span>
+        <h3><img style="width: 1rem;" [src]="defecto.severityIcon" /> {{defecto.severity}}</h3>
+        <span>Prioridad</span>
+        <h3><img style="width: 1rem;" [src]="defecto.priorityIcon" /> {{defecto.priority}}</h3>
+        </div>
+      </div>
+    </div>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <!--ACTUALIZAR BUG-->
+  <nz-modal [(nzVisible)]="isUpdateVisible" nzTile = "Actualizar Bug" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <form nz-form class="create-form" [formGroup]="validateUpdateForm" (ngSubmit)="updateForm()">
+      <div class="form-item">
+        <nz-form-label>
+          Severidad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectSeverity" class="select-input" nzPlaceHolder="Seleccione Severidad"
+          [nzOptions]="severities">
+          <nz-option nzValue="severity.value" nzLabel="severity.label"></nz-option>
+        </nz-select>
+      </div>
+      <div class="form-item">
+        <nz-form-label>
+          Prioridad
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectPriority" class="select-input" nzPlaceHolder="Seleccione Prioridad"
+          [nzOptions]="priorities">
+          <nz-option nzValue="priority.value" nzLabel="priority.label"></nz-option>
+        </nz-select>
+      </div>
+      <div class="form-item">
+        <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+          Guardar
+        </button>
+      </div>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <!--FILTROS-->
+      <form [formGroup]="filterFormGroup">
+        <div class="row d-flex">
+          <div class="col-md-4">
+            <span><b>Proyecto</b></span>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Seleccionar</mat-label>
+              <mat-select
+                formControlName="projects"
+                (selectionChange)="updateFilter($event)"
+              >
+              <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
+                {{pro.value}}
+              </mat-option>
+              </mat-select>
+              <mat-hint
+                *ngIf="validaciones('projects')"
+                class="form-text text-danger animate__animated animate__headShake"
+                >Seleccione uno</mat-hint
+              >
+            </mat-form-field>
+          </div>
+    
+          <div class="col-md-4">
+              <span><b>Suite</b></span>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Seleccionar</mat-label>
+              <mat-select
+                formControlName="testSuite"
+                (selectionChange)="updateFilter($event)"
+              >
+              <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
+                {{tSuite.value}}
+              </mat-option>
+              </mat-select>
+              <mat-hint
+                *ngIf="validaciones('testSuite')"
+                class="form-text text-danger animate__animated animate__headShake"
+                >Seleccione uno</mat-hint
+              >
+            </mat-form-field>
+          </div>
+          
+          <div class="col-md-4">
+            <span><b>Caso de Prueba</b></span>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Seleccionar</mat-label>
+            <mat-select
+              formControlName="testCase"
+              (selectionChange)="updateFilter($event)"
+            >
+            <mat-option *ngFor="let tCase of listTestCase" [value]="tCase.key">
+              {{tCase.value}}
+            </mat-option>
+            </mat-select>
+            <mat-hint
+              *ngIf="validaciones('testCase')"
+              class="form-text text-danger animate__animated animate__headShake"
+              >Seleccione uno</mat-hint
+            >
+          </mat-form-field>
+        </div>
+          <div class="col-md-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="button-global ps-3 pe-3"
+              style="margin-top: 0.5rem"
+              (click)="search()"
+            >
+              <span
+                class="iconify"
+                data-icon="charm:paper-plane"
+                style="color: white"
+                data-width="24"
+                data-height="24"
+              ></span>
+              <span> Aplicar Filtros</span>
+            </button>
+            <button
+              mat-flat-button
+              color="primary"
+              class="button-global mx-5"
+              style="margin-top: 0.5rem"
+              (click)="showModal()"
+            >
+              <span
+                class="iconify"
+                data-icon="charm:paper-plane"
+                style="color: white"
+                data-width="24"
+                data-height="24"
+              ></span>
+              <span> Enviar</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    <br>
+  
+      <span class="my-2">Manuel tienes {{setOfCheckedId.size}} bugs por validar</span>
+      <div style="margin-top: 3rem;">
+        <nz-table #rowSelectionTable #middleTable nzSize="middle" [nzData]="data" [nzFrontPagination]="false" [nzPageIndex]="page"
+    [nzTotal]="count" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th
+          [(nzChecked)] = "checked"
+          [nzIndeterminate] = "indeterminate"
+          (nzCheckedChange) = "onAllChecked($event)"
+        ></th>
+        <th>Defecto</th>
+        <th>Prioridad</th>
+        <th>Severidad</th>
+        <th>StepsRepro</th>
+        <th>Estado</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id,$event)"></td>
+        <td>{{ data.title }}</td>
+        <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }}</td>
+        <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }}</td>
+        <td>{{ data.repro_steps }}</td>
+        <td>{{ data.defectState }}</td>
+        <td class="containerbuttons">
+          <button class="options" nz-button nzType="primary"  (click)="detailDefect(data.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+          <button class="options" nz-button nzType="primary"  (click)="updateDefect(data.id)">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+      </div>
+</div>

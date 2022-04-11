@@ -20,6 +20,10 @@ import { TestCaseService } from '../../services/testcase.service';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from 'src/app/common/spinner/spinner.service';
+import { ThrowStmt } from '@angular/compiler';
+import { DefectService } from 'src/app/services/defect.service';
+import { SeverityService } from 'src/app/services/seveities.services';
+import { PriorityService } from 'src/app/services/priority.services';
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -29,6 +33,27 @@ import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 })
 export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   filterFormGroup: FormGroup;
+  isVisible = false;
+  id: number;
+  isOkLoading = false;
+  validateAddForm!: FormGroup;
+  page: number = 1;
+  pageSize: number = 10;
+  defects: Array<{
+    title: string;
+    repro_steps: string;
+    testCaseId: number;
+    severity: string;
+    priority: string;
+  }> = [];
+  priorities: Array<{
+    label: string;
+    value: number;
+  }> = [];
+  severities: Array<{
+    label: string;
+    value: number;
+  }> = [];
   listProjects: Filter[] = [];
   listTestSuite: Filter[] = [];
   listTestCase: TestCase[] = [];
@@ -53,6 +78,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     private ProjectService: ProjectService,
     private testCaseService: TestCaseService,
     private spinnerService: SpinnerService,
+    private defectService: DefectService,
+    private priorityService: PriorityService, 
+    private severityService: SeverityService,
     public utils: UtilsService
   ) {
     this.iconRegistry.addSvgIcon(
@@ -93,6 +121,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProjects();
+    this.getPriority();
+    this.getSeverity();
     console.log(localStorage.getItem('filterItems'));
     if (localStorage.getItem('filterItems')) {
       this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
@@ -112,6 +142,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       });
       this.filterItems = [];
     }
+    this.validateAddForm = this._fb.group({
+      title: [null, [Validators.required]],
+      repro_steps: [null, [Validators.required]],
+      selectSeverity: [null, [Validators.required]],
+      selectPriority: [null, [Validators.required]],
+    });
+    this.getDefects();
   }
 
   ngOnDestroy(): void {
@@ -342,5 +379,97 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   deleteFile() {
     this.file = null;
     this.xmlData = [];
+  }
+
+  showModal(){
+    this.isVisible = true;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.id = null;
+  }
+  handleOk(): void {
+    this.isOkLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isOkLoading = false;
+    }, 3000);
+  }
+
+  submitForm(): void {
+    if (this.validateAddForm.valid) {
+      this.defectService
+      .createDefect(
+        this.validateAddForm.controls['title'].value,
+        this.validateAddForm.controls['repro_steps'].value,
+        parseInt(this.testCaseSelected.id.toString()),
+        this.validateAddForm.controls['selectPriority'].value,
+        this.validateAddForm.controls['selectSeverity'].value
+      )
+      .subscribe(
+        (defecto) => {
+          this.getDefects();
+          console.log('Response: ', defecto);
+          this.isVisible = false;
+          this.validateAddForm.controls['title'].setValue('');
+          this.validateAddForm.controls['repro_steps'].setValue('');
+          this.validateAddForm.controls['selectPriority'].setValue(0);
+          this.validateAddForm.controls['selectSeverity'].setValue(0);
+        },
+        (error) => console.log(error)
+      );
+  } else {
+    Object.values(this.validateAddForm.controls).forEach((control) => {
+      if (control.invalid) {
+        control.markAsDirty();
+        control.updateValueAndValidity({ onlySelf: true});
+      }
+    });
+    }
+  }
+
+  getDefects(){
+    this.defectService.getDefects(null,null,'',this.testCaseSelected.id).subscribe(
+      (res) => {
+        this.defects = res.result.map((defectos) => {
+          return {
+            title: defectos.title,
+            repro_steps: defectos.repro_steps,
+            testCaseId: defectos.testCase.id,
+            priority: defectos.priority.name,
+            severity: defectos.severity.name,
+          };
+        })
+      }
+    )
+  }
+
+  getPriority() {
+    this.priorityService.getPriorities(null, null, '').subscribe(
+      (res) => (
+        this.priorities = res.result.map((tPriority) => {
+          return {
+            label: tPriority.name,
+            value: tPriority.id
+          };
+        })
+      )
+
+    );
+  }
+
+  getSeverity() {
+    this.severityService.getSeverities(null, null, '').subscribe(
+      (res) => (
+        this.severities = res.result.map((tSeverity) => {
+          return {
+            label: tSeverity.name,
+            value: tSeverity.id
+          };
+        })
+      )
+
+    );
   }
 }

@@ -83,6 +83,10 @@ export class TestCaseService {
     );
   }
 
+    getTestCasesBySuite(page: number, pageSize: number, search: string, suiteId:number): Observable<TestCaseResponse>{
+      return this.http.get<TestCaseResponse>(BASE_URL + this.testCase + `?page=${page}&pageSize=${pageSize}&search=${search}&suiteId=${suiteId}`);
+    }
+    
   updateTestCase(
     title: string,
     description: string,
