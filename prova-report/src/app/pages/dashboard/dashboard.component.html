@@ -10,6 +10,8 @@
               {{ pro.name }}
             </mat-option>
           </mat-select> 
+          <mat-hint *ngIf="validaciones('projects')"
+            class="form-text text-danger animate__animated animate__headShake">Seleccione uno</mat-hint>
         </mat-form-field>
       </div>
 
@@ -20,6 +22,19 @@
             data-height="24"></span>
           <span>Aplicar Filtros</span>
         </button>
+      </div>
+      <div class="col-12 centerItems" style="margin-top: 3rem" *ngIf="this.projectId == null">
+        <div style="overflow: hidden; text-align: center">
+          <div>
+            <mat-icon class="NoTest" svgIcon="NoTest"></mat-icon>
+          </div>
+          <div class="text-w-bold text-fs-32 text-purple title-table-photo text-center">
+            Selecciona tus filtros
+          </div>
+          <div class="text-w-400 text-fs-14 text-center text-gray">
+            Para poder los gráficos de las pruebas
+          </div>
+        </div>
       </div>
     </div>
   </form>
