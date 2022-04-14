@@ -94,8 +94,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.crearFormulario();
   }
   testCaseSelected: TestCase;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) paginatorTestCase: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginatorTestCase') paginatorTestCase: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   nivelPositionTest = 0;
 
@@ -324,7 +324,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.listTestCaseSteps
         );
         this.chargeTestSteps = 1;
-        // this.PaginationTestCase();
+        this.PaginationTestCase();
       });
   }
   fileChanged(e) {
