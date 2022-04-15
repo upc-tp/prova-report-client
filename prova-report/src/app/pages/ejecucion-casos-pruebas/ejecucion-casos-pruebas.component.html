@@ -1,9 +1,9 @@
-<div>
-  <div class="banner">
+<div class="backgroundContent">
+  <div class="bannerEjeCasos">
     <button *ngIf="testCaseSelected != null" class="back-button" nz-button nzType="text" (click)="backtestCase()">
       <i nz-icon nzType="left" nzTheme="outline" (click)="backtestCase()"></i>
     </button>
-    <span>Ejecucion Casos Pruebas</span>
+    Ejecucion Casos Pruebas
   </div>
   <form [hidden]="nivelPositionTest > 0" [formGroup]="filterFormGroup">
     <div class="row d-flex">
@@ -293,7 +293,7 @@
           <div class="iconify-mright">
             <mat-label class="text-fs-24 text-w-bold col-12" style="margin-right: 1rem">Reporte Bugs</mat-label>
             <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
-            <button type="button" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
+            <button type="button" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright" [disabled]="disabledRegisterBug"
               style="margin-left: 2rem" (click)="showModal()">
               <span class="iconify" data-icon="ant-design:plus-circle-filled" style="color: white" data-width="24"
                 data-height="24"></span>
@@ -389,7 +389,7 @@ nzTitle = "Añadir Bug"
   (ngSubmit)="submitForm()"
 >
   <nz-form-item>
-    <nz-form-control class="form-item">
+    <nz-form-control class="form-item w-100">
       <nz-form-label>
         Título
       </nz-form-label>
@@ -404,7 +404,7 @@ nzTitle = "Añadir Bug"
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-control class="form-item">
+    <nz-form-control class="form-item w-100">
       <nz-form-label>
         Steps Repro
       </nz-form-label>
@@ -419,7 +419,7 @@ nzTitle = "Añadir Bug"
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-control class="form-item">
+    <nz-form-control class="form-item w-100">
       <nz-form-label>
         Prioridad
       </nz-form-label>
@@ -430,7 +430,7 @@ nzTitle = "Añadir Bug"
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <nz-form-control class="form-item">
+    <nz-form-control class="form-item w-100">
       <nz-form-label>
         Severidad
       </nz-form-label>

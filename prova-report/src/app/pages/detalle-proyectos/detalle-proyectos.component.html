@@ -1,9 +1,9 @@
-<div>
-    <div class="banner">
+<div class="backgroundContent">
+    <div class="bannerDet">
       <button class="back-button" nz-button nzType="text" (click)="backTestProjects()">
         <i nz-icon nzType="left" nzTheme="outline" (click)="backTestProjects()"></i>
       </button>
-      <h3>Proyecto</h3>
+      Proyecto
     </div>
     <div class = "container-group">
      <div class="suite-info">
@@ -27,94 +27,93 @@
         <span>{{project.createdAt}}</span>
     </div>
     </div>
-</div>
+    <h3>
+      Colaboradores
+    </h3>
+    
+    <nz-tabset>
+      <nz-tab nzTitle="Usuarios">
+        <div>
+          <div class="container-inputs">
+            <div>
+    
+            </div>
+            <div>
+              <label>Ingrese un nuevo colaborador</label>
+              <button nz-button nzType="primary" (click)="showModal()">
+                <span>Nuevo</span>
+              </button>
+            </div>
+          </div>
+          <nz-table #middleTable nzSize="middle" [nzData]="collaborators"
+          [nzFrontPagination]="false"
+          [nzPageIndex]="page" [nzPageSize]="pageSize"
+          [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
+          >
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo</th>
+                <th>Rol</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of middleTable.data">
+                <td>{{ data.firstName }}</td>
+                <td>{{ data.lastName }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.role }}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #rangeTemplate let-range="range" let-total>
+              Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+          </ng-template>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="Versiones">
+        <div>
+          <div class="container-inputs">
+            <div></div>
+            <div>
+              <button nz-button nzType="primary" (click)="showModalVersion()">
+                <span>Registrar Version</span>
+              </button>
+            </div>
+          </div>
+          <nz-table #middleTableVersion nzSize="middle" [nzData]="Versions"
+          [nzFrontPagination]="false"
+          [nzPageIndex]="page" [nzPageSize]="pageSize"
+          [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
+          >
+            <thead>
+              <tr>
+                <th>Orden</th>
+                <th>Version</th>
+                <th>Descripción</th>
+                <th>Fecha Registro</th>
+                <th>Registrado por</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of middleTableVersion.data">
+                <td>{{ data.orden }}</td>
+                <td>{{ data.title }}</td>
+                <td>{{ data.description }}</td>
+                <td>{{ data.registerDate }}</td>
+                <td>{{ data.registerBy }}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #rangeTemplate let-range="range" let-total>
+              Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+          </ng-template>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
 <br>
-<h3>
-  Colaboradores
-</h3>
-
-<nz-tabset>
-  <nz-tab nzTitle="Usuarios">
-    <div>
-      <div class="container-inputs">
-        <div>
-
-        </div>
-        <div>
-          <label>Ingrese un nuevo colaborador</label>
-          <button nz-button nzType="primary" (click)="showModal()">
-            <span>Nuevo</span>
-          </button>
-        </div>
-      </div>
-      <nz-table #middleTable nzSize="middle" [nzData]="collaborators"
-      [nzFrontPagination]="false"
-      [nzPageIndex]="page" [nzPageSize]="pageSize"
-      [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-      >
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Email</th>
-            <th>Rol</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of middleTable.data">
-            <td>{{ data.firstName }}</td>
-            <td>{{ data.lastName }}</td>
-            <td>{{ data.email }}</td>
-            <td>{{ data.role }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <ng-template #rangeTemplate let-range="range" let-total>
-          Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-      </ng-template>
-    </div>
-  </nz-tab>
-  <nz-tab nzTitle="Versiones">
-    <div>
-      <div class="container-inputs">
-        <div></div>
-        <div>
-          <button nz-button nzType="primary" (click)="showModalVersion()">
-            <span>Registrar Version</span>
-          </button>
-        </div>
-      </div>
-      <nz-table #middleTableVersion nzSize="middle" [nzData]="Versions"
-      [nzFrontPagination]="false"
-      [nzPageIndex]="page" [nzPageSize]="pageSize"
-      [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-      >
-        <thead>
-          <tr>
-            <th>Orden</th>
-            <th>Version</th>
-            <th>Descripción</th>
-            <th>Fecha Registro</th>
-            <th>Registrado por</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of middleTableVersion.data">
-            <td>{{ data.orden }}</td>
-            <td>{{ data.title }}</td>
-            <td>{{ data.description }}</td>
-            <td>{{ data.registerDate }}</td>
-            <td>{{ data.registerBy }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <ng-template #rangeTemplate let-range="range" let-total>
-          Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-      </ng-template>
-    </div>
-  </nz-tab>
-</nz-tabset>
-
 
 <nz-modal
 [(nzVisible)]="isVisible"
@@ -162,7 +161,7 @@ nzTitle="Colaborador"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label>
-        Email
+        Correo
       </nz-form-label>
       <input
         nz-input

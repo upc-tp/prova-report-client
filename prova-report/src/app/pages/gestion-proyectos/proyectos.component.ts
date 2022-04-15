@@ -135,6 +135,8 @@ export class ProyectosComponent implements OnInit {
   handleCancel(): void {
     this.isVisible = false;
     this.id = null;
+    this.validateForm.controls['title'].setValue('');
+    this.validateForm.controls['description'].setValue('');
   }
 
   inputChanged(event) {

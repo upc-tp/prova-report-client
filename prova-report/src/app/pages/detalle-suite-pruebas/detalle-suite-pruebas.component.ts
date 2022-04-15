@@ -172,6 +172,11 @@ export class DetalleSuitePruebasComponent implements OnInit {
   handleCancel(): void {
     this.isVisible = false;
     this.id = null;
+    this.validateForm.controls['title'].setValue('');
+    this.validateForm.controls['description'].setValue('');
+    this.validateForm.controls['selectPriority'].setValue(0);
+    this.validateForm.controls['selectSeverity'].setValue(0);
+    this.validateForm.controls['selectCollaborator'].setValue(0);
   }
   showModal(): void {
     this.isVisible = true;

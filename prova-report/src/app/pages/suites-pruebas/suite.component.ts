@@ -157,6 +157,9 @@ export class SuiteComponent implements OnInit, OnDestroy {
   handleCancel(): void {
     this.isVisible = false;
     this.id = null;
+    this.validateForm.controls['title'].setValue('');
+    this.validateForm.controls['description'].setValue('');
+    this.validateForm.controls['selectProject'].setValue(0);
   }
 
   inputChanged(event) {

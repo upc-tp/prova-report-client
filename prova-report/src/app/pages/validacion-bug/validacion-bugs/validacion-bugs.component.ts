@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,7 +22,8 @@ import { SeverityService } from 'src/app/services/seveities.services';
 @Component({
     selector: 'app-validacion-bugs',
     templateUrl: './validacion-bugs.component.html',
-    styleUrls: ['./validacion-bugs.component.scss']
+    styleUrls: ['./validacion-bugs.component.scss'],
+    encapsulation: ViewEncapsulation.None
   })
 
   export class ValidacionBugsComponent implements OnInit {

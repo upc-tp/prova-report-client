@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ChartComponent,
@@ -39,6 +39,7 @@ export type ChartOptions = {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;

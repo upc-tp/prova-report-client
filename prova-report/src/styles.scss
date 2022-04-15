@@ -6,6 +6,17 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.button-bg-primary{
+    background: #3949ab;
+    color: #fff;
+    border: none;
+}
+.button-bg-primary:hover{
+    background: #6f74dd;
+    color: #fff;
+
+}
+
 
 .button-global {
     height: 48px;
@@ -23,6 +34,31 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     letter-spacing: 0.7px !important;
     transition: background-color 0.5s ease;
     box-shadow: 0px 4px 16px rgba(27, 27, 27, 0.08);
+}
+.banner {
+    text-align: left;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+    background: #4dd0e1;
+    padding: 20px 20px 20px 20px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+.button-normal{
+    background: #4dd0e1;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+.button-normal:hover{
+    background: #88ffff;
+    font-weight: bold;
+    color: white;
 }
 
 .maticon-mgleft .mat-icon {
@@ -45,12 +81,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: inline-block;
 }
 .text-w-bold {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .text-fs-12 {
     font-size: 12px;
     line-height: 14px;
+}
+
+.ant-modal-title {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    word-wrap: break-word;
 }
 
 .text-fs-14 {
@@ -188,7 +233,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .text-click-blue:hover {
     color: #2c7ab3 !important;
 }
-
+.inner-content{
+    background: #edf0f5 !important;
+  }
+ 
+.backgroundContent{
+    background: #ffff;padding: 2rem;
+    border-radius: 4px;
+}  
 .test-state-passed {
     color:rgb(210, 250, 161);
     background-color: rgb(116, 198, 17);
