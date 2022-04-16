@@ -9,6 +9,7 @@ import { TestCaseService } from '../../services/testcase.service';
 import { Router } from '@angular/router';
 import { tick } from '@angular/core/testing';
 import { VersionService } from 'src/app/services/versions.services';
+import { UtilsService } from 'src/app/common/UtilsService';
 @Component({
   selector: 'app-detalle-proyectos',
   templateUrl: './detalle-proyectos.component.html',
@@ -17,6 +18,7 @@ import { VersionService } from 'src/app/services/versions.services';
 
 export class DetalleProyectosComponent implements OnInit {
     projectId: number;
+    passwordVisible = false;
     testCases: Array<{
       id:number;
       title: string;
@@ -68,7 +70,7 @@ export class DetalleProyectosComponent implements OnInit {
     private subscription: Subscription;
     debounceTime = 500;
 
-    constructor(private route:ActivatedRoute, private versionService:VersionService, private projectService:ProjectService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
+    constructor(private utils: UtilsService, private route:ActivatedRoute, private versionService:VersionService, private projectService:ProjectService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
     ngOnInit(): void {
       this.route.queryParams.subscribe(params => {
@@ -101,7 +103,7 @@ export class DetalleProyectosComponent implements OnInit {
         this.project.title = res.result.title;
         this.project.description = res.result.description;
         this.project.createdBy = res.result.createdBy;
-        this.project.createdAt = res.result.createdAt;
+        this.project.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
       });
     }
 
