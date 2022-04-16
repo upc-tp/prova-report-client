@@ -29,12 +29,10 @@
     </div>
 </div>
 <br>
-<h3>
-  Colaboradores
-</h3>
+
 
 <nz-tabset>
-  <nz-tab nzTitle="Usuarios">
+  <nz-tab nzTitle="Colaboradores">
     <div>
       <div class="container-inputs">
         <div>
@@ -54,9 +52,9 @@
       >
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Email</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Correo Electrónico</th>
             <th>Rol</th>
           </tr>
         </thead>
@@ -79,8 +77,9 @@
       <div class="container-inputs">
         <div></div>
         <div>
+          <label>Ingrese una nueva versión</label>
           <button nz-button nzType="primary" (click)="showModalVersion()">
-            <span>Registrar Version</span>
+            <span>Nuevo</span>
           </button>
         </div>
       </div>
@@ -132,7 +131,7 @@ nzTitle="Colaborador"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label>
-        Nombre
+        Nombres
       </nz-form-label>
       <input
         nz-input
@@ -147,7 +146,7 @@ nzTitle="Colaborador"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label>
-        Apellido
+        Apellidos
       </nz-form-label>
       <input
         nz-input
@@ -162,7 +161,7 @@ nzTitle="Colaborador"
   <nz-form-item>
     <nz-form-control class="form-item">
       <nz-form-label>
-        Email
+        Correo Electrónico
       </nz-form-label>
       <input
         nz-input
@@ -179,14 +178,19 @@ nzTitle="Colaborador"
       <nz-form-label>
         Contraseña
       </nz-form-label>
-      <input
-        nz-input
-        name="password"
-        formControlName="password"
-        type="password"
-        id="password"
-        placeholder="Contraseña"
-      />
+      <nz-input-group [nzSuffix]="suffixTemplate">
+        <input
+          [type]="passwordVisible ? 'text' : 'password'"
+          nz-input
+          placeholder="Contraseña actual"
+          id="password"
+          name="password" formControlName="password"
+          autocomplete="off"
+        />
+      </nz-input-group>
+      <ng-template #suffixTemplate>
+        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
@@ -194,14 +198,11 @@ nzTitle="Colaborador"
       <nz-form-label>
         Rol
       </nz-form-label>
-      <input
-        nz-input
-        name="role"
-        formControlName="role"
-        type="text"
-        id="role"
-        placeholder="Rol"
-      />
+      <nz-select nzSize="large" formControlName="role" class="select-input"
+        nzPlaceHolder="Seleccione el nivel de severidad">
+        <nz-option nzLabel="Admin" nzValue="Admin"></nz-option>
+        <nz-option nzLabel="Tester" nzValue="Tester"></nz-option>
+      </nz-select>
     </nz-form-control>
   </nz-form-item>
   <div class="form-item">

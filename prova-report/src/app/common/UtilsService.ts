@@ -33,13 +33,8 @@ export class UtilsService {
             this.padTo2Digits(date.getMonth() + 1),
             date.getFullYear()
         ].join('/');
-        const strTime = [
-            this.padTo2Digits(date.getHours()),
-            this.padTo2Digits(date.getMinutes()),
-            this.padTo2Digits(date.getSeconds()),
-            this.padTo3Digits(date.getMilliseconds())
-        ].join(':');
-        return `${strDate} ${strTime}`;
+
+        return `${strDate}`;
     }
 
     formatTime(milliseconds: number): string {
