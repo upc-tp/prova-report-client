@@ -5,6 +5,7 @@ import { RegisterRoutingModule } from './register-routing.module';
 import { NzAlertModule, NzButtonModule, NzDropDownModule, NzFormModule, NzInputModule, NzModalModule, NzPaginationModule, NzSelectModule, NzTableModule } from 'ng-zorro-antd';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { RegisterComponent } from './register.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -23,6 +24,7 @@ import { RegisterComponent } from './register.component';
     NzDropDownModule,
     NzSelectModule,
     IconsProviderModule,
+    MatIconModule
   ],
   declarations: [RegisterComponent],
   exports: [RegisterComponent]

@@ -12,25 +12,37 @@ input {
   }
 }
 
+// .login-form {
+//     background-color: #3849AA;
+//     border-radius: 0.25rem; // 2px
+//     max-width: 40%;
+//     margin: 0 auto;
+//     display: flex;
+//     flex-flow: row wrap;
+
+// }
+
 .login-form {
-    background-color: #3849AA;
-    border-radius: 0.25rem; // 2px
-    max-width: 40%;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row wrap;
+  background-color: #ffff;
+  border-radius: 0.25rem; // 2px
+  max-width: 30%;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
 
 }
 
+
 .form-label {
   margin-bottom: 0.5rem;
-  color: white;
+  color: gray;
   font-weight: bold;
 }
 
 .form-item {
   flex: 1 100%;
   margin: 0.5rem;
+  width: 100%;
   & input {
     width: 100%;
   }
@@ -42,4 +54,8 @@ input {
 
 .is-invalid {
     border: 0.5px solid #e53935;
+}
+.ProvaIcon{
+  width: 181px;
+  height: 141px;
 }

@@ -5,6 +5,7 @@ import { LoginComponent } from './login.component';
 import { NzAlertModule, NzButtonModule, NzDropDownModule, NzFormModule, NzModalModule, NzPaginationModule, NzSelectModule, NzTableModule } from 'ng-zorro-antd';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { LoginRoutingModule } from './login-routing.module';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -22,7 +23,8 @@ import { LoginRoutingModule } from './login-routing.module';
     NzPaginationModule,
     NzDropDownModule,
     NzSelectModule,
-    IconsProviderModule
+    IconsProviderModule,
+    MatIconModule
   ],
   declarations: [LoginComponent],
   exports: [LoginComponent]

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ChartComponent,
@@ -16,6 +16,9 @@ import {
 import { Dashboard } from 'src/app/interfaces/dashboard';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/projects.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+import Swal from 'sweetalert2';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -36,6 +39,7 @@ export type ChartOptions = {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
@@ -72,7 +76,14 @@ export class DashboardComponent implements OnInit {
 
 
 
-  constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService) {
+  constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService,
+    private _sanitizer: DomSanitizer,private iconRegistry:MatIconRegistry
+    ) {
+    
+      this.iconRegistry.addSvgIcon(
+        'NoTest',
+        this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
+      );
     this.chartOptions = {
       series: [
         {
@@ -328,6 +339,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashboardData(){
+
     this.dashboardService.getDashboard(this.projectId).subscribe( (res) => {
       this.severityFilter = res.result.testsBySeverity.map( (stat) => {
         return{
@@ -343,6 +355,7 @@ export class DashboardComponent implements OnInit {
       console.log(this.statusFilter);
       this.loadDateStackecVerticalBars();
     });
+
   }
 
   loadDateStackecVerticalBars(){
@@ -381,8 +394,24 @@ export class DashboardComponent implements OnInit {
     );
   }
   selectProject(){
-    this.projectId = this.filterFormGroup.controls['projects'].value;
-    this.getDashboardData();
+    if(this.filterFormGroup.controls['projects'].value){
+      this.projectId = this.filterFormGroup.controls['projects'].value;
+      this.getDashboardData();
+    }else{
+      Swal.fire(
+        {
+          title: 'Selecciona un proyecto',
+          showCloseButton:true,
+          icon:'info'
+        });
+    }
+  }
+  
+  validaciones(campo: string): boolean {
+    return (
+      this.filterFormGroup.get(campo).invalid &&
+      this.filterFormGroup.get(campo).touched
+    );
   }
 
 }

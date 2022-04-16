@@ -68,6 +68,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   actualFilterTestSuite: string;
   actualFilterProject: string;
   toExecutionPage: boolean = false;
+  disabledRegisterBug = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -94,8 +95,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.crearFormulario();
   }
   testCaseSelected: TestCase;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) paginatorTestCase: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginatorTestCase') paginatorTestCase: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   nivelPositionTest = 0;
 
@@ -180,6 +181,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.testCaseSelected = element;
     if (this.testCaseSelected.lastExecution > 0) {
       this.getTestSteps();
+      this.disabledRegisterBug = false;
     } else {
       // Swal.fire({
       //   title: 'El Proyecto no Cuenta con Pasos de Ejecución',
@@ -324,7 +326,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.listTestCaseSteps
         );
         this.chargeTestSteps = 1;
-        // this.PaginationTestCase();
+        this.PaginationTestCase();
       });
   }
   fileChanged(e) {
@@ -346,6 +348,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.listTestCaseSteps = [];
     this.dataSourceTestSteps = new MatTableDataSource(); 
     this.chargeTestSteps = 0;
+    this.disabledRegisterBug = true;
     this.Pagination();
     // this.PaginationTestCase();
   }

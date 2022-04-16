@@ -11,25 +11,33 @@ input {
       border: 0.5px solid #6f74dd;
     }
   }
-  
+  .ProvaIcon{
+    width: 181px;
+    height: 141px;
+  }
   .register-form {
-      background-color: #3849AA;
+      background-color: #fff;
       border-radius: 0.2rem; // 2px
-      max-width: 40%;
+      max-width: 30%;
       margin: 0 auto;
       display: flex;
       flex-flow: row wrap;
   }
-  
+
+  .passInput .ant-input-suffix {
+    margin-left: 4px !important;
+    margin-top: 6px !important;
+}
   .form-label {
     margin-bottom: 0.5rem;
-    color: white;
+    color: gray;
     font-weight: bold;
   }
   
   .form-item {
     flex: 1 100%;
     margin: 0.5rem;
+    width: 100%;
     & input {
       width: 100%;
     }

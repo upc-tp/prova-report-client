@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div style="text-align: center;" class="backgroundContent">
   <div class="banner">Dashboard</div>
   <form [formGroup]="filterFormGroup">
     <div class="row d-flex">
@@ -10,16 +10,31 @@
               {{ pro.name }}
             </mat-option>
           </mat-select> 
+          <mat-hint *ngIf="validaciones('projects')"
+            class="form-text text-danger animate__animated animate__headShake">Seleccione uno</mat-hint>
         </mat-form-field>
       </div>
 
       <div class="col-md-3">
-        <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
+        <button mat-flat-button class="button-global ps-3 pe-3 iconify-mright button-bg-primary"
           style="margin-top: 0.5rem" (click)="selectProject()">
           <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
             data-height="24"></span>
           <span>Aplicar Filtros</span>
         </button>
+      </div>
+      <div class="col-12 centerItems" style="margin-top: 3rem" *ngIf="this.projectId == null">
+        <div style="overflow: hidden; text-align: center">
+          <div>
+            <mat-icon class="NoTest" svgIcon="NoTest"></mat-icon>
+          </div>
+          <div class="text-w-bold text-fs-32 text-purple title-table-photo text-center">
+            Selecciona tus filtros
+          </div>
+          <div class="text-w-400 text-fs-14 text-center text-gray">
+            Para poder los gráficos de las pruebas
+          </div>
+        </div>
       </div>
     </div>
   </form>

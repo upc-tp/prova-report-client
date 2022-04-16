@@ -1,7 +1,7 @@
-<div>
+<div class="backgroundContent">
   <div class="banner">
-    <span>Gestion de proyectos de prueba</span>
-    <button nz-button nzType="primary" (click)="showModal()">
+    Gestion de proyectos de prueba
+    <button nz-button class="button-bg-primary" (click)="showModal()">
       <span>Nuevo</span>
     </button>
   </div>
@@ -46,6 +46,7 @@
         <th>Descripción</th>
         <th>Fecha de registro</th>
         <th>Registrado por</th>
+        <th nzWidth="10%"></th>
       </tr>
     </thead>
     <tbody>
@@ -56,8 +57,11 @@
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
         <td class="containerbuttons">
-          <button class="options" nz-button nzType="primary"  (click)="detailProject(data.id)">
+          <button class="options" nz-button nzType="primary"  (click)="detailProject(data.id)" style="margin-right: 0.5rem;">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+          <button class="options" nz-button nzType="primary"  (click)="updateProject(data.id)">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
           </button>
         </td>
       </tr>
