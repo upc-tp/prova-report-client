@@ -48,13 +48,14 @@ input {
   }
 }
 
-.invalid-feedback {
-    color: #e53935;
-}
-
 .is-invalid {
     border: 0.5px solid #e53935;
 }
+
+.invalid-feedback {
+  color: #e53935;
+}
+
 .ProvaIcon{
   width: 181px;
   height: 141px;

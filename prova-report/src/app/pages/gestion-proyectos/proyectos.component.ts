@@ -22,7 +22,8 @@ export class ProyectosComponent implements OnInit {
 
   isVisible = false;
   isOkLoading = false;
-  validateForm!: FormGroup;
+  submitted = false;
+  validateForm: FormGroup;
   id: number;
   page: number = 1;
   pageSize: number = 10;
@@ -40,8 +41,8 @@ export class ProyectosComponent implements OnInit {
   ngOnInit(): void {
     this.fetchProjects(this.page, this.pageSize);
     this.validateForm = this.fb.group({
-      title: [null, [Validators.required]],
-      description: [null, [Validators.required]],
+      title: [null, Validators.required],
+      description: [null, Validators.required],
     });
 
     this.subscription = this.modelChanged
@@ -51,7 +52,11 @@ export class ProyectosComponent implements OnInit {
       });
   }
 
+  // convenience getter for easy access to form fields
+  get f() { return this.validateForm.controls; }
+
   submitForm(): void {
+    this.submitted = true;
     if (this.validateForm.valid) {
       if (this.id) {
         this.projectService
@@ -134,6 +139,7 @@ export class ProyectosComponent implements OnInit {
 
   handleCancel(): void {
     this.isVisible = false;
+    this.submitted = false;
     this.id = null;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
