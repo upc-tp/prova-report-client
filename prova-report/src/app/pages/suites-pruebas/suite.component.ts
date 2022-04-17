@@ -25,6 +25,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
     value: number;
   }> = [];
   isVisible = false;
+  submitted = false;
   isOkLoading = false;
   validateForm!: FormGroup;
   id: number;
@@ -55,9 +56,11 @@ export class SuiteComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  // convenience getter for easy access to form fields
+  get f() { return this.validateForm.controls; }
 
   submitForm(): void {
+    this.submitted = true;
     if (this.validateForm.valid) {
       if (this.id) {
         this.suiteService
@@ -72,6 +75,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
               this.fetchSuites(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
+              this.submitted = false;
               this.id = null;
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
@@ -91,6 +95,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
               this.fetchSuites(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
+              this.submitted = false;
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectProject'].setValue(0);
@@ -148,6 +153,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   handleOk(): void {
     this.isOkLoading = true;
+    this.submitted = false;
     setTimeout(() => {
       this.isVisible = false;
       this.isOkLoading = false;
@@ -156,6 +162,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   handleCancel(): void {
     this.isVisible = false;
+    this.submitted = false;
     this.id = null;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');

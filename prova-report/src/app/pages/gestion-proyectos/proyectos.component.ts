@@ -70,6 +70,7 @@ export class ProyectosComponent implements OnInit {
               this.fetchProjects(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
+              this.submitted = false;
               this.id = null;
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
@@ -88,6 +89,7 @@ export class ProyectosComponent implements OnInit {
               this.fetchProjects(this.page, this.pageSize);
               console.log('Response: ', project);
               this.isVisible = false;
+              this.submitted = false;
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
             },
@@ -134,6 +136,7 @@ export class ProyectosComponent implements OnInit {
     setTimeout(() => {
       this.isVisible = false;
       this.isOkLoading = false;
+      this.submitted = false;
     }, 3000);
   }
 
