@@ -41,9 +41,9 @@
 
 
   <div class="gutter-example" *ngIf="this.projectId != null">
-    <div nz-row [nzGutter]="[hGutter, vGutter]">
-      <div nz-col class="gutter-row" [nzSpan]="24 / count">
-        <apx-chart
+    <div nz-row [nzGutter]="[hGutter, vGutter]" class="container-gutter">
+      <div class="gutter-row">
+        <apx-chart class="graphs"
           [series]="donutOptions.series"
           [chart]="donutOptions.chart"
           [xaxis]="donutOptions.xaxis"
@@ -53,21 +53,19 @@
           [labels]="donutOptions.labels"
           [plotOptions]="donutOptions.plotOptions"
         ></apx-chart>
-      </div>
-      <div nz-col class="gutter-row" [nzSpan]="24 / count">
-        <apx-chart
-          [series]="stackedBarVerticalOptions.series"
-          [chart]="stackedBarVerticalOptions.chart"
-          [xaxis]="stackedBarVerticalOptions.xaxis"
-          [title]="stackedBarVerticalOptions.title"
-          [plotOptions]="stackedBarVerticalOptions.plotOptions"
-          [yaxis]="stackedBarVerticalOptions.yaxis"
-          [fill]="stackedBarVerticalOptions.fill"
-          [legend]="stackedBarVerticalOptions.legend"
+        <apx-chart class="graphs"
+          [series]="severityStackedBarVerticalOptions.series"
+          [chart]="severityStackedBarVerticalOptions.chart"
+          [xaxis]="severityStackedBarVerticalOptions.xaxis"
+          [title]="severityStackedBarVerticalOptions.title"
+          [plotOptions]="severityStackedBarVerticalOptions.plotOptions"
+          [yaxis]="severityStackedBarVerticalOptions.yaxis"
+          [fill]="severityStackedBarVerticalOptions.fill"
+          [legend]="severityStackedBarVerticalOptions.legend"
         ></apx-chart>
       </div>
-      <div nz-col class="gutter-row" [nzSpan]="24 / count">
-        <apx-chart
+      <div nz-col class="gutter-row">
+        <apx-chart class="graphs"
           [series]="stackedBarHorizontalOptions.series"
           [chart]="stackedBarHorizontalOptions.chart"
           [xaxis]="stackedBarHorizontalOptions.xaxis"
@@ -78,9 +76,7 @@
           [fill]="stackedBarHorizontalOptions.fill"
           [legend]="stackedBarHorizontalOptions.legend"
         ></apx-chart>
-      </div>
-      <div nz-col class="gutter-row" [nzSpan]="24 / count">
-        <apx-chart
+        <apx-chart class="graphs"
           [series]="lineColumnOptions.series"
           [chart]="lineColumnOptions.chart"
           [xaxis]="lineColumnOptions.xaxis"
@@ -94,7 +90,18 @@
           [labels]="lineColumnOptions.labels"
         ></apx-chart>
       </div>
+      <div nz-col class="gutter-row">
+        <apx-chart class="graphs"
+          [series]="priorityStackedBarVerticalOptions.series"
+          [chart]="priorityStackedBarVerticalOptions.chart"
+          [xaxis]="priorityStackedBarVerticalOptions.xaxis"
+          [title]="priorityStackedBarVerticalOptions.title"
+          [plotOptions]="priorityStackedBarVerticalOptions.plotOptions"
+          [yaxis]="priorityStackedBarVerticalOptions.yaxis"
+          [fill]="priorityStackedBarVerticalOptions.fill"
+          [legend]="priorityStackedBarVerticalOptions.legend"
+        ></apx-chart>
+      </div>
     </div>
   </div>
 </div>
-
