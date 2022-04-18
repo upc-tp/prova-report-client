@@ -1,0 +1,103 @@
+<div class="backgroundContent">
+  <div class="bannerUserStory">Historias de Usuario</div>
+  <form [formGroup]="filterFormGroup">
+    <div class="row d-flex">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Proyectos</mat-label>
+          <mat-select formControlName="projects" >
+            <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
+              {{ pro.name }}
+            </mat-option>
+          </mat-select> 
+          <mat-hint *ngIf="validaciones('projects')"
+            class="form-text text-danger animate__animated animate__headShake">Seleccione uno</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <button mat-flat-button class="button-global ps-3 pe-3 iconify-mright button-bg-primary"
+          style="margin-top: 0.5rem" (click)="selectProject()">
+          <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
+            data-height="24"></span>
+          <span>Aplicar Filtros</span>
+        </button>
+      </div>
+      <div class="col-12 centerItems" style="margin-top: 3rem" *ngIf="this.projectId == null">
+        <div style="overflow: hidden; text-align: center">
+          <div>
+            <mat-icon class="NoTest" svgIcon="NoTest"></mat-icon>
+          </div>
+          <div class="text-w-bold text-fs-32 text-purple title-table-photo text-center">
+            Selecciona tus filtros
+          </div>
+          <div class="text-w-400 text-fs-14 text-center text-gray">
+            Para ver las historias de usuario
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="this.projectId" style="margin-top: 3rem">   
+      <div class="col-12">
+      <mat-form-field appearance="outline" class="w-100 filter-table">
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-label>Filtrar por Título, Descripcion, Estado, Prioridad, Responsable o
+          Registrado Por</mat-label>
+          <input matInput autocomplete="off" (keyup)="filterUserStories($event)" #inputFilter />
+      </mat-form-field>
+      </div>
+      <div class="container-inputs">
+        <div>
+
+        </div>
+        <div>
+          <label>Ingrese un nuevo colaborador  </label>
+          <button nz-button nzType="primary" (click)="createUserStory()">
+            <span>Nuevo</span>
+          </button>
+        </div>
+      </div>
+      <table mat-table class="table-hover" [dataSource]="dataSource"  style="width: 100%"> 
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Order</th>
+          <td mat-cell *matCellDef="let element" >
+            {{ element.name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Ejecutado por</th>
+          <td mat-cell *matCellDef="let element" >
+            {{ element.description }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdBy">
+          <th mat-header-cell *matHeaderCellDef>Comentarios</th>
+          <td mat-cell *matCellDef="let element" >
+            {{ element.createdBy }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef>Fecha de Inicio</th>
+          <td mat-cell *matCellDef="let element" >
+            {{ element.createdAt }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+            <button class="details" nz-button nzType="primary" (click)="getDetailsUserStory(element.id)">
+                <i nz-icon nzType="profile" nzTheme="outline"></i>
+            </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="backgroundContent">
+    <div class="bannerUserStory">Historias de Usuario</div>
+    <form [formGroup]="registerForm">
+
+        <div class="row d-flex">
+            <ng-container>
+                <h2 style="color: black;">Registro de Historia de Usuario</h2>
+            </ng-container>
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="name" type="input" placeholder="Nombre" />
+                <mat-error *ngIf="registerForm.controls['name'].hasError('required')">
+                    Ingrese un nombre
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="description" type="input" placeholder="Descripción"></textarea>
+                <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
+                    Ingrese una descripción
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="container-inputs">
+            <label>Añada Criterios de aceptacion</label>
+            <button class="details" nz-button nzType="primary" (click)="addCriteria()">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+            </button>
+        </div>
+        <div>
+            <ng-container formArrayName="criterias">
+                <ng-container *ngFor="let criteriaForm of criterias.controls; let i = index">
+                    <div [formGroup]="criteriaForm">
+                        <mat-form-field>
+                            <mat-label>Descripción del criterio</mat-label>
+                            <input matInput formControlName="description" type="input" id="criteria" />
+                            <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
+                                Ingrese una descripción
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-icon (click)="deleteCriteria(i)">delete_forever</mat-icon>
+
+                    </div>
+                </ng-container>
+            </ng-container>
+
+        </div>
+        <button nz-button nzBlock nzSize="large" nzType="primary" (click)="registerUserStory()">
+            Guardar
+        </button>
+    </form>
+</div>
