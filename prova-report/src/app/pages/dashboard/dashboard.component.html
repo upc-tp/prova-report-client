@@ -9,7 +9,7 @@
             <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
               {{ pro.name }}
             </mat-option>
-          </mat-select> 
+          </mat-select>
           <mat-hint *ngIf="validaciones('projects')"
             class="form-text text-danger animate__animated animate__headShake">Seleccione uno</mat-hint>
         </mat-form-field>
@@ -62,6 +62,16 @@
           [yaxis]="severityStackedBarVerticalOptions.yaxis"
           [fill]="severityStackedBarVerticalOptions.fill"
           [legend]="severityStackedBarVerticalOptions.legend"
+        ></apx-chart>
+        <apx-chart class="graphs"
+                   [series]="donutDefectsOptions.series"
+                   [chart]="donutDefectsOptions.chart"
+                   [xaxis]="donutDefectsOptions.xaxis"
+                   [title]="donutDefectsOptions.title"
+                   [dataLabels]="donutDefectsOptions.dataLabels"
+                   [legend]="donutDefectsOptions.legend"
+                   [labels]="donutDefectsOptions.labels"
+                   [plotOptions]="donutDefectsOptions.plotOptions"
         ></apx-chart>
       </div>
       <div nz-col class="gutter-row">

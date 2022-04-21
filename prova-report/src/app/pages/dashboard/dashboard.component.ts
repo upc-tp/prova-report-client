@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit {
   public severityStackedBarVerticalOptions: Partial<ChartOptions>;
   public lineColumnOptions: Partial<ChartOptions>;
   public donutOptions: Partial<ChartOptions>;
+  public donutDefectsOptions: Partial<ChartOptions>;
   public priorityStackedBarVerticalOptions: Partial<ChartOptions>;
   filterFormGroup: FormGroup;
 
@@ -74,19 +75,19 @@ export class DashboardComponent implements OnInit {
 
   priorityFilter: Array<{
     states: number[];
-  }> = []
+  }> = [];
 
   statusFilter: Array<number> = [];
+  defectFilter: Array<number> = [];
 
   severityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
   priorityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
 
 
-
   constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService,
     private _sanitizer: DomSanitizer,private iconRegistry:MatIconRegistry
     ) {
-    
+
       this.iconRegistry.addSvgIcon(
         'NoTest',
         this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
@@ -375,12 +376,40 @@ export class DashboardComponent implements OnInit {
                 show: true,
                 label: 'Total',
                 color: '#000',
-                // formatter: function (w) {
-                //   const total = w.globals.seriesTotals.reduce((a, b) => {
-                //     return a + b
-                //   }, 0);
-                //   return `${total} pruebas`;
-                // }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.donutDefectsOptions = {
+      series: this.defectFilter,
+      labels: ["Nuevos", "Aceptados", "Rechazados"],
+      chart: {
+        width: 380,
+        type: 'donut'
+      },
+      title: {
+        text: 'Indicador de defectos de las pruebas por Estado',
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        position: 'left',
+        offsetY: 0,
+        height: 230,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
               }
             }
           }
@@ -405,20 +434,29 @@ export class DashboardComponent implements OnInit {
           states: stat.statuses.map((yes) => {
             return yes.num_tests;
           })
-        }
+        };
       });
       this.priorityFilter = res.result.testsByPriority.map( (stat) => {
+        console.log(stat);
         return{
           states: stat.statuses.map((yes) => {
             return yes.num_tests;
           })
-        }
+        };
       });
       this.statusFilter = res.result.testsByStatus.map( (stat) => {
+        console.log(stat);
         return Number(stat.num_tests);
       });
+
+      this.defectFilter = res.result.defectsByStatus.map( (stat) => {
+        console.log(Number(stat.num_defects));
+        return Number(stat.num_defects);
+      });
       this.donutOptions.series = this.statusFilter;
+      this.donutDefectsOptions.series = this.defectFilter;
       console.log(this.statusFilter);
+      console.log(this.defectFilter);
       this.priorityLoadDateStackecVerticalBars();
       this.severityLoadDateStackecVerticalBars();
     });
@@ -502,7 +540,7 @@ export class DashboardComponent implements OnInit {
         });
     }
   }
-  
+
   validaciones(campo: string): boolean {
     return (
       this.filterFormGroup.get(campo).invalid &&
