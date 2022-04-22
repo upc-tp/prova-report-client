@@ -82,11 +82,11 @@ export class PlanComponent implements OnInit, OnDestroy {
       selectProject: [null, [Validators.required]]
     });
 
-    // this.subscription = this.modelChanged
-    //   .pipe(debounceTime(this.debounceTime))
-    //   .subscribe((search: string) => {
-    //     this.fetchPlans(this.page, this.pageSize, search);
-    //   });
+    this.subscription = this.modelChanged
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe((search: string) => {
+        this.fetchPlans(this.page, this.pageSize, search);
+      });
   }
 
   // convenience getter for easy access to form fields
