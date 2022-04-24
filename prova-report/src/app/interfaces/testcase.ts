@@ -63,6 +63,7 @@ export interface TestExecutionStep{
 	deletedAt?: any;
 	deletedBy?: any;
 	id: number;
+	testState: TestState;
 	name:string;
 	startTime: string;
 	endTime: string;

@@ -114,7 +114,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
 
   headerColumnTestCaseSteps: string[] = [
     'name',
-    'executed_by',
+    'state',
     'start_time',
     'end_time',
     'duration',
@@ -131,7 +131,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         projects: [this.filterItems[1], [Validators.required]],
         testSuite: [this.filterItems[0], [Validators.required]],
       });
-      this.search();
+      //this.search();
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
         testSuite: ['', [Validators.required]],
@@ -149,7 +149,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       selectSeverity: [null, [Validators.required]],
       selectPriority: [null, [Validators.required]],
     });
-    this.getDefects();
+    //this.getDefects();
   }
 
   ngOnDestroy(): void {
@@ -310,6 +310,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           (tCaseStep) => {
             const testCaseStep = new TestCaseSteps();
             testCaseStep.id = tCaseStep.id;
+            testCaseStep.testState = tCaseStep.testState;
             testCaseStep.name = tCaseStep.name;
             const startTime = new Date(tCaseStep.startTime);
             testCaseStep.start_time = this.utils.formatDateTime(startTime);
