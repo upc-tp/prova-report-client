@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 })
 export class PlanComponent implements OnInit, OnDestroy {
   isDetailVisible= false;
+  isVisibleProjectUpdateform = true;
   isFilterVisible=true;
   filterFormGroup: FormGroup;
   listProjects: Filter[] = [];
@@ -53,7 +54,7 @@ export class PlanComponent implements OnInit, OnDestroy {
   validateForm!: FormGroup;
   id: number;
   sProject: number = 0;
-  page: number = 1;
+  page: number = 2;
   pageSize: number = 10;
   count: number = this.pageSize;
 
@@ -285,6 +286,7 @@ export class PlanComponent implements OnInit, OnDestroy {
       this.isVisible = false;
       this.isDetailVisible = false;
       this.isOkLoading = false;
+      this.isVisibleProjectUpdateform = true;
     }, 3000);
   }
 
@@ -292,6 +294,7 @@ export class PlanComponent implements OnInit, OnDestroy {
     this.isVisible = false;
     this.submitted = false;
     this.isDetailVisible = false;
+    this.isVisibleProjectUpdateform = true;
     this.id = null;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
@@ -340,6 +343,7 @@ export class PlanComponent implements OnInit, OnDestroy {
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
       this.isVisible = true;
+      this.isVisibleProjectUpdateform = false;
     });
   }
 
