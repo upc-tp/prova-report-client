@@ -35,10 +35,11 @@
 .sidebar-logo {
   flex-direction: row;
   position: relative;
-  height: 8rem; // 128px
+  height: auto; // 128px
   padding-left: 0.625rem; // 10px
   overflow: hidden;
   background: #001529;
+  margin-bottom: 2.5rem;
   transition: all .3s;
 }
 

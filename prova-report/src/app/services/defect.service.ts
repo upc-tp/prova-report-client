@@ -11,8 +11,13 @@ import { DefectCreated, DefectCreatedResponse, DefectResponse, SingleDefectRespo
 export class DefectService{
     private defect='api/defects';
     constructor(private http: HttpClient) { }
+
     getDefects(page: number, pageSize:number, search:string, testCaseId: number): Observable<DefectResponse>{
         return this.http.get<DefectResponse>(BASE_URL + this.defect + `?page=${page}&pageSize=${pageSize}&search=${search}&testCaseId=${testCaseId}`);
+    }
+
+    getDefectbyProject(page: number, pageSize:number, search: string, projectId: number ,defectStateId:number, isFixed:number): Observable<DefectResponse> {
+        return this.http.get<DefectResponse>(BASE_URL + this.defect + `?page=${page}&pageSize=${pageSize}&search=${search}&projectId=${projectId}&defectStateId=${defectStateId}&is_fixed=${isFixed}`)
     }
 
     getDefect(id: number): Observable<SingleDefectResponse> {
@@ -38,6 +43,22 @@ export class DefectService{
             catchError(this.handleErrorObservable)
         );
     }
+    updateStateDefect(ids: number[],defectStateId:number){
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post<DefectCreatedResponse>( BASE_URL + this.defect + '/bulk',{
+            defectStateId: defectStateId,
+            defectIds:ids
+        },httpOptions).pipe(
+            map(this.extractData),      
+            catchError(this.handleErrorObservable)
+        );
+    }
+
     updateDefect(severityId: number, priorityId: number, id: number): Observable<DefectCreatedResponse> {
         const httpOptions = {
             headers: new HttpHeaders({

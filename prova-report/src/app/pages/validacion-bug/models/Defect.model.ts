@@ -39,6 +39,12 @@ export interface Severities {
 }
 
 export class DefectState {
+	createdAt: string;
+	createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
 	id: number;
 	name: string;
 }

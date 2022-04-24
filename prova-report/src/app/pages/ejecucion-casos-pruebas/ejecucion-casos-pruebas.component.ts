@@ -131,7 +131,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         projects: [this.filterItems[1], [Validators.required]],
         testSuite: [this.filterItems[0], [Validators.required]],
       });
-      this.search();
+      // this.search();
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
         testSuite: ['', [Validators.required]],
@@ -149,7 +149,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       selectSeverity: [null, [Validators.required]],
       selectPriority: [null, [Validators.required]],
     });
-    this.getDefects();
+    // this.getDefects();
   }
 
   ngOnDestroy(): void {

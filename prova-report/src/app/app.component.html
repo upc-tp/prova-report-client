@@ -15,7 +15,8 @@
         alt="logo"
       />
       <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
-        <h1>{{ currentUser.firstName}} {{currentUser.lastName}}</h1>
+        <span><h1>{{ currentUser.firstName}}</h1></span>
+        <span><h1>{{currentUser.lastName}}</h1></span>
         <p>{{ currentUser.role === 'Admin' ? 'Administrador' : 'Tester' }}</p>
         <p class="primary-link"><a :href="/Perfil">Ver perfil</a></p>
         <p><a (click)="logout()">Cerrar sesión</a></p>
@@ -143,8 +144,8 @@
             nz-icon
             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
           ></i>
-          <span>
-            <mat-icon svgIcon="provaLogo" class="provaLogo"></mat-icon>
+          <span style="font-weight: 500;color: #3949ab;">
+            <mat-icon svgIcon="ProvaIcon" class="provaLogo"></mat-icon>
             Prova Report</span>
         </span>
       </div>

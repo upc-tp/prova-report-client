@@ -34,8 +34,8 @@ export interface DefectResponse {
 	count: number;
 	message: string;
 	success: boolean;
-  severity: Severities;
-  priority: Priorities;
+  	severity: Severities;
+ 	priority: Priorities;
 	result: Defect[];
 }
 

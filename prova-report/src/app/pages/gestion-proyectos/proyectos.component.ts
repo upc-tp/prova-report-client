@@ -115,7 +115,7 @@ export class ProyectosComponent implements OnInit {
             title: tSuite.title,
             description: tSuite.description,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
-            registerBy: 'manuel@gmail.com',
+            registerBy: tSuite.createdBy,
           };
         });
         this.page = res.page;
