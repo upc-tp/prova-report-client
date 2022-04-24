@@ -154,7 +154,7 @@
         Selecciona tus filtros
       </div>
       <div class="text-w-400 text-fs-14 text-center text-gray">
-        Para poder mostrarte los Casos de Prueba a ejecutar
+        Para poder mostrarte los Planes de Prueba
       </div>
     </div>
   </div>
@@ -313,10 +313,15 @@
                 {{ element.name }}
               </td>
             </ng-container>
-            <ng-container matColumnDef="executed_by">
-              <th mat-header-cell *matHeaderCellDef>Ejecutado por</th>
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.created_by }}
+                <span [ngClass]="{
+                  'test-state-passed': element.testState.name == 'Superado',
+                  'test-state-non-executed': element.testState.name == 'No ejecutado',
+                  'test-state-skipped': element.testState.name == 'Omitido',
+                  'test-state-failed': element.testState.name == 'Fallido'
+                }">{{ element.testState.name }}</span>
               </td>
             </ng-container>
             <ng-container matColumnDef="start_time">

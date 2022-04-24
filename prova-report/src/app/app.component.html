@@ -76,6 +76,19 @@
         nz-menu-item
         nz-tooltip
         nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Planes de prueba' : ''"
+        style="text-align: left"
+        routerLink="/plan-pruebas"
+        routerLinkActive="ant-menu-item-selected"
+      >
+        <i nz-icon nzType="form"></i>
+        <span>Planes de prueba</span>
+      </li>
+
+      <li
+        nz-menu-item
+        nz-tooltip
+        nzTooltipPlacement="right"
         [nzTooltipTitle]="isCollapsed ? 'Suites de prueba' : ''"
         style="text-align: left"
         routerLink="/suite-pruebas"
