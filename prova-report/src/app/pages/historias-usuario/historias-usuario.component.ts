@@ -36,6 +36,9 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'description', 'createdBy', 'createdAt', 'options'];
   dataSource = new MatTableDataSource<any>(); 
   found: boolean = false;
+  selected: boolean = false;
+  projectNameSelected: string;
+  firstEntry: boolean = true;
 
   constructor(
     private projectService: ProjectService,
@@ -55,6 +58,8 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
+    console.log('inicie');
+    console.log(localStorage.getItem('projectId'));
     this.getProjects();
     if(localStorage.getItem('projectId')){
       this.found = true;
@@ -62,6 +67,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
         projects: [+localStorage.getItem('projectId'),[Validators.required]]
       });
       this.projectId = +localStorage.getItem('projectId');
+      this.selected = true;
       this.getUserStories();
     }
     else {
@@ -72,9 +78,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.found){
-      localStorage.removeItem('projectId');
-    }
+    console.log('me fui');
   }
   
   getProjects() {
@@ -91,15 +95,13 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     );
   }
   selectProject(){
-    console.log("este es el bool");
-    console.log(this.found);
-    console.log("este es el localstorage");
-    console.log(localStorage.getItem('projectId'));
     localStorage.removeItem('projectId');
     if(this.filterFormGroup.controls['projects'].value){
-      this.projectId = this.filterFormGroup.controls['projects'].value;
+      this.firstEntry = false;
+      this.selected = true;
+      this.projectId = +this.filterFormGroup.controls['projects'].value;
       this.getUserStories();
-    }else{
+    }else if(!this.firstEntry){
       Swal.fire(
         {
           title: 'Selecciona un proyecto',
@@ -135,8 +137,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
             showCloseButton:true,
             icon:'info'
           });
-        this.filterFormGroup.controls['projects'].setValue('');
-        this.projectId = null;
+        this.selected = false;
       }
       this.dataSource = new MatTableDataSource(this.userStories);
       this.dataSource.paginator = this.paginator;
@@ -144,7 +145,19 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   getDetailsUserStory(id: number){
+    localStorage.removeItem('projectId');
+    localStorage.setItem('projectId', this.projectId.toString());
+    this.router.navigate(['detalles-historia-usuario'], {
+      queryParams: { userStoryId: id },
+    });
+  }
 
+  updateUserStory(id: number){
+    localStorage.removeItem('projectId');
+    localStorage.setItem('projectId', this.projectId.toString());
+    this.router.navigate(['registrar-historia-usuario'], {
+      queryParams: { userStoryId: id },
+    });
   }
 
   filterUserStories(e: Event) {
@@ -153,6 +166,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   createUserStory(){
+    localStorage.removeItem('projectId');
     localStorage.setItem('projectId', this.projectId.toString());
     this.router.navigate(['/registrar-historia-usuario']);
   }

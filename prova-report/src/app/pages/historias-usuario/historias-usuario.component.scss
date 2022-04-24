@@ -1,5 +1,6 @@
 
-.bannerUserStory {
+
+.bannerEjeCasos {
     text-align: left;
     font-weight: bold;
     color: #fff;
@@ -71,66 +72,6 @@
     width: 47px;
     height: 36.53px;
 }
-  .container-inputs{
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 1rem;
-  }
-  .container-inputs > div:nth-child(1){
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    right: 2.5rem;
-
-    & input {
-      width: 50%;
-      border-radius: 1.5rem;
-    }
-
-    & i {
-      color: black;
-      font-size: large;
-    }
-  }
-  .container-inputs > div:nth-child(2){
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .container-inputs > div:nth-child(1) label,
-  .container-inputs > div:nth-child(2) label{
-    margin-right: 1rem;
-  }
-    .suite-info{
-        display:table-row-group;
-    }
-    .suite-infor{
-        display:table-row-group;
-        justify-content: flex-end;
-    }
-    .span{
-      font-size:16px ;
-    }
-    input {
-      padding: 10px 10px 10px 10px;
-      font-size: 16px;
-      border: 0.5px solid rgb(218, 218, 218);
-      border-radius: 2px;
-      outline: none;
-      transition: all .3s;
-      &:focus {
-        outline: none;
-        border: 0.5px solid #3849AA;
-      }
-    }
-    tbody {
-      &:hover {
-        cursor: pointer;
-      }
-    }
 
   .NoTest{
     width: 181px;
@@ -175,18 +116,6 @@
   }
 }
 
-input {
-  padding: 10px 10px 10px 10px;
-  font-size: 16px;
-  border: 0.5px solid rgb(218, 218, 218);
-  border-radius: 2px;
-  outline: none;
-  transition: all .3s;
-  &:focus {
-    outline: none;
-    border: 0.5px solid #3849AA;
-  }
-}
 
 button.options{
   width: 50%;

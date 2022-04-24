@@ -1,11 +1,18 @@
 <div class="backgroundContent">
-    <div class="bannerUserStory">Historias de Usuario</div>
+    <div class="bannerUserStory">
+        <button class="back-button" nz-button nzType="text" (click)="backUserStories()">
+            <i nz-icon nzType="left" nzTheme="outline" (click)="backUserStories()"></i>
+        </button>
+        <div *ngIf="this.isUpdate">
+            Actualización de Historia de Usuario
+        </div>
+        <div *ngIf="!this.isUpdate">
+            Registro de Historia de Usuario
+        </div>
+    </div>
     <form [formGroup]="registerForm">
 
         <div class="row d-flex">
-            <ng-container>
-                <h2 style="color: black;">Registro de Historia de Usuario</h2>
-            </ng-container>
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="name" type="input" placeholder="Nombre" />
@@ -13,9 +20,9 @@
                     Ingrese un nombre
                 </mat-error>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field >
                 <mat-label>Descripción</mat-label>
-                <textarea matInput formControlName="description" type="input" placeholder="Descripción"></textarea>
+                <textarea class="descriptionField" matInput formControlName="description" type="input" placeholder="Descripción"></textarea>
                 <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
                     Ingrese una descripción
                 </mat-error>
@@ -30,15 +37,15 @@
         <div>
             <ng-container formArrayName="criterias">
                 <ng-container *ngFor="let criteriaForm of criterias.controls; let i = index">
-                    <div [formGroup]="criteriaForm">
-                        <mat-form-field>
+                    <div [formGroup]="criteriaForm" class="row d-flex">
+                        <mat-form-field class="col-md-8">
                             <mat-label>Descripción del criterio</mat-label>
-                            <input matInput formControlName="description" type="input" id="criteria" />
-                            <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
+                            <textarea class="criteriaDescriptionField" matInput formControlName="description" type="input" id="criteria" ></textarea>
+                            <mat-error  *ngIf="registerForm.controls['description'].hasError('required')">
                                 Ingrese una descripción
                             </mat-error>
                         </mat-form-field>
-                        <mat-icon (click)="deleteCriteria(i)">delete_forever</mat-icon>
+                        <mat-icon style="cursor: pointer;" (click)="deleteCriteria(i)">delete_forever</mat-icon>
 
                     </div>
                 </ng-container>

@@ -1,1 +1,47 @@
-<p>detalles-historia-usuario works!</p>
+<div class="backgroundContent">
+  <div class="banner">
+    <button class="back-button" nz-button nzType="text" (click)="backUserStories()">
+      <i nz-icon nzType="left" nzTheme="outline" (click)="backUserStories()"></i>
+    </button>
+    Ejecuciones de Caso de Prueba
+  </div>
+  <div class="container-group">
+    <div class="case-info">
+      <h2>
+        <b>Descripcion</b>
+      </h2>
+      <span style="white-space: pre-line">{{userStory.description}}</span>
+    </div>
+        <div class="case-infor">
+      <h2>
+        <b>Fecha de Registro</b>
+      </h2>
+      <span>{{userStory.createdAt}}</span>
+    </div>
+  </div>
+</div>
+
+<div  style="margin-top: 3rem">
+    
+    <table mat-table class="table-hover" [dataSource]="dataSource"  style="width: 100%">
+      
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descripción</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.description }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Fecha de Registro</th>
+        <td mat-cell *matCellDef="let element" >
+          {{ element.createdAt }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+</div>

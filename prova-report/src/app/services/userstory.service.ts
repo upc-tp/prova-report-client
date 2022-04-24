@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BASE_URL } from '../common/urlConstants';
-import { SingleUserStoryResponse, UserStoryCreatedResponse, UserStoryCriteria, UserStoryCriteriaCreatedResponse, UserStoryResponse } from '../interfaces/userstory';
+import { SingleUserStoryResponse, UserStoryCreatedResponse, UserStoryCriteria, UserStoryCriteriaCreatedResponse, UserStoryCriteriaView, UserStoryResponse } from '../interfaces/userstory';
 
 @Injectable({
   providedIn: 'root',
@@ -39,13 +39,15 @@ export class UserStoryService {
     );
   }
 
+
+
   getUserStory(id: number): Observable<SingleUserStoryResponse> {
     return this.http.get<SingleUserStoryResponse>(
       BASE_URL + this.userStory + `/${id}`
     );
   }
     
-  updateUserStory(name: string, description: string, id: number): Observable<UserStoryCreatedResponse> {
+  updateUserStory(name: string, description: string, id: number, userStoryCriterias: UserStoryCriteriaView[]): Observable<UserStoryCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -54,7 +56,8 @@ export class UserStoryService {
 
     return this.http.put<UserStoryCreatedResponse>(BASE_URL + this.userStory + `/${id}`, {
       name,
-      description
+      description,
+      userStoryCriterias
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
