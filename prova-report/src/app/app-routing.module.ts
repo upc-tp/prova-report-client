@@ -17,6 +17,8 @@ const routes: Routes = [
   { path:'detalles-ejecucion-caso-prueba', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalles-ejecucion-caso-prueba/detalles-ejecucion-caso-prueba.module').then(m => m.DetallesEjecucionCasoPruebaModule)},
   { path:'historias-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/historias-usuario/historias-usuario.module').then(m => m.HistoriasUsuarioModule)},
   { path:'registrar-historia-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/registrar-historia-usuario/registrar-historia-usuario.module').then(m => m.RegistrarHistoriaUsuarioModule)},
+  { path: 'detalles-historia-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalles-historia-usuario/detalles-historia-usuario.module').then(m => m.DetallesHistoriaUsuarioModule)},
+  { path: 'plan-pruebas', canActivate: [AuthGuard], loadChildren: ()=> import('./pages/plans-pruebas/plan.module').then(m => m.PlanModule)},
   // otherwise redirect to home
   { path: '**', redirectTo: ''}
 ];

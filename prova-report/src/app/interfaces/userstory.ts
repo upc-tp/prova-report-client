@@ -14,6 +14,28 @@ export interface UserStory{
     userStoryCriterias: UserStoryCriteria[];
 }
 
+export interface UserStoryView{
+	createdAt: string;
+	createdBy: string;
+	name: string;
+	description: string;
+	id: number;
+}
+
+
+export interface UserStoryCriteriaView{
+	description: string;
+	id: number;
+}
+
+export interface UserStoriesCriteriaView{
+	userStoryCriterias: UserStoryCriteriaView[];
+}
+
+
+
+
+
 export interface UserStoryCreated{
 	createdAt: string;
 	createdBy: string;
@@ -78,5 +100,5 @@ export interface UserStoryResponse {
 export interface SingleUserStoryResponse {
 	message: string;
 	success: boolean;
-	result: UserStory[];
+	result: UserStory;
 }

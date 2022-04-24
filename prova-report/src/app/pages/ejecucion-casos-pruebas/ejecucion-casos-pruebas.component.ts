@@ -114,7 +114,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
 
   headerColumnTestCaseSteps: string[] = [
     'name',
-    'executed_by',
+    'state',
     'start_time',
     'end_time',
     'duration',
@@ -310,6 +310,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           (tCaseStep) => {
             const testCaseStep = new TestCaseSteps();
             testCaseStep.id = tCaseStep.id;
+            testCaseStep.testState = tCaseStep.testState;
             testCaseStep.name = tCaseStep.name;
             const startTime = new Date(tCaseStep.startTime);
             testCaseStep.start_time = this.utils.formatDateTime(startTime);
