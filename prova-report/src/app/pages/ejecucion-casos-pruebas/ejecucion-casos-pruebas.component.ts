@@ -101,9 +101,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   nivelPositionTest = 0;
 
   headerColumn: string[] = [
-    'id',
+    'tag',
     'title',
-    'description',
     'state',
     'priority',
     'severity',
@@ -216,6 +215,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.listTestCase = res.result.map((tCase) => {
             const testCase = new TestCase();
             (testCase.id = tCase.id),
+            (testCase.tag) = tCase.tag,
               (testCase.title = tCase.title),
               (testCase.description = tCase.description),
               (testCase.priority = tCase.priority),

@@ -27,13 +27,14 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   userStories: Array<{
     id: number;
     name: string;
+    tag: string;
     description: string;
     createdBy: string;
     createdAt: string;
   }> = [];
   
   filterFormGroup: FormGroup;
-  displayedColumns: string[] = ['name', 'description', 'createdBy', 'createdAt', 'options'];
+  displayedColumns: string[] = ['tag','name', 'createdBy', 'createdAt', 'options'];
   dataSource = new MatTableDataSource<any>(); 
   found: boolean = false;
   selected: boolean = false;
@@ -120,14 +121,15 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   getUserStories(){
-    this.userStoryService.getUserStories(null, null, '', this.projectId).subscribe( (res) => {
+    this.userStoryService.getUserStories(null, null, 'DESC', this.projectId).subscribe( (res) => {
       this.userStories = res.result.map( (uStory) => {
         return{
           id: uStory.id,
+          tag: uStory.tag,
           name: uStory.name,
           description: uStory.description,
           createdBy: uStory.createdBy,
-          createdAt: this.utils.formatDateTime(new Date(uStory.createdAt))
+          createdAt: this.utils.formatDate(new Date(uStory.createdAt))
         };
       });
       if(this.userStories.length == 0){

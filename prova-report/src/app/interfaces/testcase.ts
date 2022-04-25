@@ -13,6 +13,7 @@ export interface TestCase {
 	deletedBy?: any;
 	lastExecution:number;
     id: number;
+	tag: string;
     title: string;
     description: string;
     testState: TestState;

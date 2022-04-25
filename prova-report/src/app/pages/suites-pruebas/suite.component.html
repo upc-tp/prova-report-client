@@ -55,8 +55,8 @@
     (nzPageIndexChange)="onPageIndexChange($event)">
     <thead>
       <tr>
+        <th>Etiqueta</th>
         <th>Título</th>
-        <th>Descripción</th>
         <th>Proyecto</th>
         <th>Fecha de registro</th>
         <th>Registrado por</th>
@@ -65,16 +65,16 @@
     </thead>
     <tbody>
       <tr *ngFor="let data of middleTable.data">
+        <td>{{ data.tag }}</td>
         <td>{{ data.title }}</td>
-        <td>{{ data.description }}</td>
         <td>{{ data.project }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
-        <td class="containerbuttons">
-          <button class="options" nz-button nzType="primary" (click)="updateSuite(data.id)">
+        <td>
+          <button style="margin-right: 0.5rem" nz-button nzType="primary" (click)="updateSuite(data.id)">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
           </button>
-          <button class="options" nz-button nzType="primary" (click)="detailTestSuite(data.id)">
+          <button nz-button nzType="primary" (click)="detailTestSuite(data.id)">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
         </td>

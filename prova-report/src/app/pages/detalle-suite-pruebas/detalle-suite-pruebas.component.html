@@ -53,9 +53,8 @@
       (nzPageIndexChange)="onPageIndexChange($event)">
       <thead>
         <tr>
-          <th>Id</th>
+          <th>Etiqueta</th>
           <th>Título</th>
-          <th>Descripción</th>
           <th>Estado</th>
           <th>Prioridad</th>
           <th>Severidad</th>
@@ -67,9 +66,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of middleTable.data">
-          <td># {{ data.id }}</td>
+          <td>{{ data.tag }}</td>
           <td>{{ data.title }}</td>
-          <td>{{ data.description }}</td>
           <td>
             <span [ngClass]="{
               'test-state-passed': data.testStatus == 'Superado',

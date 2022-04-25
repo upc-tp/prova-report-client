@@ -29,6 +29,7 @@ export interface Suites {
 	deletedAt?: any;
 	deletedBy?: any;
 	id: number;
+	tag: string;
 	title: string;
 	description: string;
 	project: Project;
