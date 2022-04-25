@@ -44,14 +44,17 @@ export type ChartOptions = {
 export class DashboardComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
   @ViewChild('stackedBarHorizontal') stackedBarHorizontal: ChartComponent;
-  @ViewChild('stackedBarVertical') stackedBarVertical: ChartComponent;
+  @ViewChild('stackedBarVertical') severityStackedBarVertical: ChartComponent;
   @ViewChild('lineColumn') lineColumn: ChartComponent;
   @ViewChild('donut') donut: ChartComponent;
+  @ViewChild('priorityStackedBarVertical') priorityStackedBarVertical: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   public stackedBarHorizontalOptions: Partial<ChartOptions>;
-  public stackedBarVerticalOptions: Partial<ChartOptions>;
+  public severityStackedBarVerticalOptions: Partial<ChartOptions>;
   public lineColumnOptions: Partial<ChartOptions>;
   public donutOptions: Partial<ChartOptions>;
+  public donutDefectsOptions: Partial<ChartOptions>;
+  public priorityStackedBarVerticalOptions: Partial<ChartOptions>;
   filterFormGroup: FormGroup;
 
 
@@ -70,16 +73,21 @@ export class DashboardComponent implements OnInit {
     states: number[];
   }> = [];
 
+  priorityFilter: Array<{
+    states: number[];
+  }> = [];
+
   statusFilter: Array<number> = [];
+  defectFilter: Array<number> = [];
 
-  stackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
-
+  severityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
+  priorityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
 
 
   constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService,
     private _sanitizer: DomSanitizer,private iconRegistry:MatIconRegistry
     ) {
-    
+
       this.iconRegistry.addSvgIcon(
         'NoTest',
         this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
@@ -176,21 +184,21 @@ export class DashboardComponent implements OnInit {
       },
     };
 
-    this.stackedBarVerticalOptions = {
+    this.severityStackedBarVerticalOptions = {
       series: [
         {
           name: 'Superado', //Azul
-          data: this.stackedVerticalData[0],
+          data: this.severityStackedVerticalData[0],
           color: '#48b337',
         },
         {
           name: 'Fallido', //Verde
-          data: this.stackedVerticalData[1],
+          data: this.severityStackedVerticalData[1],
           color: '#f50000',
         },
         {
           name: 'Omitido', //Amarillo
-          data: this.stackedVerticalData[2],
+          data: this.severityStackedVerticalData[2],
           color: '#f5a700',
         },
       ],
@@ -229,6 +237,58 @@ export class DashboardComponent implements OnInit {
       colors: ['#48b337', '#f5a700', '#f50000'],
     };
 
+    this.priorityStackedBarVerticalOptions = {
+      series: [
+        {
+          name: 'Superado', //Azul
+          data: this.priorityStackedVerticalData[0],
+          color: '#48b337',
+        },
+        {
+          name: 'Fallido', //Verde
+          data: this.priorityStackedVerticalData[1],
+          color: '#f50000',
+        },
+        {
+          name: 'Omitido', //Amarillo
+          data: this.priorityStackedVerticalData[2],
+          color: '#f5a700',
+        },
+      ],
+      chart: {
+        height: 350,
+        type: 'bar',
+        stacked: true,
+        toolbar: {
+          show: true,
+        },
+        zoom: {
+          enabled: true,
+        },
+      },
+      title: {
+        text: 'Prioridad',
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          borderRadius: 2,
+        },
+      },
+      xaxis: {
+        type: 'category',
+        categories: ['Baja', 'Media', 'Alta'],
+      },
+      fill: {
+        opacity: 1,
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
+      },
+      colors: ['#48b337', '#f5a700', '#f50000'],
+    };
 
     this.lineColumnOptions = {
       series: [
@@ -316,12 +376,40 @@ export class DashboardComponent implements OnInit {
                 show: true,
                 label: 'Total',
                 color: '#000',
-                // formatter: function (w) {
-                //   const total = w.globals.seriesTotals.reduce((a, b) => {
-                //     return a + b
-                //   }, 0);
-                //   return `${total} pruebas`;
-                // }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    this.donutDefectsOptions = {
+      series: this.defectFilter,
+      labels: ["Nuevos", "Aceptados", "Rechazados"],
+      chart: {
+        width: 380,
+        type: 'donut'
+      },
+      title: {
+        text: 'Indicador de defectos de las pruebas por Estado',
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        position: 'left',
+        offsetY: 0,
+        height: 230,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
               }
             }
           }
@@ -346,38 +434,84 @@ export class DashboardComponent implements OnInit {
           states: stat.statuses.map((yes) => {
             return yes.num_tests;
           })
-        }
+        };
+      });
+      this.priorityFilter = res.result.testsByPriority.map( (stat) => {
+        console.log(stat);
+        return{
+          states: stat.statuses.map((yes) => {
+            return yes.num_tests;
+          })
+        };
       });
       this.statusFilter = res.result.testsByStatus.map( (stat) => {
+        console.log(stat);
         return Number(stat.num_tests);
       });
+
+      this.defectFilter = res.result.defectsByStatus.map( (stat) => {
+        console.log(Number(stat.num_defects));
+        return Number(stat.num_defects);
+      });
       this.donutOptions.series = this.statusFilter;
+      this.donutDefectsOptions.series = this.defectFilter;
       console.log(this.statusFilter);
-      this.loadDateStackecVerticalBars();
+      console.log(this.defectFilter);
+      this.priorityLoadDateStackecVerticalBars();
+      this.severityLoadDateStackecVerticalBars();
     });
 
   }
 
-  loadDateStackecVerticalBars(){
+  priorityLoadDateStackecVerticalBars(){
     for(var i = 0; i < 3; i++){
       for(var j = 1; j < 4; j++){
-        this.stackedVerticalData[j-1][i] = this.severityFilter[i].states[j];
+        this.priorityStackedVerticalData[j-1][i] = this.priorityFilter[i].states[j];
       }
     }
-    this.stackedBarVerticalOptions.series = [
+    this.priorityStackedBarVerticalOptions.series = [
         {
           name: 'Superado',
-          data: this.stackedVerticalData[0],
+          data: this.priorityStackedVerticalData[0],
           color: '#48b337',
         },
         {
           name: 'Fallido',
-          data: this.stackedVerticalData[1],
+          data: this.priorityStackedVerticalData[1],
           color: '#f50000',
         },
         {
           name: 'Omitido',
-          data: this.stackedVerticalData[2],
+          data: this.priorityStackedVerticalData[2],
+          color: '#f5a700',
+        },
+      ]
+  }
+  severityLoadDateStackecVerticalBars(){
+    for(var i = 0; i < 3; i++){
+      for(var j = 1; j < 4; j++){
+        this.severityStackedVerticalData[j-1][i] = this.severityFilter[i].states[j];
+      }
+    }
+    for(var i = 0; i < 3; i++){
+      for(var j = 1; j < 4; j++){
+        this.priorityStackedVerticalData[j-1][i] = this.priorityFilter[i].states[j];
+      }
+    }
+    this.severityStackedBarVerticalOptions.series = [
+        {
+          name: 'Superado',
+          data: this.severityStackedVerticalData[0],
+          color: '#48b337',
+        },
+        {
+          name: 'Fallido',
+          data: this.severityStackedVerticalData[1],
+          color: '#f50000',
+        },
+        {
+          name: 'Omitido',
+          data: this.severityStackedVerticalData[2],
           color: '#f5a700',
         },
       ]
@@ -406,7 +540,7 @@ export class DashboardComponent implements OnInit {
         });
     }
   }
-  
+
   validaciones(campo: string): boolean {
     return (
       this.filterFormGroup.get(campo).invalid &&

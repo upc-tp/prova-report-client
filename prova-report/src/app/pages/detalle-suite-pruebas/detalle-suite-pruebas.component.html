@@ -112,7 +112,8 @@
         <nz-form-label>
           Título
         </nz-form-label>
-        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"/>
+        <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -121,7 +122,8 @@
           Descripción
         </nz-form-label>
         <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Descripción" />
+          placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+          <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es obligatorio</span>
       </nz-form-control>
     </nz-form-item>
 
@@ -131,9 +133,10 @@
           Prioridad
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectPriority" class="select-input"
-          nzPlaceHolder="Seleccione el nivel de prioridad" [nzOptions]="priorities">
+          nzPlaceHolder="Seleccione el nivel de prioridad" [nzOptions]="priorities" [ngClass]="{ 'is-invalid': submitted && f.selectPriority.errors }">
           <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
         </nz-select>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectPriority.errors?.required">* Este campo es obligatorio</span>
       </nz-form-control>
     </nz-form-item>
 
@@ -143,9 +146,10 @@
           Severidad
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectSeverity" class="select-input"
-          nzPlaceHolder="Seleccione el nivel de severidad" [nzOptions]="severities">
+          nzPlaceHolder="Seleccione el nivel de severidad" [nzOptions]="severities" [ngClass]="{ 'is-invalid': submitted && f.selectSeverity.errors }">
           <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
         </nz-select>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectSeverity.errors?.required">* Este campo es obligatorio</span>
       </nz-form-control>
     </nz-form-item>
 
@@ -155,9 +159,10 @@
           Asignar Responsable
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input"
-          nzPlaceHolder="Seleccione Responsable" [nzOptions]="collaborators">
+          nzPlaceHolder="Seleccione Responsable" [nzOptions]="collaborators" [ngClass]="{ 'is-invalid': submitted && f.selectCollaborator.errors }">
           <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
         </nz-select>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectCollaborator.errors?.required">* Este campo es obligatorio</span>
       </nz-form-control>
     </nz-form-item>
 

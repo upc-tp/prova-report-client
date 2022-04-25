@@ -6,7 +6,29 @@
   border-radius: 4px;
 }
 
+.gutter-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
 
+.graphs{
+  width: 100%;
+}
+
+.container-gutter{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 1280px){
+  .gutter-row{
+    flex-direction: column;
+    margin-top: 100px;
+  }
+}
 
 .NoTest{
   width: 181px;

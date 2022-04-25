@@ -28,7 +28,7 @@ export class DetallesEjecucionCasoPruebaComponent implements OnInit {
   
   testExecutions: Array<{
     order:number;
-    createdBy: string;
+    state: string;
     comments: string;
     startTime: string;
     endTime: string;
@@ -70,7 +70,7 @@ export class DetallesEjecucionCasoPruebaComponent implements OnInit {
       this.testExecutions = res.result.map( (tExecution) => {
         return{
           order: tExecution.order,
-          createdBy: tExecution.createdBy,
+          state: tExecution.testState.name,
           startTime: tExecution.startTime = (tExecution.startTime == null) ? '-': this.utils.formatDateTime(new Date(tExecution.startTime)),
           endTime: tExecution.endTime = (tExecution.endTime == null) ? '-' : this.utils.formatDateTime(new Date(tExecution.endTime)),
           comments: tExecution.comments,

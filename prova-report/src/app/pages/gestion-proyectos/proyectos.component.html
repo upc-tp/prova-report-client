@@ -12,14 +12,16 @@
         <div class="form-label">
           Título
         </div>
-        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+        <input [ngClass]="{ 'is-invalid': submitted && f.title.errors }" nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
+        <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required" >* Este campo es obligatorio</span>
       </div>
       <div class="form-item">
         <div class="form-label">
           Descripción
         </div>
         <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Descripción" />
+          placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+          <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required" >* Este campo es obligatorio</span>
       </div>
 
 
@@ -57,10 +59,11 @@
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
         <td class="containerbuttons">
-          <button class="options" nz-button nzType="primary"  (click)="detailProject(data.id)" style="margin-right: 0.5rem;">
+          <button class="options" nz-button nzType="primary" (click)="detailProject(data.id)"
+            style="margin-right: 0.5rem;">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
-          <button class="options" nz-button nzType="primary"  (click)="updateProject(data.id)">
+          <button class="options" nz-button nzType="primary" (click)="updateProject(data.id)">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
           </button>
         </td>

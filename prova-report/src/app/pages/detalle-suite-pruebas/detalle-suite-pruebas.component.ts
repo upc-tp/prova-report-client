@@ -61,6 +61,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   id: number;
   saved: boolean = false;
   updated: boolean = false;
+  submitted = false;
   page: number = 1;
   pageSize: number = 10;
   count: number = 0;
@@ -96,6 +97,10 @@ export class DetalleSuitePruebasComponent implements OnInit {
         this.fetchTestCases(this.page, this.pageSize, search);
       });
   }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.validateForm.controls; }
+
   getSuite(){
     this.suiteService.getTestSuite(this.suiteId).subscribe((res) => {
       this.suite.id = this.suiteId;
@@ -171,6 +176,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   }
   handleCancel(): void {
     this.isVisible = false;
+    this.submitted = false;
     this.id = null;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
@@ -208,6 +214,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
     this.router.navigate(['suite-pruebas']);
   }
   submitForm(): void {
+    this.submitted = true;
     if (this.validateForm.valid) {
       if (this.id) {
         this.testCaseService
@@ -227,6 +234,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               this.isVisible = false;
               this.id = null;
               this.updated = true;
+              this.submitted = false;
               setTimeout(function () {
                 this.updated = false;
                 console.log('Updated: ', this.updated);
@@ -255,6 +263,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               this.fetchTestCases(this.page, this.pageSize);
               console.log('Response: ', suite);
               this.isVisible = false;
+              this.submitted = false;
               this.saved = true;
               setTimeout(function () {
                 this.saved = false;
