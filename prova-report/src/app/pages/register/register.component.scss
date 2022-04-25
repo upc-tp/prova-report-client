@@ -1,23 +1,27 @@
 input {
-    padding: 0.625rem; // 10px
-    font-size: 1rem; // 16px
+    padding: 0.320rem; // 10px
+    font-size: 0.9rem; // 16px
     border: 0.5px solid rgb(218, 218, 218);
-    border-radius: 0.125rem; // 2px
+    border-radius: 1.5rem;
     outline: none;
     transition: all .3s;
-  
+
     &:focus {
       outline: none;
       border: 0.5px solid #6f74dd;
     }
   }
+.button-normal{
+  border-radius: 1.5rem; // 2px
+}
+
   .ProvaIcon{
     width: 181px;
-    height: 141px;
+    height: 120px;
   }
   .register-form {
       background-color: #fff;
-      border-radius: 0.2rem; // 2px
+      border-radius: 1.0rem; // 2px
       max-width: 30%;
       margin: 0 auto;
       display: flex;
@@ -26,14 +30,15 @@ input {
 
   .passInput .ant-input-suffix {
     margin-left: 4px !important;
-    margin-top: 6px !important;
+    margin-top: 8px !important;
 }
   .form-label {
     margin-bottom: 0.5rem;
     color: gray;
     font-weight: bold;
+    border-radius: 1.5rem;
   }
-  
+
   .form-item {
     flex: 1 100%;
     margin: 0.5rem;
@@ -42,11 +47,11 @@ input {
       width: 100%;
     }
   }
-  
+
   .invalid-feedback {
       color: #e53935;
   }
-  
+
   .is-invalid {
       border: 0.5px solid #e53935;
   }
@@ -54,3 +59,28 @@ input {
   i {
     cursor: pointer;
   }
+
+.image-background{
+  background-image: url("https://noticias.upc.edu.pe/wp-content/uploads/2020/08/Monterrico6-scaled.jpg");
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-position:50% 50%;
+}
+
+.passInput{
+  border-radius: 1.5rem;
+}
+
+.checkInput{
+  border-radius: 1.5rem;
+}
+
+.nz-form-control{
+  border-radius: 1.5rem;
+}
+.nz-input-group{
+  border-radius: 1.5rem;
+}
+

@@ -29,4 +29,5 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [RegisterComponent],
   exports: [RegisterComponent]
 })
-export class RegisterModule { }
+export class RegisterModule {
+}

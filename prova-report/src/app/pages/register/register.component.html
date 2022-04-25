@@ -1,5 +1,5 @@
-<div>
-  <div style="display: flex; justify-content: center" class="mt-2">
+<div class="image-background">
+  <div style="display: flex; justify-content: center">
     <div class="row">
       <div class="col">
         <mat-icon class="ProvaIcon" svgIcon="ProvaIcon"></mat-icon>
@@ -11,7 +11,7 @@
   </div>
   <form
     nz-form
-    class="register-form mt-1 mb-1"
+    class="register-form"
     [formGroup]="registerForm"
     (ngSubmit)="register()"
   >
@@ -94,7 +94,7 @@
       <nz-input-group
         [nzSuffix]="suffixEye1"
         class="passInput"
-        style="height: 48px"
+        style="height: 38px"
       >
         <input
           nz-input
@@ -119,7 +119,7 @@
     <div class="form-item my-2 mx-4">
       <div class="form-label" nzfor="checkPassword">Confirmar Contraseña</div>
       <nz-form-control [nzErrorTip]="errorTpl">
-        <nz-input-group [nzSuffix]="suffixEye2">
+        <nz-input-group [nzSuffix]="suffixEye2" class="checkInput">
           <input
             nz-input
             [type]="passwordVisible2 ? 'text' : 'password'"
@@ -157,7 +157,7 @@
         <strong>¿Ya tiene una cuenta? Iniciar sesión</strong>
       </button>
     </div>
-    <div class="form-item mb-4 mx-4">
+    <div class="form-item">
       <button
         nz-button
         nzSize="large"
