@@ -43,6 +43,14 @@
       </mat-form-field>
     </div>
     <table mat-table class="table-hover" [dataSource]="dataSource" style="width: 100%">
+      
+      <ng-container matColumnDef="tag">
+        <th mat-header-cell *matHeaderCellDef>Etiqueta</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.tag }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Nombre</th>
         <td mat-cell *matCellDef="let element">
@@ -50,22 +58,15 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Descripción</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.description }}
-        </td>
-      </ng-container>
-
       <ng-container matColumnDef="createdBy">
-        <th mat-header-cell *matHeaderCellDef>Creado por</th>
+        <th mat-header-cell *matHeaderCellDef>Registrado por</th>
         <td mat-cell *matCellDef="let element">
           {{ element.createdBy }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef>Fecha de Creación</th>
+        <th mat-header-cell *matHeaderCellDef>Fecha de registro</th>
         <td mat-cell *matCellDef="let element">
           {{ element.createdAt }}
         </td>

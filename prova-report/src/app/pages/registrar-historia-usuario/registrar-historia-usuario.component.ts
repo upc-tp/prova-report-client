@@ -64,6 +64,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   ];
   testCases: Array<{
     id: number,
+    tag: string,
     title: string,
     disable: boolean
   }> = [];
@@ -237,6 +238,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
       this.testCases = res.result.map( (c) => {
         return{
           id: c.id,
+          tag: c.tag,
           title: c.title,
           disable: false
         }
@@ -253,6 +255,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
           {
             id: this.userStoryCriterias[i].testCase.id,
             title: this.userStoryCriterias[i].testCase.title,
+            tag: this.userStoryCriterias[i].testCase.title,
             disable: true
           }
         )

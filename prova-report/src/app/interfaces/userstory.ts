@@ -9,6 +9,7 @@ export interface UserStory{
 	deletedAt?: any;
 	deletedBy?: any;
 	id: number;
+	tag: string;
 	name: string;
 	description: string;
     project: Project;

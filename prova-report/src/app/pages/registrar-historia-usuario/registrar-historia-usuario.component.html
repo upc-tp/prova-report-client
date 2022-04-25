@@ -58,11 +58,11 @@
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field class="col-md-4" appearance="outline">
-                            <mat-label>Lista</mat-label>
+                            <mat-label>Asociar caso de prueba</mat-label>
                             <mat-select formControlName="testCaseId">
                                 <mat-option *ngFor="let pro of testCases; let i = index" [value]="pro.id"
                                     (click)="this.disableTestCase(i, j)" [disabled]="pro.disable">
-                                    {{ pro.title }}
+                                    {{pro.tag}}: {{ pro.title }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
