@@ -1,4 +1,5 @@
 import { User } from "./users";
+import { UserStoryCriteria } from "./userstory";
 
 export interface TestCase {
 	createdAt: string;
@@ -16,6 +17,7 @@ export interface TestCase {
     description: string;
     testState: TestState;
     testSuite: TestSuite;
+	userStoryCriteria: UserStoryCriteria;
 }
 
 export interface TestCaseView {

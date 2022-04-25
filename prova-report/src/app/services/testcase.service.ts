@@ -30,6 +30,19 @@ export class TestCaseService {
     );
   }
 
+  getTestCasesByProject(
+    page: number,
+    pageSize: number,
+    projectId: number,
+    isAssigned: number
+  ): Observable<TestCaseResponse> {
+    return this.http.get<TestCaseResponse>(
+      BASE_URL +
+        this.testCase +
+        `?page=${page}&pageSize=${pageSize}&isAssigned=${isAssigned}&projectId=${projectId}`
+    );
+  }
+
   createTestCase(
     title: string,
     description: string,

@@ -64,7 +64,6 @@ export class DetallesHistoriaUsuarioComponent implements OnInit {
       );
       console.log(this.criterias)
       this.dataSource = new MatTableDataSource(this.criterias);
-      this.dataSource.paginator = this.paginator;
     });
   }
 

@@ -6,47 +6,66 @@
         <div *ngIf="this.isUpdate">
             Actualización de Historia de Usuario
         </div>
-        <div *ngIf="!this.isUpdate">
+        <div style="align-items: flex-end;" *ngIf="!this.isUpdate">
             Registro de Historia de Usuario
+        </div>
+
+        <div class="buttonSave" >
+            <button nz-button nzType="primary" (click)="registerUserStory()">
+                Guardar
+            </button>
         </div>
     </div>
     <form [formGroup]="registerForm">
 
         <div class="row d-flex">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="name" type="input" placeholder="Nombre" />
                 <mat-error *ngIf="registerForm.controls['name'].hasError('required')">
                     Ingrese un nombre
                 </mat-error>
             </mat-form-field>
-            <mat-form-field >
+            <mat-form-field appearance="outline">
                 <mat-label>Descripción</mat-label>
-                <textarea class="descriptionField" matInput formControlName="description" type="input" placeholder="Descripción"></textarea>
+                <textarea class="descriptionField" matInput formControlName="description" type="input"
+                    placeholder="Descripción"></textarea>
                 <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
                     Ingrese una descripción
                 </mat-error>
             </mat-form-field>
         </div>
-        <div class="container-inputs">
-            <label>Añada Criterios de aceptacion</label>
-            <button class="details" nz-button nzType="primary" (click)="addCriteria()">
+        <div style="margin-bottom: 2rem;">
+            <label style="font-size: medium;"><b>Añada Criterios de Aceptación</b></label>
+            <button style="margin-left: 2rem;" nz-button nzType="primary" (click)="addCriteria()">
                 <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
             </button>
         </div>
         <div>
             <ng-container formArrayName="criterias">
-                <ng-container *ngFor="let criteriaForm of criterias.controls; let i = index">
+                <ng-container *ngFor="let criteriaForm of criterias.controls; let j = index">
+                    <label style="font-size: medium;"><b>Criterio {{j+1}}</b></label>
+                    <button style="margin-left: 1rem; margin-bottom: 1rem;" nz-button nzType="primary" (click)="deleteCriteria(j)">
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </button>
                     <div [formGroup]="criteriaForm" class="row d-flex">
-                        <mat-form-field class="col-md-8">
+                        <mat-form-field appearance="outline">
                             <mat-label>Descripción del criterio</mat-label>
-                            <textarea class="criteriaDescriptionField" matInput formControlName="description" type="input" id="criteria" ></textarea>
-                            <mat-error  *ngIf="registerForm.controls['description'].hasError('required')">
+                            <textarea class="criteriaDescriptionField" matInput formControlName="description"
+                                type="input" id="criteria"></textarea>
+                            <mat-error *ngIf="registerForm.controls['description'].hasError('required')">
                                 Ingrese una descripción
                             </mat-error>
                         </mat-form-field>
-                        <mat-icon style="cursor: pointer;" (click)="deleteCriteria(i)">delete_forever</mat-icon>
-
+                        <mat-form-field class="col-md-4" appearance="outline">
+                            <mat-label>Lista</mat-label>
+                            <mat-select formControlName="testCaseId">
+                                <mat-option *ngFor="let pro of testCases; let i = index" [value]="pro.id"
+                                    (click)="this.disableTestCase(i, j)" [disabled]="pro.disable">
+                                    {{ pro.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </ng-container>
             </ng-container>
