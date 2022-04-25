@@ -1,19 +1,15 @@
 <body class="background-image">
-    <div style="display: flex; justify-content: center">
-        <div class="row">
-            <div class="col">
-                <mat-icon class="ProvaIcon" svgIcon="ProvaIcon"></mat-icon>
-                <h1 style="text-align: center;font-weight: 500;color: #3949ab;">Prova Report</h1>
-            </div>
-        </div>
-    </div>
     <form nz-form class="login-form mt-3 mb-5" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div style="align-self: center;">
+            <mat-icon class="ProvaIcon" svgIcon="ProvaIcon"></mat-icon>
+            <h1 style="text-align: center;font-weight: 500;color: #3949ab;">Prova Report</h1>
+        </div>
         <div class="form-item my-3 mx-4">
             <div class="form-label text-fs-16">
                 Correo electrónico
             </div>
             <input nz-input name="email" formControlName="email" type="email" id="email"
-                placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+                placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                 <div *ngIf="f.email.errors.required">* Este campo es obligatorio</div>
             </div>
@@ -23,18 +19,20 @@
                 Contraseña
             </div>
             <input nz-input name="password" formControlName="password" type="password" id="password"
-                placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+                placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                 <div *ngIf="f.password.errors.required">* Este campo es obligatorio</div>
             </div>
         </div>
         <div class="form-item my-3 mx-4">
-            <button md-raised nz-button nzSize="large" nzBlock nzType="primary" class="button-normal" [nzLoading]="loading">
+            <button md-raised nz-button nzSize="large" nzBlock nzType="primary" class="button-normal"
+                [nzLoading]="loading">
                 Iniciar sesión
             </button>
         </div>
         <div class="form-item mt-3 mb-4 mx-4">
-            <button md-raided nz-button nzSize="large" nzBlock nzType="primary" class="button-normal" routerLink="/register">
+            <button md-raided nz-button nzSize="large" nzBlock nzType="primary" class="button-normal"
+                routerLink="/register">
                 Registrarse
             </button>
         </div>

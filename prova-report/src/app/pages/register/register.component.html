@@ -1,34 +1,18 @@
 <div class="image-background">
-  <div style="display: flex; justify-content: center">
-    <div class="row">
-      <div class="col">
-        <mat-icon class="ProvaIcon" svgIcon="ProvaIcon"></mat-icon>
-        <h1 style="text-align: center; font-weight: 500; color: #3949ab">
-          Prova Report
-        </h1>
-      </div>
+  <form nz-form class="register-form" [formGroup]="registerForm" (ngSubmit)="register()">
+    <div style="align-self: center;">
+      <mat-icon class="ProvaIcon" svgIcon="ProvaIcon"></mat-icon>
+      <h1 style="text-align: center; font-weight: 500; color: #3949ab">
+        Prova Report
+      </h1>
     </div>
-  </div>
-  <form
-    nz-form
-    class="register-form"
-    [formGroup]="registerForm"
-    (ngSubmit)="register()"
-  >
     <div class="form-item mt-2 mx-4">
       <h2 style="color: black">Registro</h2>
     </div>
     <div class="form-item mb-2 mx-4">
       <div class="form-label">Nombres</div>
-      <input
-        nz-input
-        name="firstName"
-        formControlName="firstName"
-        type="input"
-        id="firstName"
-        placeholder="Nombres"
-        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
-      />
+      <input nz-input name="firstName" formControlName="firstName" type="input" id="firstName" placeholder="Nombres"
+        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
       <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
         <div *ngIf="f.firstName.errors.required">
           * Este campo es obligatorio
@@ -37,15 +21,8 @@
     </div>
     <div class="form-item my-2 mx-4">
       <div class="form-label">Apellidos</div>
-      <input
-        nz-input
-        name="lastName"
-        formControlName="lastName"
-        type="input"
-        id="lastName"
-        placeholder="Apellidos"
-        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
-      />
+      <input nz-input name="lastName" formControlName="lastName" type="input" id="lastName" placeholder="Apellidos"
+        [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
       <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
         <div *ngIf="f.lastName.errors.required">
           * Este campo es obligatorio
@@ -54,15 +31,8 @@
     </div>
     <div class="form-item my-2 mx-4">
       <div class="form-label">Correo electrónico</div>
-      <input
-        nz-input
-        name="email"
-        formControlName="email"
-        type="email"
-        id="email"
-        placeholder="Correo electrónico"
-        [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
-      />
+      <input nz-input name="email" formControlName="email" type="email" id="email" placeholder="Correo electrónico"
+        [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
       <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
         <div *ngIf="f.email.errors.required">* Este campo es obligatorio</div>
       </div>
@@ -91,49 +61,27 @@
         </div>-->
     <div class="form-item my-2 mx-4">
       <div class="form-label" nzfor="password">Contraseña</div>
-      <nz-input-group
-        [nzSuffix]="suffixEye1"
-        class="passInput"
-        style="height: 38px"
-      >
-        <input
-          nz-input
-          [type]="passwordVisible ? 'text' : 'password'"
-          id="password"
-          ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/"
-          formControlName="password"
-          placeholder="Contraseña"
-          (ngModelChange)="updateConfirmValidator()"
-          nzErrorTip="Introduzca su contraseña!"
-          required
-        />
+      <nz-input-group [nzSuffix]="suffixEye1" class="passInput" style="height: 38px">
+        <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password"
+          ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/" formControlName="password"
+          placeholder="Contraseña" (ngModelChange)="updateConfirmValidator()" nzErrorTip="Introduzca su contraseña!"
+          required />
       </nz-input-group>
       <ng-template #suffixEye1>
-        <i
-          nz-icon
-          [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
-          (click)="passwordVisible = !passwordVisible"
-        ></i>
+        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+          (click)="passwordVisible = !passwordVisible"></i>
       </ng-template>
     </div>
     <div class="form-item my-2 mx-4">
       <div class="form-label" nzfor="checkPassword">Confirmar Contraseña</div>
       <nz-form-control [nzErrorTip]="errorTpl">
         <nz-input-group [nzSuffix]="suffixEye2" class="checkInput">
-          <input
-            nz-input
-            [type]="passwordVisible2 ? 'text' : 'password'"
-            formControlName="checkPassword"
-            id="checkPassword"
-            placeholder="Confirmar contraseña"
-          />
+          <input nz-input [type]="passwordVisible2 ? 'text' : 'password'" formControlName="checkPassword"
+            id="checkPassword" placeholder="Confirmar contraseña" />
         </nz-input-group>
         <ng-template #suffixEye2>
-          <i
-            nz-icon
-            [nzType]="passwordVisible2 ? 'eye-invisible' : 'eye'"
-            (click)="passwordVisible2 = !passwordVisible2"
-          ></i>
+          <i nz-icon [nzType]="passwordVisible2 ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible2 = !passwordVisible2"></i>
         </ng-template>
       </nz-form-control>
       <ng-template #errorTpl let-control>
@@ -146,25 +94,12 @@
       </ng-template>
     </div>
     <div class="form-item my-2 mx-4">
-      <button
-        nz-button
-        nzSize="large"
-        nzBlock
-        nzType="link"
-        [nzLoading]="loading"
-        routerLink="/login"
-      >
+      <button nz-button nzSize="large" nzBlock nzType="link" [nzLoading]="loading" routerLink="/login">
         <strong>¿Ya tiene una cuenta? Iniciar sesión</strong>
       </button>
     </div>
     <div class="form-item">
-      <button
-        nz-button
-        nzSize="large"
-        nzBlock
-        nzType="primary"
-        class="button-normal"
-      >
+      <button nz-button nzSize="large" nzBlock nzType="primary" class="button-normal">
         <strong>Registrarse</strong>
       </button>
     </div>

@@ -33,6 +33,7 @@ button{
   margin: 0 auto;
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
 }
 
 
@@ -60,8 +61,9 @@ button{
 }
 
 .ProvaIcon{
-  width: 181px;
-  height: 141px;
+  width: 10rem;
+  height: 8rem;
+  margin-top: 1rem;
 }
 
 .background-image{
@@ -71,4 +73,17 @@ button{
   width: 100%;
   position: fixed;
   background-position:50% 50%;
+  padding-top: 10rem;
+}
+
+@media (max-width: 1366px) {
+  .login-form {
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 640px) {
+  .login-form {
+    max-width: 80%;
+  }
 }
