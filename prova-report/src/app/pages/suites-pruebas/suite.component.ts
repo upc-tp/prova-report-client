@@ -133,6 +133,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
         this.data = res.result.map((tSuite) => {
           return {
             id: tSuite.id,
+            tag: tSuite.tag,
             title: tSuite.title,
             description: tSuite.description,
             project: tSuite.project.title,

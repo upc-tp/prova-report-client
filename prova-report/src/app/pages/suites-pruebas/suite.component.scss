@@ -39,6 +39,16 @@ h4 {
   }
 }
 
+.containterbuttons{
+  display: block;
+  width: 100%;
+}
+
+button.options{
+  width: 50%;
+  margin:0.5rem;
+}
+
 .filters-container {
   width: 100%;
   display: flex;
@@ -63,15 +73,6 @@ h4 {
   }
 }
 
-.containterbuttons{
-  display: block;
-  width: 100%;
-}
-
-button.options{
-  width: 50%;
-  margin:0.5rem;
-}
 
 button.fab {
   position: absolute;

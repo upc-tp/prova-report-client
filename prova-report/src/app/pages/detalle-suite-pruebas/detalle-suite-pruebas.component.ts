@@ -147,6 +147,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
           this.testCases = res.result.map((tCase) =>{
             return{
               id: tCase.id,
+              tag: tCase.tag,
               title: tCase.title,
               description: tCase.description,
               testStatus: tCase.testState.name,
