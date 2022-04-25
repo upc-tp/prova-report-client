@@ -14,9 +14,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .button-bg-primary:hover{
     background: #6f74dd;
     color: #fff;
-
 }
-
 
 .button-global {
     height: 48px;
@@ -64,15 +62,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .maticon-mgleft .mat-icon {
     margin-left: 12px;
   }
-  
+
 .maticon-mgright .mat-icon {
     margin-right: 12px;
   }
-  
+
 .iconify-mgleft .iconify {
     margin-left: 12px;
   }
-  
+
 .iconify-mright .iconify {
     margin-right: 12px;
 }
@@ -236,25 +234,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .inner-content{
     background: #edf0f5 !important;
   }
- 
+
 .backgroundContent{
     background: #ffff;padding: 2rem;
     border-radius: 4px;
-}  
+}
 .test-state-passed {
     color:rgb(210, 250, 161);
     background-color: rgb(116, 198, 17);
     padding: 0.25rem;
     border-radius: 0.25rem;
   }
-  
+
   .test-state-failed {
     color:rgb(250, 161, 161);
     background-color: rgba(179, 33, 33, 0.822);
     padding: 0.25rem;
     border-radius: 0.25rem;
   }
-  
+
   .test-state-skipped {
     color:rgb(174, 251, 252);
     background-color: rgb(49, 151, 156);
@@ -267,7 +265,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 0.25rem;
     border-radius: 0.25rem;
   }
-  
+
   tr[mat-row]:hover {
     opacity: 0.75;
     transition: opacity 0.25s;
