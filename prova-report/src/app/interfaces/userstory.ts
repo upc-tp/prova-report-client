@@ -1,3 +1,4 @@
+import { TestCase } from "../pages/ejecucion-casos-pruebas/models/TestCaseExecution.model";
 import { Project } from "./suites";
 
 export interface UserStory{
@@ -27,14 +28,6 @@ export interface UserStoryCriteriaView{
 	description: string;
 	id: number;
 }
-
-export interface UserStoriesCriteriaView{
-	userStoryCriterias: UserStoryCriteriaView[];
-}
-
-
-
-
 
 export interface UserStoryCreated{
 	createdAt: string;
@@ -66,8 +59,8 @@ export interface UserStoryCriteria{
 	deletedBy?: any;
 	id: number;
 	description: string;
+	testCase: TestCase;
 }
-
 
 export interface UserStoryCriteriaCreated{
  	createdAt: string;

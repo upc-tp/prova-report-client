@@ -1,5 +1,6 @@
 
 .bannerUserStory {
+  display: flex;
     text-align: left;
     font-weight: bold;
     color: #fff;
@@ -10,9 +11,13 @@
     margin-bottom: 1rem;
     font-size: 1.25rem;
     display: flex;
-    justify-content: flex-start;
     align-items: baseline;
   }
+
+
+.buttonSave{
+  margin-left: auto;
+}
   .back-button{
     margin-right: 20px;
   }
@@ -51,6 +56,7 @@
     height: 36.53px;
 }
   .container-inputs{
+    margin-top: 1rem;
     width: 100%;
     height: auto;
     display: grid;
@@ -142,7 +148,6 @@
     width: 100%;
   }
 }
-
 button.options{
   width: 50%;
   margin:0.5rem;

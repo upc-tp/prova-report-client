@@ -6,7 +6,9 @@ import { AuthService } from 'src/app/common/auth/auth.service';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { RegisterRequest } from 'src/app/interfaces/users';
 import { UserStoryView } from 'src/app/interfaces/userstory';
+import { TestCaseService } from 'src/app/services/testcase.service';
 import { UserStoryService } from 'src/app/services/userstory.service';
+import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.model';
 
 
 
@@ -25,8 +27,8 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private userStoryService: UserStoryService,
-    private utils: UtilsService
-
+    private utils: UtilsService,
+    private testCaseService: TestCaseService
   ) { }
   saved: boolean = false;
   projectId: number;
@@ -49,12 +51,33 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   userStoryCriterias: Array<{
     id: number;
     description: string;
+    testCase: TestCase;
   }> = [];
 
+  testList:Array<any> = [
+    {id: 1, description: 'uno', disable: false},
+    {id: 2, description: 'dos', disable: false},
+    {id: 3, description: 'tres', disable: false},
+    {id: 4, description: 'cuatro', disable: false},
+    {id: 5, description: 'cinco', disable: false},
+    {id: 6, description: 'seis', disable: false},
+  ];
+  testCases: Array<{
+    id: number,
+    title: string,
+    disable: boolean
+  }> = [];
+
+  selectedTestCases: Array<number> = [];
+
+  selected: number;
   isUpdate = false;
 
   ngOnInit(): void {
-
+    console.log(this.testList);
+    this.projectId = +localStorage.getItem("projectId");
+    console.log("Proyecto ", this.projectId);
+    this.getTestCases(); 
     if(this.route.snapshot.queryParamMap.get('userStoryId')){
       this.isUpdate = true;
     }
@@ -70,13 +93,13 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
         this.userStoryId = params.userStoryId;
       });
       this.getUserStory(); 
-    }
+    }  
 
-    
     
   }
   ngOnDestroy(): void {
   }
+
 
   get f() { return this.registerForm.controls; }
   
@@ -90,17 +113,21 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
       {
         return{ 
           id: cri.id,
-          description: cri.description
+          description: cri.description,
+          testCase: cri.testCase
         }
       } 
       );
+      this.addTestCases();
+      console.log("estos son los criterios", this.userStoryCriterias);
       this.registerForm = this._fb.group({
         name: [this.userStory.name, Validators.required],
         description: [this.userStory.description, Validators.required],
         criterias: this._fb.array(this.userStoryCriterias.map((U) => {
           const criteriaForm = this._fb.group({
             id: [U.id],
-            description: [U.description, Validators.required]
+            description: [U.description, Validators.required],
+            testCaseId: [U.testCase ? U.testCase.id : '']
           })
           return criteriaForm;
         }
@@ -129,6 +156,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
           );
       }
       else{
+        console.log(this.f.criterias.value);
         this.userStoryService
           .createUserStory(
             this.f.name.value,
@@ -162,16 +190,23 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   addCriteria(){
     const criteriaForm = this._fb.group({
       id: [null],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      testCaseId: ['']
     })
+
     this.criterias.push(criteriaForm);
+    this.selectedTestCases.push(-1);
   }
 
   deleteCriteria(index: number){
-    console.log(this.criterias);
-    console.log(this.criterias.at(index));
     this.criterias.removeAt(index);
-    console.log(this.criterias);
+
+    if(this.selectedTestCases[index] >= 0){
+      console.log("voy a deshabilitar el ", index);
+      this.testCases[this.selectedTestCases[index]].disable = false;
+      this.selectedTestCases[index] = -1;
+    }
+
   }
   
   validaciones(campo: string): boolean {
@@ -183,5 +218,47 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
 
   backUserStories(){
     this.router.navigate(['/historias-usuario']);
+  }
+
+  disableTestCase(index: number, superindex: number){
+    console.log("este es el index", index, "este es el superindex", superindex);
+    if(!this.testCases[index].disable){
+      if(this.selectedTestCases[superindex] >= 0){
+        this.testCases[this.selectedTestCases[superindex]].disable = false;
+      }
+      this.selectedTestCases[superindex] = index;
+      this.testCases[index].disable = true;
+    }
+  }
+
+  getTestCases(){
+    console.log(this.projectId);
+    this.testCaseService.getTestCasesByProject(null, null, this.projectId, 0).subscribe( (res) =>{
+      this.testCases = res.result.map( (c) => {
+        return{
+          id: c.id,
+          title: c.title,
+          disable: false
+        }
+      });
+    })
+
+  }
+
+  addTestCases(){
+    for (let i = 0; i < this.userStoryCriterias.length; i++){
+      if(this.userStoryCriterias[i].testCase){
+        console.log("estoy haciendo push de", this.userStoryCriterias[i].testCase)
+        this.testCases.push(
+          {
+            id: this.userStoryCriterias[i].testCase.id,
+            title: this.userStoryCriterias[i].testCase.title,
+            disable: true
+          }
+        )
+        this.selectedTestCases[i] = this.testCases.length - 1;
+      }
+    }
+      console.log("esta es la lista de seleccionados", this.selectedTestCases);
   }
 }

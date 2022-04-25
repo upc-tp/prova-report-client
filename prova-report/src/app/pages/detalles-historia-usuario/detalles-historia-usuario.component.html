@@ -3,45 +3,48 @@
     <button class="back-button" nz-button nzType="text" (click)="backUserStories()">
       <i nz-icon nzType="left" nzTheme="outline" (click)="backUserStories()"></i>
     </button>
-    Ejecuciones de Caso de Prueba
+    Detalles de Historia de Usuario
   </div>
   <div class="container-group">
     <div class="case-info">
+      <h2>
+        <b>Nombre</b>
+      </h2>
+      <span style="white-space: pre-line">{{userStory.name}}</span>
       <h2>
         <b>Descripcion</b>
       </h2>
       <span style="white-space: pre-line">{{userStory.description}}</span>
     </div>
-        <div class="case-infor">
+    <div class="case-infor">
       <h2>
         <b>Fecha de Registro</b>
       </h2>
       <span>{{userStory.createdAt}}</span>
     </div>
   </div>
-</div>
+  <div style="margin-top: 3rem">
 
-<div  style="margin-top: 3rem">
-    
-    <table mat-table class="table-hover" [dataSource]="dataSource"  style="width: 100%">
-      
+      <h3><b>Criterios de aceptación</b></h3>
+    <table mat-table class="table-hover" [dataSource]="dataSource" style="width: 100%">
+
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Descripción</th>
-        <td mat-cell *matCellDef="let element" >
+        <td mat-cell *matCellDef="let element">
           {{ element.description }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef>Fecha de Registro</th>
-        <td mat-cell *matCellDef="let element" >
+        <td mat-cell *matCellDef="let element">
           {{ element.createdAt }}
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      
+
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+  </div>
 </div>
