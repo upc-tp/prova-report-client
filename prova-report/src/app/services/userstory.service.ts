@@ -21,7 +21,7 @@ export class UserStoryService {
     );
   }
 
-  createUserStory(name: string, description: string, projectId:number, userStoryCriterias: any): Observable<UserStoryCreatedResponse> {
+  createUserStory(testPlanId: number, name: string, description: string, projectId:number, userStoryCriterias: any): Observable<UserStoryCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -30,6 +30,7 @@ export class UserStoryService {
 
     return this.http.post<UserStoryCreatedResponse>(BASE_URL + this.userStory, {
       name,
+      testPlanId,
       description,
       projectId,
       userStoryCriterias
@@ -47,7 +48,7 @@ export class UserStoryService {
     );
   }
     
-  updateUserStory(name: string, description: string, id: number, userStoryCriterias: UserStoryCriteriaView[]): Observable<UserStoryCreatedResponse> {
+  updateUserStory(testPlanId: number, name: string, description: string, id: number, userStoryCriterias: UserStoryCriteriaView[]): Observable<UserStoryCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -56,6 +57,7 @@ export class UserStoryService {
 
     return this.http.put<UserStoryCreatedResponse>(BASE_URL + this.userStory + `/${id}`, {
       name,
+      testPlanId,
       description,
       userStoryCriterias
     }, httpOptions).pipe(

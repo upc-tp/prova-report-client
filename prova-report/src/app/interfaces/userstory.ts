@@ -1,4 +1,5 @@
 import { TestCase } from "../pages/ejecucion-casos-pruebas/models/TestCaseExecution.model";
+import { TestPlan } from "../pages/plans-pruebas/models/TestPlan";
 import { Project } from "./suites";
 
 export interface UserStory{
@@ -13,6 +14,7 @@ export interface UserStory{
 	name: string;
 	description: string;
     project: Project;
+	testPlan: TestPlan;
     userStoryCriterias: UserStoryCriteria[];
 }
 
@@ -21,6 +23,7 @@ export interface UserStoryView{
 	createdBy: string;
 	name: string;
 	description: string;
+	testPlanId: number;
 	id: number;
 }
 

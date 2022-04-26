@@ -16,6 +16,7 @@ export class DetallesHistoriaUsuarioComponent implements OnInit {
   userStoryId: number;
   userStory: UserStoryView= {
     id: 0,
+    testPlanId: null,
     createdAt: '',
     description: '',
     name: '',

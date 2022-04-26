@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UtilsService } from 'src/app/common/UtilsService';
+import { PlanService } from 'src/app/services/plan.service';
 import { ProjectService } from 'src/app/services/projects.service';
 import { UserStoryService } from 'src/app/services/userstory.service';
 import Swal from 'sweetalert2';
@@ -34,7 +35,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }> = [];
   
   filterFormGroup: FormGroup;
-  displayedColumns: string[] = ['tag','name', 'createdBy', 'createdAt', 'options'];
+  displayedColumns: string[] = ['tag','name','testPlan', 'createdBy', 'createdAt', 'options'];
   dataSource = new MatTableDataSource<any>(); 
   found: boolean = false;
   selected: boolean = false;
@@ -95,6 +96,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
   selectProject(){
     localStorage.removeItem('projectId');
     if(this.filterFormGroup.controls['projects'].value){
@@ -127,6 +129,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           id: uStory.id,
           tag: uStory.tag,
           name: uStory.name,
+          testPlan: uStory.testPlan?.title,
           description: uStory.description,
           createdBy: uStory.createdBy,
           createdAt: this.utils.formatDate(new Date(uStory.createdAt))

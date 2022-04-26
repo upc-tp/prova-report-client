@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/common/auth/auth.service';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { RegisterRequest } from 'src/app/interfaces/users';
 import { UserStoryView } from 'src/app/interfaces/userstory';
+import { PlanService } from 'src/app/services/plan.service';
 import { TestCaseService } from 'src/app/services/testcase.service';
 import { UserStoryService } from 'src/app/services/userstory.service';
 import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.model';
@@ -26,6 +27,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private planService: PlanService,
     private userStoryService: UserStoryService,
     private utils: UtilsService,
     private testCaseService: TestCaseService
@@ -42,6 +44,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   userStoryId: number;
   userStory: UserStoryView = {
     id: 0,
+    testPlanId: null,
     createdAt: '',
     description: '',
     name: '',
@@ -69,20 +72,27 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     disable: boolean
   }> = [];
 
+
+  listPlans: Array<{
+    id: number;
+    name: string;
+  }> = [];
+
   selectedTestCases: Array<number> = [];
+  selectedPlan: number = 0;
 
   selected: number;
   isUpdate = false;
 
   ngOnInit(): void {
-    console.log(this.testList);
     this.projectId = +localStorage.getItem("projectId");
-    console.log("Proyecto ", this.projectId);
     this.getTestCases(); 
+    this.getTestPlans(this.projectId);
     if(this.route.snapshot.queryParamMap.get('userStoryId')){
       this.isUpdate = true;
     }
     this.registerForm = this._fb.group({
+      selectPlan: [null],
       name: ['', Validators.required],
       description: ['', Validators.required],
       criterias: this._fb.array([])
@@ -106,6 +116,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   
   getUserStory(){
     this.userStoryService.getUserStory(this.userStoryId).subscribe((res) => {
+      this.userStory.testPlanId = res.result.testPlan?.id;
       this.userStory.description = res.result.description;
       this.userStory.name = res.result.name;
       this.userStory.id = res.result.id;
@@ -123,6 +134,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
       console.log("estos son los criterios", this.userStoryCriterias);
       this.registerForm = this._fb.group({
         name: [this.userStory.name, Validators.required],
+        selectPlan: [this.userStory.testPlanId],
         description: [this.userStory.description, Validators.required],
         criterias: this._fb.array(this.userStoryCriterias.map((U) => {
           const criteriaForm = this._fb.group({
@@ -142,6 +154,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
 
       if(this.isUpdate){
         this.userStoryService.updateUserStory(  
+          this.f.selectPlan.value,
           this.f.name.value,
           this.f.description.value,
           this.userStoryId,
@@ -160,6 +173,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
         console.log(this.f.criterias.value);
         this.userStoryService
           .createUserStory(
+            this.f.selectPlan.value,
             this.f.name.value,
             this.f.description.value,
             +localStorage.getItem('projectId'),
@@ -167,6 +181,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
           )
           .subscribe(
             (project) => {
+              this.f['selectPlan'].setValue(null);
               this.f['name'].setValue('');
               this.f['description'].setValue(''); 
               this.router.navigate(['/historias-usuario']);
@@ -245,6 +260,18 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
       });
     })
 
+  }
+
+  getTestPlans(projectId: number) {
+    this.planService.getTestPlansForSelect(projectId).subscribe(res => {
+      this.listPlans = res.result.map(tPlan => {
+        console.log(tPlan);
+        return {
+          name: tPlan.title,
+          id: tPlan.id
+        }
+      });
+    });
   }
 
   addTestCases(){

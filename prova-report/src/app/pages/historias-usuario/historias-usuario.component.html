@@ -58,6 +58,13 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="testPlan">
+        <th mat-header-cell *matHeaderCellDef>Plan de prueba</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.testPlan }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="createdBy">
         <th mat-header-cell *matHeaderCellDef>Registrado por</th>
         <td mat-cell *matCellDef="let element">

@@ -10,7 +10,7 @@
             Registro de Historia de Usuario
         </div>
 
-        <div class="buttonSave" >
+        <div class="buttonSave">
             <button nz-button nzType="primary" (click)="registerUserStory()">
                 Guardar
             </button>
@@ -19,6 +19,17 @@
     <form [formGroup]="registerForm">
 
         <div class="row d-flex">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Plan de prueba</mat-label>
+                <mat-select [formControlName]="'selectPlan'">
+                    <mat-option *ngFor="let plan of listPlans" [value]="plan.id">
+                        {{ plan.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="validaciones('selectPlan')"
+                    class="form-text text-danger animate__animated animate__headShake">
+                    Seleccione uno</mat-hint>
+            </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
                 <input matInput formControlName="name" type="input" placeholder="Nombre" />
@@ -45,7 +56,8 @@
             <ng-container formArrayName="criterias">
                 <ng-container *ngFor="let criteriaForm of criterias.controls; let j = index">
                     <label style="font-size: medium;"><b>Criterio {{j+1}}</b></label>
-                    <button style="margin-left: 1rem; margin-bottom: 1rem;" nz-button nzType="primary" (click)="deleteCriteria(j)">
+                    <button style="margin-left: 1rem; margin-bottom: 1rem;" nz-button nzType="primary"
+                        (click)="deleteCriteria(j)">
                         <i nz-icon nzType="delete" nzTheme="outline"></i>
                     </button>
                     <div [formGroup]="criteriaForm" class="row d-flex">
