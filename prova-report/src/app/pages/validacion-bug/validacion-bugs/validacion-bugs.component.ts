@@ -381,7 +381,7 @@ export class ValidacionBugsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    
   }
 
   checked = false;

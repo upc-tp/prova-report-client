@@ -1,268 +1,204 @@
 <div class="backgroundContent">
-    <div class="bannerDet">
-      <button class="back-button" nz-button nzType="text" (click)="backTestProjects()">
-        <i nz-icon nzType="left" nzTheme="outline" (click)="backTestProjects()"></i>
-      </button>
-      Proyecto
-    </div>
-    <div class = "container-group">
-     <div class="suite-info">
-        <h3>
-            Título
-        </h3>
-        <span>{{project.title}}</span>
-        <h3>
-            Descripcion
-        </h3>
-        <span>{{project.description}}</span>
+  <div class="bannerDet">
+    <button class="back-button" nz-button nzType="text" (click)="backTestProjects()">
+      <i nz-icon nzType="left" nzTheme="outline" (click)="backTestProjects()"></i>
+    </button>
+    Proyecto
+  </div>
+  <div class="container-group">
+    <div class="suite-info">
+      <h3>
+        Título
+      </h3>
+      <span>{{project.title}}</span>
+      <h3>
+        Descripcion
+      </h3>
+      <span>{{project.description}}</span>
     </div>
     <div class="suite-infor">
-        <h3>
-            Creado por
-        </h3>
-        <span>{{project.createdBy}}</span>
-        <h3>
-            Fecha de Registro
-        </h3>
-        <span>{{project.createdAt}}</span>
+      <h3>
+        Creado por
+      </h3>
+      <span>{{project.createdBy}}</span>
+      <h3>
+        Fecha de Registro
+      </h3>
+      <span>{{project.createdAt}}</span>
     </div>
-    </div>
+  </div>
 </div>
 <br>
 
+<div class="backgroundContent">
+  <nz-tabset>
+    <nz-tab nzTitle="Colaboradores">
+      <div>
+        <div class="container-inputs">
+          <div>
 
-<nz-tabset>
-  <nz-tab nzTitle="Colaboradores">
-    <div>
-      <div class="container-inputs">
-        <div>
-
+          </div>
+          <div>
+            <label>Ingrese un nuevo colaborador</label>
+            <button nz-button nzType="primary" (click)="showModal()">
+              <span>Nuevo</span>
+            </button>
+          </div>
         </div>
-        <div>
-          <label>Ingrese un nuevo colaborador</label>
-          <button nz-button nzType="primary" (click)="showModal()">
-            <span>Nuevo</span>
-          </button>
-        </div>
-      </div>
-      <nz-table #middleTable nzSize="middle" [nzData]="collaborators"
-      [nzFrontPagination]="false"
-      [nzPageIndex]="page" [nzPageSize]="pageSize"
-      [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-      >
-        <thead>
-          <tr>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Correo Electrónico</th>
-            <th>Rol</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of middleTable.data">
-            <td>{{ data.firstName }}</td>
-            <td>{{ data.lastName }}</td>
-            <td>{{ data.email }}</td>
-            <td>{{ data.role }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <ng-template #rangeTemplate let-range="range" let-total>
+        <nz-table #middleTable nzSize="middle" [nzData]="collaborators" [nzFrontPagination]="false" [nzPageIndex]="page"
+          [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
+          (nzPageIndexChange)="onPageIndexChange($event)">
+          <thead>
+            <tr>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Correo Electrónico</th>
+              <th>Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of middleTable.data">
+              <td>{{ data.firstName }}</td>
+              <td>{{ data.lastName }}</td>
+              <td>{{ data.email }}</td>
+              <td>{{ data.role }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <ng-template #rangeTemplate let-range="range" let-total>
           Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-      </ng-template>
-    </div>
-  </nz-tab>
-  <nz-tab nzTitle="Versiones">
-    <div>
-      <div class="container-inputs">
-        <div></div>
-        <div>
-          <label>Ingrese una nueva versión</label>
-          <button nz-button nzType="primary" (click)="showModalVersion()">
-            <span>Nuevo</span>
-          </button>
-        </div>
+        </ng-template>
       </div>
-      <nz-table #middleTableVersion nzSize="middle" [nzData]="Versions"
-      [nzFrontPagination]="false"
-      [nzPageIndex]="page" [nzPageSize]="pageSize"
-      [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)"
-      >
-        <thead>
-          <tr>
-            <th>Orden</th>
-            <th>Version</th>
-            <th>Descripción</th>
-            <th>Fecha Registro</th>
-            <th>Registrado por</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of middleTableVersion.data">
-            <td>{{ data.orden }}</td>
-            <td>{{ data.title }}</td>
-            <td>{{ data.description }}</td>
-            <td>{{ data.registerDate }}</td>
-            <td>{{ data.registerBy }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-      <ng-template #rangeTemplate let-range="range" let-total>
+    </nz-tab>
+    <nz-tab nzTitle="Versiones">
+      <div>
+        <div class="container-inputs">
+          <div></div>
+          <div>
+            <label>Ingrese una nueva versión</label>
+            <button nz-button nzType="primary" (click)="showModalVersion()">
+              <span>Nuevo</span>
+            </button>
+          </div>
+        </div>
+        <nz-table #middleTableVersion nzSize="middle" [nzData]="Versions" [nzFrontPagination]="false"
+          [nzPageIndex]="page" [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count"
+          [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="onPageIndexChange($event)">
+          <thead>
+            <tr>
+              <th>Orden</th>
+              <th>Version</th>
+              <th>Descripción</th>
+              <th>Fecha Registro</th>
+              <th>Registrado por</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of middleTableVersion.data">
+              <td>{{ data.orden }}</td>
+              <td>{{ data.title }}</td>
+              <td>{{ data.description }}</td>
+              <td>{{ data.registerDate }}</td>
+              <td>{{ data.registerBy }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <ng-template #rangeTemplate let-range="range" let-total>
           Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-      </ng-template>
-    </div>
-  </nz-tab>
-</nz-tabset>
-
-
-<nz-modal
-[(nzVisible)]="isVisible"
-nzTitle="Colaborador"
-(nzOnCancel)="handleCancel()"
-(nzOnOk)="handleOk()"
-[nzOkLoading]="isOkLoading"
->
-<form
-  nz-form
-  class="create-form"
-  [formGroup]="validateForm"
-  (ngSubmit)="submitForm()"
->
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Nombres
-      </nz-form-label>
-      <input
-        nz-input
-        name="firstName"
-        formControlName="firstName"
-        type="text"
-        id="firstName"
-        placeholder="Nombre"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Apellidos
-      </nz-form-label>
-      <input
-        nz-input
-        name="lastName"
-        formControlName="lastName"
-        type="text"
-        id="lastName"
-        placeholder="Apellido"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Correo Electrónico
-      </nz-form-label>
-      <input
-        nz-input
-        name="email"
-        formControlName="email"
-        type="text"
-        id="email"
-        placeholder="Email"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Contraseña
-      </nz-form-label>
-      <nz-input-group [nzSuffix]="suffixTemplate">
-        <input
-          [type]="passwordVisible ? 'text' : 'password'"
-          nz-input
-          placeholder="Contraseña actual"
-          id="password"
-          name="password" formControlName="password"
-          autocomplete="off"
-        />
-      </nz-input-group>
-      <ng-template #suffixTemplate>
-        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
-      </ng-template>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Rol
-      </nz-form-label>
-      <nz-select nzSize="large" formControlName="role" class="select-input"
-        nzPlaceHolder="Seleccione el nivel de severidad">
-        <nz-option nzLabel="Admin" nzValue="Admin"></nz-option>
-        <nz-option nzLabel="Tester" nzValue="Tester"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <div class="form-item">
-  <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
-    Guardar
-  </button>
+        </ng-template>
+      </div>
+    </nz-tab>
+  </nz-tabset>
 </div>
-</form>
-<div *nzModalFooter></div>
-</nz-modal>
-<nz-modal
-[(nzVisible)]="isVisibleVersion"
-nzTitle="Registro de versión"
-(nzOnCancel)="handleCancelVersion()"
-(nzOnOk)="handleOkVersion()"
-[nzOkLoading]="isOkLoadingVersion"
->
-<form
-  nz-form
-  class="create-form"
-  [formGroup]="validateFormVersion"
-  (ngSubmit)="submitFormVersion()"
->
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Versión
-      </nz-form-label>
-      <input
-        nz-input
-        name="version"
-        formControlName="version"
-        type="text"
-        id="version"
-        placeholder="Versión"
-      />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control class="form-item">
-      <nz-form-label>
-        Descripción
-      </nz-form-label>
-      <textarea rows="4"
-        nz-input
-        style="resize: none;"
-        name="descripcion"
-        formControlName="descripcion"
-        type="text"
-        id="descripcion"
-        placeholder="Descripción"
-      ></textarea>
-    </nz-form-control>
-  </nz-form-item>
 
-  <div class="form-item">
-    <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading" >
-      Guardar
-    </button>
-  </div>
-</form>
-<div *nzModalFooter></div>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Colaborador" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Nombres
+        </nz-form-label>
+        <input nz-input name="firstName" formControlName="firstName" type="text" id="firstName" placeholder="Nombre" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Apellidos
+        </nz-form-label>
+        <input nz-input name="lastName" formControlName="lastName" type="text" id="lastName" placeholder="Apellido" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Correo Electrónico
+        </nz-form-label>
+        <input nz-input name="email" formControlName="email" type="text" id="email" placeholder="Email" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Contraseña
+        </nz-form-label>
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Contraseña actual" id="password"
+            name="password" formControlName="password" autocomplete="off" />
+        </nz-input-group>
+        <ng-template #suffixTemplate>
+          <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+            (click)="passwordVisible = !passwordVisible"></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Rol
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="role" class="select-input"
+          nzPlaceHolder="Seleccione el nivel de severidad">
+          <nz-option nzLabel="Admin" nzValue="Admin"></nz-option>
+          <nz-option nzLabel="Tester" nzValue="Tester"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
+</nz-modal>
+<nz-modal [(nzVisible)]="isVisibleVersion" nzTitle="Registro de versión" (nzOnCancel)="handleCancelVersion()"
+  (nzOnOk)="handleOkVersion()" [nzOkLoading]="isOkLoadingVersion">
+  <form nz-form class="create-form" [formGroup]="validateFormVersion" (ngSubmit)="submitFormVersion()">
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Versión
+        </nz-form-label>
+        <input nz-input name="version" formControlName="version" type="text" id="version" placeholder="Versión" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="form-item">
+        <nz-form-label>
+          Descripción
+        </nz-form-label>
+        <textarea rows="4" nz-input style="resize: none;" name="descripcion" formControlName="descripcion" type="text"
+          id="descripcion" placeholder="Descripción"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
 </nz-modal>

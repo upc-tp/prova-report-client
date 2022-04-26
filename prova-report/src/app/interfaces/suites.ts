@@ -1,3 +1,5 @@
+import { TestPlan } from "../pages/plans-pruebas/models/TestPlan";
+
 export interface Project {
 	createdAt: string;
 	createdBy: string;
@@ -33,6 +35,7 @@ export interface Suites {
 	title: string;
 	description: string;
 	project: Project;
+	testPlan: TestPlan;
 }
 
 export interface SuiteResponse {
@@ -97,6 +100,7 @@ export interface Suite {
 	title: string;
 	description: string;
 	project: Project;
+	testPlan: TestPlan;
 	testState: TestState;
 }
 

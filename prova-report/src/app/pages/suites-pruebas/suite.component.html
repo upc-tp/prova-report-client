@@ -31,10 +31,20 @@
           Proyecto
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectProject" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }"
-          nzPlaceHolder="Seleccione Proyecto" [nzOptions]="projects">
+          nzPlaceHolder="Seleccione Proyecto" [nzOptions]="projects" (ngModelChange)="onSelectProject($event)">
           <nz-option nzValue="project.value" nzLabel="project.label"></nz-option>
         </nz-select>
         <span class="invalid-feedback" *ngIf="submitted && f.selectProject.errors?.required" >* Este campo es obligatorio</span>
+      </div>
+      <div class="form-item">
+        <nz-form-label>
+          Plan de prueba
+        </nz-form-label>
+        <nz-select nzSize="large" formControlName="selectPlan" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectPlan.errors }"
+          nzPlaceHolder="Seleccione Plan de prueba" [nzOptions]="testPlans">
+          <nz-option nzValue="testPlan.value" nzLabel="testPlan.label"></nz-option>
+        </nz-select>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectPlan.errors?.required" >* Este campo es obligatorio</span>
       </div>
       <div class="form-item">
         <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
@@ -58,6 +68,7 @@
         <th>Etiqueta</th>
         <th>Título</th>
         <th>Proyecto</th>
+        <th>Plan de prueba</th>
         <th>Fecha de registro</th>
         <th>Registrado por</th>
         <th></th>
@@ -68,6 +79,7 @@
         <td>{{ data.tag }}</td>
         <td>{{ data.title }}</td>
         <td>{{ data.project }}</td>
+        <td>{{ data.testPlan }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
         <td>

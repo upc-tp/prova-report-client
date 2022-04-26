@@ -12,11 +12,15 @@ export class PlanService {
   private testPlan = 'api/test-plans';
   constructor(private http: HttpClient) { }
 
-  getTestPlans(page: number, pageSize: number, search: string): Observable<PlanResponse> {
+  getTestPlans(page: number = null, pageSize: number = null, search: string = null): Observable<PlanResponse> {
     return this.http.get<PlanResponse>(BASE_URL + this.testPlan + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
   getTestPlansByProject(page: number, pageSize: number, search: string, projectId:number): Observable<PlanResponse>{
     return this.http.get<PlanResponse>(BASE_URL + this.testPlan + `?page=${page}&pageSize=${pageSize}&search=${search}&projectId=${projectId}`);
+  }
+
+  getTestPlansForSelect(projectId: number) {
+    return this.http.get<PlanResponse>(BASE_URL + this.testPlan + `?projectId=${projectId}`);
   }
 
   getTestPlan(id: number): Observable<SinglePlanResponse> {

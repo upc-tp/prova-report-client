@@ -5,6 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/projects.service';
 import { SuitesService } from '../../services/suites.service';
 import { Router } from '@angular/router';
+import { PlanService } from 'src/app/services/plan.service';
 
 @Component({
   selector: 'app-suite',
@@ -24,6 +25,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
     label: string;
     value: number;
   }> = [];
+  testPlans: Array<{
+    label: string;
+    value: number;
+  }> = [];
   isVisible = false;
   submitted = false;
   isOkLoading = false;
@@ -38,7 +43,12 @@ export class SuiteComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private suiteService: SuitesService, private projectService: ProjectService, private fb: FormBuilder, private router: Router) { }
+  constructor(
+    private suiteService: SuitesService,
+    private planService: PlanService, 
+    private projectService: ProjectService, 
+    private fb: FormBuilder, 
+    private router: Router) { }
 
   ngOnInit(): void {
     this.fetchSuites(this.page, this.pageSize);
@@ -46,7 +56,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      selectProject: [null, [Validators.required]]
+      selectProject: [null, Validators.required],
+      selectPlan: [null]
     });
 
     this.subscription = this.modelChanged
@@ -65,10 +76,11 @@ export class SuiteComponent implements OnInit, OnDestroy {
       if (this.id) {
         this.suiteService
           .updateTestSuite(
-            this.validateForm.controls['title'].value,
-            this.validateForm.controls['description'].value,
-            this.validateForm.controls['selectProject'].value,
-            this.id
+            this.f['title'].value,
+            this.f['description'].value,
+            this.f['selectProject'].value,
+            this.id,
+            this.f['selectPlan'].value
           )
           .subscribe(
             (suite) => {
@@ -77,18 +89,20 @@ export class SuiteComponent implements OnInit, OnDestroy {
               this.isVisible = false;
               this.submitted = false;
               this.id = null;
-              this.validateForm.controls['title'].setValue('');
-              this.validateForm.controls['description'].setValue('');
-              this.validateForm.controls['selectProject'].setValue(0);
+              this.f['title'].setValue('');
+              this.f['description'].setValue('');
+              this.f['selectProject'].setValue(null);
+              this.f['selectPlan'].setValue(null);
             },
             (error) => console.log(error)
           );
       } else {
         this.suiteService
           .createTestSuite(
-            this.validateForm.controls['title'].value,
-            this.validateForm.controls['description'].value,
-            this.validateForm.controls['selectProject'].value
+            this.f['title'].value,
+            this.f['description'].value,
+            this.f['selectProject'].value,
+            this.f['selectPlan'].value
           )
           .subscribe(
             (suite) => {
@@ -96,15 +110,16 @@ export class SuiteComponent implements OnInit, OnDestroy {
               console.log('Response: ', suite);
               this.isVisible = false;
               this.submitted = false;
-              this.validateForm.controls['title'].setValue('');
-              this.validateForm.controls['description'].setValue('');
-              this.validateForm.controls['selectProject'].setValue(0);
+              this.f['title'].setValue('');
+              this.f['description'].setValue('');
+              this.f['selectProject'].setValue(null);
+              this.f['selectPlan'].setValue(null);
             },
             (error) => console.log(error)
           );
       }
     } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
+      Object.values(this.f).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -127,6 +142,23 @@ export class SuiteComponent implements OnInit, OnDestroy {
     );
   }
 
+  getTestPlans(projectId: number) {
+    this.planService.getTestPlansForSelect(projectId).subscribe(res => {
+      this.testPlans = res.result.map(tPlan => {
+        console.log(tPlan);
+        return {
+          label: tPlan.title,
+          value: tPlan.id
+        }
+      });
+    });
+  }
+
+  onSelectProject(projectId: number) {
+    this.f['selectPlan'].setValue(null);
+    this.getTestPlans(projectId);
+  }
+
   fetchSuites(page: number, pageSize: number, search: string = '') {
     this.suiteService.getTestSuites(page, pageSize, search).subscribe(
       res => {
@@ -137,6 +169,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             title: tSuite.title,
             description: tSuite.description,
             project: tSuite.project.title,
+            testPlan: tSuite.testPlan?.title,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
             registerBy: tSuite.createdBy,
           };
@@ -165,9 +198,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.isVisible = false;
     this.submitted = false;
     this.id = null;
-    this.validateForm.controls['title'].setValue('');
-    this.validateForm.controls['description'].setValue('');
-    this.validateForm.controls['selectProject'].setValue(0);
+    this.f['title'].setValue('');
+    this.f['description'].setValue('');
+    this.f['selectProject'].setValue(null);
+    this.f['selectPlan'].setValue(null);
   }
 
   inputChanged(event) {
@@ -189,6 +223,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
+      this.validateForm.get('selectPlan').setValue(res.result.testPlan?.id);
       this.isVisible = true;
     });
   }

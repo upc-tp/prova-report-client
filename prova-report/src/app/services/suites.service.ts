@@ -23,7 +23,7 @@ export class SuitesService {
     return this.http.get<SingleSuiteResponse>(BASE_URL + this.testSuite + `/${id}`)
   }
 
-  createTestSuite(title: string, description: string, projectId:number): Observable<SuiteCreatedResponse> {
+  createTestSuite(title: string, description: string, projectId:number, testPlanId: number): Observable<SuiteCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -34,13 +34,14 @@ export class SuitesService {
       title,
       description,
       projectId,
+      testPlanId
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
     );
   }
 
-  updateTestSuite(title: string, description: string,projectId:number ,id: number): Observable<SuiteCreatedResponse> {
+  updateTestSuite(title: string, description: string,projectId:number ,id: number, testPlanId: number): Observable<SuiteCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -51,6 +52,7 @@ export class SuitesService {
       title,
       description,
       projectId,
+      testPlanId
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
