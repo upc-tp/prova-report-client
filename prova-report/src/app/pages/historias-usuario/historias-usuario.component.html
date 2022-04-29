@@ -1,10 +1,75 @@
 <div class="backgroundContent">
   <div class="banner">
     <span>Historias de Usuario</span>
-    <button nz-button nzType="primary" (click)="createUserStory()">
-      <span *ngIf="this.projectId">Nuevo</span>
-    </button>
+    <div>
+      <button nz-button nzType="primary" (click)="showModalMassive()" style="margin-right: 1rem;">
+        <span *ngIf="this.projectId">Carga Masiva</span>
+      </button>
+      <button nz-button nzType="primary" (click)="createUserStory()">
+        <span *ngIf="this.projectId">Nuevo</span>
+      </button>
+    </div>
   </div>
+  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Suite de prueba" (nzOnCancel)="handleCancelMassive()" (nzOnOk)="handleOkMassive()"
+    [nzOkLoading]="isOkLoadingMassive">
+    <div>
+        <a nz-button nzBlock nzSize="large" nzType="primary" style="color: white; margin-bottom: 2rem;" nz-button nzBlock="" download="user-stories.csv" target="_blank" href="../../../assets/files/user-stories.csv">
+          <span class="iconify" data-icon="ant-design:download-outlined" style="color: white;" data-width="24"
+            data-height="24"></span>
+          Descargar formato de ejemplo
+        </a>
+   
+    </div>
+    <form>
+      <div >
+        <div>
+          <div class="fileSection">
+            <div>
+              <mat-label class="text-fs-20 text-w-bold col-12">Carga de Archivo</mat-label>
+            </div>
+            <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null" style="width: 100%;">
+              <div class="text-center" style="margin-bottom: 1.5rem; margin-top: 1.5rem">
+                <div *ngIf="file == null">
+                  <span class="iconify" data-icon="fa-solid:file-upload" data-width="85px" data-height="95px"
+                    style="color: #ff8585"></span>
+                </div>
+                <div *ngIf="file != null">
+                  <span class="iconify" data-icon="fa-solid:file-upload" data-width="85px" data-height="95px"
+                    style="color: #a2ff85"></span>
+                </div>
+
+                <div *ngIf="file != null" class="filePrev">
+                  <div>
+                    <span class="iconify" data-icon="akar-icons:file" data-width="24px" data-height="24px"
+                      style="color: #00f1b2"></span>
+                  </div>
+                  <div>
+                    <h4>
+                      {{ file?.name }}
+                    </h4>
+                  </div>
+                  <button mat-flat-button class="button-global ps-3 pe-3"
+                    (click)="deleteFile()">
+                    <span class="iconify" data-icon="ant-design:delete-filled" data-width="24px" data-height="24px"
+                      style="color: #f10000"></span>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="file == null" class="text-center">
+                <span class="text-fs-16 text-black">Solo se permiten archivos en formato CSV</span><br />
+                <input #FileClick id="FileClick" type="file" style="display: none" accept="text/csv" (change)="fileChanged($event)" />
+                <a href="javascript:void(0)" (click)="FileClick.click()" for="FileClick">Busca en tu ordenador</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive" (click)="enviarCsvData()">
+            Guardar
+          </button>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
   <form [formGroup]="filterFormGroup">
     <div class="row d-flex">
       <div class="col-md-3">

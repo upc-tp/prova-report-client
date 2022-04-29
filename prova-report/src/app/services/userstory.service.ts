@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BASE_URL } from '../common/urlConstants';
-import { SingleUserStoryResponse, UserStoryCreatedResponse, UserStoryCriteria, UserStoryCriteriaCreatedResponse, UserStoryCriteriaView, UserStoryResponse } from '../interfaces/userstory';
+import { SingleUserStoryResponse, UserStoriesCreatedResponse, UserStoryCreatedResponse, UserStoryCriteria, UserStoryCriteriaCreatedResponse, UserStoryCriteriaView, UserStoryResponse } from '../interfaces/userstory';
 
 @Injectable({
   providedIn: 'root',
@@ -80,6 +80,19 @@ export class UserStoryService {
       catchError(this.handleErrorObservable)
     );
   }
+  
+  bulkLoadUserStories(projectId: number, text: string): Observable<UserStoriesCreatedResponse>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml',
+      }),
+    };
+    return this.http.post<UserStoriesCreatedResponse>(
+      BASE_URL + this.userStory + `/import?projectId=${projectId}`,
+      text,
+      httpOptions
+    );
+  }
 
   private extractData(res: any) {
     let body = res;
@@ -93,5 +106,6 @@ export class UserStoryService {
     console.error(error.message || error);
     return Promise.reject(error.message || error);
   }
+
 }
 

@@ -6,6 +6,7 @@ import { ProjectService } from 'src/app/services/projects.service';
 import { SuitesService } from '../../services/suites.service';
 import { Router } from '@angular/router';
 import { PlanService } from 'src/app/services/plan.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-suite',
@@ -30,14 +31,19 @@ export class SuiteComponent implements OnInit, OnDestroy {
     value: number;
   }> = [];
   isVisible = false;
+  isVisibleMassive = false;
   submitted = false;
   isOkLoading = false;
+  isOkLoadingMassive = false;
   validateForm!: FormGroup;
+  formMassive: FormGroup;
   id: number;
   sProject: number = 0;
   page: number = 1;
   pageSize: number = 10;
   count: number = this.pageSize;
+  file: any;
+  csvData: string[] = [];
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -58,6 +64,11 @@ export class SuiteComponent implements OnInit, OnDestroy {
       description: [null, [Validators.required]],
       selectProject: [null, Validators.required],
       selectPlan: [null]
+    });
+
+
+    this.formMassive = this.fb.group({
+      projects: [null, [Validators.required]],
     });
 
     this.subscription = this.modelChanged
@@ -185,6 +196,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.isVisible = true;
   }
 
+  showModalMassive(): void {
+    this.isVisibleMassive = true;
+  }
+
   handleOk(): void {
     this.isOkLoading = true;
     this.submitted = false;
@@ -231,5 +246,57 @@ export class SuiteComponent implements OnInit, OnDestroy {
   onPageIndexChange(selectedPage: number) {
     this.page = selectedPage;
     this.fetchSuites(this.page, this.pageSize);
+  }
+
+  fileChanged(e) {
+    this.file = e.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(this.file);
+    fileReader.onload = (e) => {
+      if (e.target.readyState == FileReader.DONE) {
+        let xmlData = e.target.result as string;
+        this.csvData.push(xmlData);
+      }
+      console.log(this.csvData);
+    };
+  }
+
+  enviarCsvData(){
+    console.log(this.csvData[0]);
+    if (this.file) {
+      this.suiteService
+        .bulkLoadSuites(
+          this.formMassive.controls['projects'].value,
+          this.csvData[0]
+        )
+        .subscribe((res) => {
+          console.log(res.result);
+          this.fetchSuites(this.page, this.pageSize);
+          this.deleteFile();
+        });
+    } else {
+      Swal.fire({
+        title: 'Debes cargar un archivo para registrar la ejecución',
+        showCloseButton: true,
+        icon: 'info',
+      });
+    }
+  }
+
+  handleOkMassive(): void {
+    this.isOkLoadingMassive = true;
+    setTimeout(() => {
+      this.isVisibleMassive = false;
+      this.isOkLoadingMassive = false;
+    }, 3000);
+  }
+
+  handleCancelMassive(): void {
+    this.isVisibleMassive = false;
+  }
+
+  deleteFile() {
+    this.file = null;
+    this.csvData = [];
   }
 }

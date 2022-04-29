@@ -26,9 +26,10 @@ export class DetallesHistoriaUsuarioComponent implements OnInit {
   criterias: Array<{
     description: string;
     createdAt: string;
+    testCaseName: string;
   }> = [];
 
-  displayedColumns: string[] = ['description', 'createdAt'];
+  displayedColumns: string[] = ['description', 'testCase','createdAt'];
   dataSource = new MatTableDataSource<any>(); 
   
   constructor(
@@ -52,14 +53,15 @@ export class DetallesHistoriaUsuarioComponent implements OnInit {
     this.userStoryService.getUserStory(this.userStoryId).subscribe((res) => {
       this.userStory.createdAt = this.utils.formatDateTime(new Date(res.result.createdAt));
       this.userStory.description = res.result.description;
-      this.userStory.name = res.result.name;
+      this.userStory.name = res.result.tag + ' - ' + res.result.name;
       this.userStory.id = res.result.id;
       console.log(res.result.userStoryCriterias)
       this.criterias = res.result.userStoryCriterias.map( (cri) => 
       {
         return{ 
           description: cri.description,
-          createdAt: this.utils.formatDateTime(new Date(cri.createdAt))
+          createdAt: this.utils.formatDateTime(new Date(cri.createdAt)),
+          testCaseName: cri.testCase ? ((cri.testCase.tag ? cri.testCase.tag : ' ') + ' ' + cri.testCase.title) : 'No asociado'
         }
       } 
       );
