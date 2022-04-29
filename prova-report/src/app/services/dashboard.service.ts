@@ -17,5 +17,9 @@ export class DashboardService {
     return this.http.get<DashboardResponse>(BASE_URL + this.dashboard + `?projectId=${projectId}`);
   }
 
+  getDashboardFilter(projectId: number, startDate: string, endDate: string) : Observable<DashboardResponse> {
+    return this.http.get<DashboardResponse>(BASE_URL + this.dashboard + `?projectId=${projectId}&startDate=${startDate}&endDate=${endDate}`);
+  }
+
 
 }
