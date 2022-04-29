@@ -14,7 +14,24 @@
             class="form-text text-danger animate__animated animate__headShake">Seleccione uno</mat-hint>
         </mat-form-field>
       </div>
-
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Desde</mat-label>
+          <input formControlName="startDate" matInput [matDatepicker]="picker">
+          <mat-hint *ngIf="validaciones('startDate')" class="form-text text-danger animate__animated animate__headShake">DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Hasta</mat-label>
+          <input formControlName="endDate" matInput [matDatepicker]="picker2">
+          <mat-hint *ngIf="validaciones('endDate')" class="form-text text-danger animate__animated animate__headShake">DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
       <div class="col-md-3">
         <button mat-flat-button class="button-global ps-3 pe-3 iconify-mright button-bg-primary"
           style="margin-top: 0.5rem" (click)="selectProject()">
