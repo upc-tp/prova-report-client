@@ -72,6 +72,12 @@ export interface SuiteCreatedResponse {
 	result: SuiteCreated;
 }
 
+export interface SuitesCreatedResponse {
+	message: string;
+	success: boolean;
+	result: SuiteCreated[];
+}
+
 export interface Project {
 	createdAt: string;
 	createdBy: string;

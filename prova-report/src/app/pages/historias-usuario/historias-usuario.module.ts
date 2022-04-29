@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HistoriasUsuarioComponent } from './historias-usuario.component';
 import { HistoriasUsuarioRoutingModule } from './historias-usuario-routing.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { NzButtonModule, NzGridModule, NzIconModule } from 'ng-zorro-antd';
+import { NzAlertModule, NzButtonModule, NzFormModule, NzGridModule, NzIconModule, NzModalModule, NzSelectModule, NzTableModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { IconsProviderModule } from 'src/app/icons-provider.module';
 
 
 
@@ -36,7 +37,14 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatSortModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    NzFormModule,
+    NzButtonModule,
+    NzModalModule,
+    NzTableModule,
+    NzAlertModule,
+    IconsProviderModule,
+    NzSelectModule
   ]
 })
 export class HistoriasUsuarioModule { }

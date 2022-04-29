@@ -41,6 +41,11 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   selected: boolean = false;
   projectNameSelected: string;
   firstEntry: boolean = true;
+  file: any;
+  csvData: string[] = [];
+  isVisibleMassive = false;
+  isOkLoadingMassive = false;
+  formMassive: FormGroup;
 
   constructor(
     private projectService: ProjectService,
@@ -176,4 +181,59 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     this.router.navigate(['/registrar-historia-usuario']);
   }
 
+  fileChanged(e) {
+    this.file = e.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsText(this.file);
+    fileReader.onload = (e) => {
+      if (e.target.readyState == FileReader.DONE) {
+        let xmlData = e.target.result as string;
+        this.csvData.push(xmlData);
+      }
+      console.log(this.csvData);
+    };
+  }
+
+  enviarCsvData(){
+    console.log(this.csvData[0]);
+    if (this.file) {
+      this.userStoryService
+        .bulkLoadUserStories(
+          this.filterFormGroup.controls['projects'].value,
+          this.csvData[0]
+        )
+        .subscribe((res) => {
+          console.log(res.result);
+          this.getUserStories();
+          this.deleteFile();
+        });
+    } else {
+      Swal.fire({
+        title: 'Debes cargar un archivo para registrar la ejecución',
+        showCloseButton: true,
+        icon: 'info',
+      });
+    }
+  }
+
+  handleOkMassive(): void {
+    this.isOkLoadingMassive = true;
+    setTimeout(() => {
+      this.isVisibleMassive = false;
+      this.isOkLoadingMassive = false;
+    }, 3000);
+  }
+
+  handleCancelMassive(): void {
+    this.isVisibleMassive = false;
+  }
+
+  deleteFile() {
+    this.file = null;
+    this.csvData = [];
+  }
+
+  showModalMassive(): void {
+    this.isVisibleMassive = true;
+  }
 }

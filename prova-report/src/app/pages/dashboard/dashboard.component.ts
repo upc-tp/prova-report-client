@@ -19,6 +19,8 @@ import { ProjectService } from 'src/app/services/projects.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import Swal from 'sweetalert2';
+import { formatDate } from '@angular/common';
+
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart;
@@ -63,6 +65,10 @@ export class DashboardComponent implements OnInit {
   count = 2;
   array = new Array(this.count);
   projectId: number;
+  startDate: Date;
+  endDate: Date;
+  startDateFor: string;
+  endDateFor: string;
   listProjects: Array<{
     id: number;
     name: string;
@@ -422,15 +428,19 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    let dateStart = new Date();
+    dateStart.setMonth(dateStart.getMonth()-1);
     this.filterFormGroup = this._fb.group({
-      projects: ['', [Validators.required]]
+      projects: ['',[Validators.required]],
+      startDate: [dateStart,[Validators.required]],
+      endDate: [new Date(),[Validators.required]]
     });
     this.getProjects();
   }
 
   getDashboardData(){
 
-    this.dashboardService.getDashboard(this.projectId).subscribe( (res) => {
+    this.dashboardService.getDashboardFilter(this.projectId, this.startDateFor, this.endDateFor).subscribe( (res) => {
       this.severityFilter = res.result.testsBySeverity.map( (stat) => {
         return{
           states: stat.statuses.map((yes) => {
@@ -548,9 +558,15 @@ export class DashboardComponent implements OnInit {
   }
 
   selectProject(){
-    if (this.filterFormGroup.controls.projects.value){
-      this.projectId = this.filterFormGroup.controls.projects.value;
+    if(this.filterFormGroup.controls['projects'].value){
+      this.projectId = this.filterFormGroup.controls['projects'].value;
+      this.startDate = this.filterFormGroup.controls['startDate'].value;
+      this.endDate = this.filterFormGroup.controls['endDate'].value;
+      this.startDateFor= formatDate(this.startDate,'yyy-MM-dd','en-US');
+      this.endDateFor= formatDate(this.endDate,'yyy-MM-dd','en-US');
       this.getDashboardData();
+      console.log(this.startDateFor);
+      console.log(this.endDate);
     }else{
       Swal.fire(
         {

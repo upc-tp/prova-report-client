@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SuiteResponse, SuiteCreatedResponse, SingleSuiteResponse } from '../interfaces/suites';
+import { SuiteResponse, SuiteCreatedResponse, SingleSuiteResponse, SuitesCreatedResponse } from '../interfaces/suites';
 import { BASE_URL } from '../common/urlConstants';
 
 @Injectable({
@@ -56,6 +56,20 @@ export class SuitesService {
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
+    );
+  }
+
+
+  bulkLoadSuites(projectId: number, text: string): Observable<SuitesCreatedResponse>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml',
+      }),
+    };
+    return this.http.post<SuitesCreatedResponse>(
+      BASE_URL + this.testSuite + `/import?projectId=${projectId}`,
+      text,
+      httpOptions
     );
   }
 

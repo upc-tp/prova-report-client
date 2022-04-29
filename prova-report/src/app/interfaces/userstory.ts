@@ -54,6 +54,12 @@ export interface UserStoryCreatedResponse{
 	result: UserStoryCreated;
 }
 
+export interface UserStoriesCreatedResponse{
+	message: string;
+	success: boolean;
+	result: UserStoryCreated[];
+}
+
 export interface UserStoryCriteria{
  	createdAt: string;
 	createdBy: string;

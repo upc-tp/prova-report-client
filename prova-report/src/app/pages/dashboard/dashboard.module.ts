@@ -13,6 +13,8 @@ import { MatTableModule } from '@angular/material/table';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NzButtonModule, NzIconModule } from 'ng-zorro-antd';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
@@ -33,7 +35,9 @@ import { DashboardComponent } from './dashboard.component';
     MatPaginatorModule,
     MatSortModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [DashboardComponent],
   exports: [DashboardComponent]
