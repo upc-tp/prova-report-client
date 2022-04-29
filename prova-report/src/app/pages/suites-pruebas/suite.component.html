@@ -1,20 +1,103 @@
 <div class="backgroundContent">
   <div class="banner">
     <span>Suite pruebas</span>
-    <button nz-button nzType="primary" (click)="showModal()">
-      <span>Nuevo</span>
-    </button>
+    <div>
+      <button nz-button nzType="primary" style="margin-right: 1rem;" (click)="showModalMassive()">
+        <span>Carga Masiva</span>
+      </button>
+      <button nz-button nzType="primary" (click)="showModal()">
+        <span>Nuevo</span>
+      </button>
+    </div>
+
   </div>
 
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="Suite de prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-    [nzOkLoading]="isOkLoading">
+  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Suite de prueba" (nzOnCancel)="handleCancelMassive()" (nzOnOk)="handleOkMassive()"
+    [nzOkLoading]="isOkLoadingMassive">
+    <div>
+        <a nz-button nzBlock nzSize="large" nzType="primary" style="color: white; margin-bottom: 2rem;" nz-button nzBlock="" download="test-suites.csv" target="_blank" href="../../../assets/files/test-suites.csv">
+          <span class="iconify" data-icon="ant-design:download-outlined" style="color: white;" data-width="24"
+            data-height="24"></span>
+          Descargar formato de ejemplo
+        </a>
+   
+    </div>
+    <form [formGroup]="formMassive" (ngSubmit)="enviarCsvData()">
+      <div >
+        <div>
+
+          <div>
+            <mat-label class="text-fs-20 text-w-bold col-12">Carga de Archivo</mat-label>
+          </div>
+          <mat-form-field class="col-md-12" appearance="outline">
+              <mat-label>Proyectos</mat-label>
+              <mat-select formControlName="projects">
+                  <mat-option *ngFor="let pro of projects; let i = index" [value]="pro.value">
+                      {{ pro.label }}
+                  </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formMassive.controls['projects'].hasError('required')">
+                  Ingrese una descripción
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <div class="fileSection">
+            <div>
+              <mat-label class="text-fs-20 text-w-bold col-12">Carga de Archivo</mat-label>
+            </div>
+            <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null" style="width: 100%;">
+              <div class="text-center" style="margin-bottom: 1.5rem; margin-top: 1.5rem">
+                <div *ngIf="file == null">
+                  <span class="iconify" data-icon="fa-solid:file-upload" data-width="85px" data-height="95px"
+                    style="color: #ff8585"></span>
+                </div>
+                <div *ngIf="file != null">
+                  <span class="iconify" data-icon="fa-solid:file-upload" data-width="85px" data-height="95px"
+                    style="color: #a2ff85"></span>
+                </div>
+
+                <div *ngIf="file != null" class="filePrev">
+                  <div>
+                    <span class="iconify" data-icon="akar-icons:file" data-width="24px" data-height="24px"
+                      style="color: #00f1b2"></span>
+                  </div>
+                  <div>
+                    <h4>
+                      {{ file?.name }}
+                    </h4>
+                  </div>
+                  <button mat-flat-button class="button-global ps-3 pe-3"
+                    (click)="deleteFile()">
+                    <span class="iconify" data-icon="ant-design:delete-filled" data-width="24px" data-height="24px"
+                      style="color: #f10000"></span>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="file == null" class="text-center">
+                <span class="text-fs-16 text-black">Solo se permiten archivos en formato CSV</span><br />
+                <input #FileClick id="FileClick" type="file" style="display: none" accept="text/csv" (change)="fileChanged($event)" />
+                <a href="javascript:void(0)" (click)="FileClick.click()" for="FileClick">Busca en tu ordenador</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive">
+            Guardar
+          </button>
+    </form>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Suite de prueba" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
     <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="form-item">
         <nz-form-label>
           Título
         </nz-form-label>
         <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título"
-          autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"/>
+          autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
         <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
       </div>
       <div class="form-item">
@@ -22,7 +105,8 @@
           Descripción
         </nz-form-label>
         <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+          placeholder="Descripción" autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
         <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es
           obligatorio</span>
       </div>
@@ -30,21 +114,25 @@
         <nz-form-label>
           Proyecto
         </nz-form-label>
-        <nz-select nzSize="large" formControlName="selectProject" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }"
-          nzPlaceHolder="Seleccione Proyecto" [nzOptions]="projects" (ngModelChange)="onSelectProject($event)">
+        <nz-select nzSize="large" formControlName="selectProject" class="select-input"
+          [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }" nzPlaceHolder="Seleccione Proyecto"
+          [nzOptions]="projects" (ngModelChange)="onSelectProject($event)">
           <nz-option nzValue="project.value" nzLabel="project.label"></nz-option>
         </nz-select>
-        <span class="invalid-feedback" *ngIf="submitted && f.selectProject.errors?.required" >* Este campo es obligatorio</span>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectProject.errors?.required">* Este campo es
+          obligatorio</span>
       </div>
       <div class="form-item">
         <nz-form-label>
           Plan de prueba
         </nz-form-label>
-        <nz-select nzSize="large" formControlName="selectPlan" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectPlan.errors }"
-          nzPlaceHolder="Seleccione Plan de prueba" [nzOptions]="testPlans">
+        <nz-select nzSize="large" formControlName="selectPlan" class="select-input"
+          [ngClass]="{ 'is-invalid': submitted && f.selectPlan.errors }" nzPlaceHolder="Seleccione Plan de prueba"
+          [nzOptions]="testPlans">
           <nz-option nzValue="testPlan.value" nzLabel="testPlan.label"></nz-option>
         </nz-select>
-        <span class="invalid-feedback" *ngIf="submitted && f.selectPlan.errors?.required" >* Este campo es obligatorio</span>
+        <span class="invalid-feedback" *ngIf="submitted && f.selectPlan.errors?.required">* Este campo es
+          obligatorio</span>
       </div>
       <div class="form-item">
         <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
