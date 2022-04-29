@@ -27,7 +27,7 @@ export class PlanService {
     return this.http.get<SinglePlanResponse>(BASE_URL + this.testPlan + `/${id}`)
   }
 
-  createTestPlan(title: string, description: string, projectId:number): Observable<PlanCreatedResponse> {
+  createTestPlan(title: string, description: string, projectId:number, versionId: number): Observable<PlanCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -38,6 +38,7 @@ export class PlanService {
       title,
       description,
       projectId,
+      versionId,
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)

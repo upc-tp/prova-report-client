@@ -11,6 +11,7 @@ import { PlanView } from 'src/app/interfaces/plan';
 import { Filter } from 'src/app/interfaces/global.model';
 import { UtilsService } from 'src/app/common/UtilsService';
 import Swal from 'sweetalert2';
+import { VersionService } from 'src/app/services/versions.services';
 
 @Component({
   selector: 'app-plan',
@@ -29,11 +30,16 @@ export class PlanComponent implements OnInit, OnDestroy {
     id: number;
     title: string;
     project: string;
+    version: string;
     description: string;
     registerDate: string;
     registerBy: string;
   }> = [];
   projects: Array<{
+    label: string;
+    value: number;
+  }> = [];
+  versions: Array<{
     label: string;
     value: number;
   }> = [];
@@ -47,6 +53,8 @@ export class PlanComponent implements OnInit, OnDestroy {
 	  description: '',
 	  project: '',
 	  projectId: 0,
+    version:'',
+    versionId: 0,
   };
   isVisible = false;
   submitted = false;
@@ -62,7 +70,7 @@ export class PlanComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private planService: PlanService, private projectService: ProjectService, private fb: FormBuilder, private router: Router, public utils: UtilsService, private _sanitizer: DomSanitizer, private iconRegistry: MatIconRegistry) { 
+  constructor(private planService: PlanService, private projectService: ProjectService, private versionService: VersionService, private fb: FormBuilder, private router: Router, public utils: UtilsService, private _sanitizer: DomSanitizer, private iconRegistry: MatIconRegistry) { 
     this.iconRegistry.addSvgIcon(
       'NoTest',
       this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
@@ -75,12 +83,13 @@ export class PlanComponent implements OnInit, OnDestroy {
       projects: ['', [Validators.required]],});
     //this.fetchPlans(this.page, this.pageSize);
     console.log(this.listProjects);
-    //this.getProjects();
+    this.getProjects();
   
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      selectProject: [null, [Validators.required]]
+      selectProject: [null, [Validators.required]],
+      selectVersion: [null, [Validators.required]]
     });
 
     this.subscription = this.modelChanged
@@ -122,7 +131,8 @@ export class PlanComponent implements OnInit, OnDestroy {
           .createTestPlan(
             this.validateForm.controls['title'].value,
             this.validateForm.controls['description'].value,
-            this.validateForm.controls['selectProject'].value
+            this.validateForm.controls['selectProject'].value,
+            this.validateForm.controls['selectVersion'].value
           )
           .subscribe(
             (plan) => {
@@ -133,6 +143,7 @@ export class PlanComponent implements OnInit, OnDestroy {
               this.validateForm.controls['title'].setValue('');
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectProject'].setValue(0);
+              this.validateForm.controls['selectVersion'].setValue(null);
             },
             (error) => console.log(error)
           );
@@ -176,6 +187,7 @@ export class PlanComponent implements OnInit, OnDestroy {
               id: tPlan.id,
               title: tPlan.title,
               description: tPlan.description,
+              version: tPlan.version?.title,
               project: tPlan.project.title,
               registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
               registerBy: tPlan.createdBy,
@@ -202,7 +214,7 @@ export class PlanComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPlansByProjectId(){
+  /*getPlansByProjectId(){
     this.planService.getTestPlansByProject(null, null, '', this.projectId).subscribe( (res) => {
       this.data = res.result.map( (plan) => {
         return{
@@ -225,7 +237,7 @@ export class PlanComponent implements OnInit, OnDestroy {
         this.projectId = null;
       }
     });
-  }
+  }*/
 
   getProjects() {
     this.projectService.getTestProjects(null, null, '').subscribe(
@@ -240,6 +252,23 @@ export class PlanComponent implements OnInit, OnDestroy {
     );
   }
 
+  getVersions(projectId: number) {
+    this.versionService.getVersionsForSelect(projectId).subscribe(res =>{
+      this.versions = res.result.map(tVersion => {
+        console.log(tVersion);
+        return{
+          label: tVersion.title,
+          value: tVersion.id
+        }
+      })
+    })
+  }
+
+  onSelectVersion(projectId: number) {
+    this.f['selectVersion'].setValue(null);
+    this.getVersions(projectId);
+  }
+
   detailPlan(id: number){
     this.id = id;
         this.planService.getTestPlan(id).subscribe((res) => {
@@ -247,6 +276,7 @@ export class PlanComponent implements OnInit, OnDestroy {
             this.plan.title = res.result.title;
             this.plan.description = res.result.description;
             this.plan.project = res.result.project.title;
+            this.plan.version = res.result.version.title;
             this.plan.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
 	          this.plan.createdBy = res.result.createdBy;
 	          this.plan.modifiedAt = res.result.modifiedAt;
@@ -263,6 +293,7 @@ export class PlanComponent implements OnInit, OnDestroy {
             id: tPlan.id,
             title: tPlan.title,
             description: tPlan.description,
+            version: tPlan.version.title,
             project: tPlan.project.title,
             registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
             registerBy: tPlan.createdBy,
@@ -299,6 +330,7 @@ export class PlanComponent implements OnInit, OnDestroy {
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
     this.validateForm.controls['selectProject'].setValue(0);
+    this.validateForm.controls['selectVersion'].setValue(null);
   }
 
   inputChanged(event) {
@@ -321,7 +353,7 @@ export class PlanComponent implements OnInit, OnDestroy {
     );
   }
 
-  selectProject(){
+  /*selectProject(){
     localStorage.removeItem('projectId');
     if(this.filterFormGroup.controls['projects'].value){
       this.projectId = this.filterFormGroup.controls['projects'].value;
@@ -334,7 +366,7 @@ export class PlanComponent implements OnInit, OnDestroy {
           icon:'info'
         });
     }
-  }
+  }*/
 
   updatePlan(id: number) {
     this.id = id;
@@ -342,6 +374,7 @@ export class PlanComponent implements OnInit, OnDestroy {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
+      this.validateForm.get('selectVersion').setValue(res.result.version.id);
       this.isVisible = true;
       this.isVisibleProjectUpdateform = false;
     });
