@@ -13,13 +13,12 @@ import {
   ApexLegend,
   ApexDataLabels,
 } from 'ng-apexcharts';
-import { Dashboard } from 'src/app/interfaces/dashboard';
+import {Dashboard} from 'src/app/interfaces/dashboard';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/projects.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import Swal from 'sweetalert2';
-
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart;
@@ -39,7 +38,7 @@ export type ChartOptions = {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  encapsulation:ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
@@ -49,11 +48,12 @@ export class DashboardComponent implements OnInit {
   @ViewChild('donut') donut: ChartComponent;
   @ViewChild('priorityStackedBarVertical') priorityStackedBarVertical: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
-  public stackedBarHorizontalOptions: Partial<ChartOptions>;
   public severityStackedBarVerticalOptions: Partial<ChartOptions>;
-  public lineColumnOptions: Partial<ChartOptions>;
+  public severityDefectsStackedBarVerticalOptions: Partial<ChartOptions>;
   public donutOptions: Partial<ChartOptions>;
   public donutDefectsOptions: Partial<ChartOptions>;
+  public donutDefectsCorrected: Partial<ChartOptions>;
+  public donutDesignCoverage: Partial<ChartOptions>;
   public priorityStackedBarVerticalOptions: Partial<ChartOptions>;
   filterFormGroup: FormGroup;
 
@@ -73,26 +73,36 @@ export class DashboardComponent implements OnInit {
     states: number[];
   }> = [];
 
+
+
   priorityFilter: Array<{
     states: number[];
   }> = [];
 
+  severityDefectFilter: Array<number> = [];
+
   statusFilter: Array<number> = [];
   defectFilter: Array<number> = [];
 
-  severityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
-  priorityStackedVerticalData = [[0,0,0],[0,0,0],[0,0,0]];
+  testsCoverageFilter: Array<number> = [];
+  defectFixedFilter: Array<number> = [];
+
+
+  severityDefectStackedVerticalData = [];
+
+  severityStackedVerticalData = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  priorityStackedVerticalData = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 
   constructor( private dashboardService: DashboardService, private _fb: FormBuilder, private projectService: ProjectService,
-    private _sanitizer: DomSanitizer,private iconRegistry:MatIconRegistry
+               private _sanitizer: DomSanitizer, private iconRegistry: MatIconRegistry
     ) {
 
       this.iconRegistry.addSvgIcon(
         'NoTest',
         this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
       );
-    this.chartOptions = {
+      this.chartOptions = {
       series: [
         {
           name: 'My-series',
@@ -121,58 +131,36 @@ export class DashboardComponent implements OnInit {
       },
     };
 
-    this.stackedBarHorizontalOptions = {
+      this.severityDefectsStackedBarVerticalOptions = {
       series: [
         {
-          name: 'Cancelado',
-          data: [44, null, 41, 37, 22, 43, 21],
-        },
-        {
-          name: 'Sin asignar',
-          data: [53, 32, null, 52, null, 43, 32],
-        },
-        {
-          name: 'En proceso',
-          data: [12, 17, 11, null, 15, 11, 20],
-        },
-        {
-          name: 'Solucionado',
-          data: [9, 7, null, 8, null, 9, 4],
-        },
-        {
-          name: 'Asignado',
-          data: [25, null, 19, null, 25, 24, 10],
-        },
+          name: 'Defectos',
+          data: this.severityDefectFilter,
+        }
       ],
       chart: {
         height: 350,
         type: 'bar',
         stacked: true,
+        toolbar: {
+          show: true,
+        },
+        zoom: {
+          enabled: true,
+        },
       },
       title: {
-        text: 'Suites',
+        text: 'Severidad por Defecto',
       },
       plotOptions: {
         bar: {
-          horizontal: true,
+          horizontal: false,
+          borderRadius: 2,
         },
-      },
-      stroke: {
-        width: 1,
-        colors: ['#fff'],
       },
       xaxis: {
-        categories: [
-          'ST01 Módulo de compras',
-          'ST02 Módulo de ventas',
-          'ST03 Pruebas de búsqueda',
-          'ST01 Módulo de inventario',
-        ],
-      },
-      yaxis: {
-        title: {
-          text: undefined,
-        },
+        type: 'category',
+        categories: ['Trivial', 'Normal', 'Crítico'],
       },
       fill: {
         opacity: 1,
@@ -182,22 +170,23 @@ export class DashboardComponent implements OnInit {
         horizontalAlign: 'left',
         offsetX: 40,
       },
+      colors: ['#48b337', '#f5a700', '#f50000'],
     };
 
-    this.severityStackedBarVerticalOptions = {
+      this.severityStackedBarVerticalOptions = {
       series: [
         {
-          name: 'Superado', //Azul
+          name: 'Superado', // Azul
           data: this.severityStackedVerticalData[0],
           color: '#48b337',
         },
         {
-          name: 'Fallido', //Verde
+          name: 'Fallido', // Verde
           data: this.severityStackedVerticalData[1],
           color: '#f50000',
         },
         {
-          name: 'Omitido', //Amarillo
+          name: 'Omitido', // Amarillo
           data: this.severityStackedVerticalData[2],
           color: '#f5a700',
         },
@@ -237,20 +226,20 @@ export class DashboardComponent implements OnInit {
       colors: ['#48b337', '#f5a700', '#f50000'],
     };
 
-    this.priorityStackedBarVerticalOptions = {
+      this.priorityStackedBarVerticalOptions = {
       series: [
         {
-          name: 'Superado', //Azul
+          name: 'Superado', // Azul
           data: this.priorityStackedVerticalData[0],
           color: '#48b337',
         },
         {
-          name: 'Fallido', //Verde
+          name: 'Fallido', // Verde
           data: this.priorityStackedVerticalData[1],
           color: '#f50000',
         },
         {
-          name: 'Omitido', //Amarillo
+          name: 'Omitido', // Amarillo
           data: this.priorityStackedVerticalData[2],
           color: '#f5a700',
         },
@@ -290,68 +279,9 @@ export class DashboardComponent implements OnInit {
       colors: ['#48b337', '#f5a700', '#f50000'],
     };
 
-    this.lineColumnOptions = {
-      series: [
-        {
-          name: 'Pruebas ejecutadas',
-          type: 'column',
-          data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160],
-        },
-        {
-          name: 'Tiempo (ms)',
-          type: 'line',
-          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16],
-        },
-      ],
-      chart: {
-        height: 350,
-        type: 'line',
-      },
-      stroke: {
-        width: [0, 4],
-      },
-      title: {
-        text: 'Duración',
-      },
-      dataLabels: {
-        enabled: true,
-        enabledOnSeries: [1],
-      },
-      labels: [
-        '01 Jan 2001',
-        '02 Jan 2001',
-        '03 Jan 2001',
-        '04 Jan 2001',
-        '05 Jan 2001',
-        '06 Jan 2001',
-        '07 Jan 2001',
-        '08 Jan 2001',
-        '09 Jan 2001',
-        '10 Jan 2001',
-        '11 Jan 2001',
-        '12 Jan 2001',
-      ],
-      xaxis: {
-        type: 'datetime',
-      },
-      yaxis: [
-        {
-          title: {
-            text: 'Pruebas ejecutadas',
-          },
-        },
-        {
-          opposite: true,
-          title: {
-            text: 'Tiempo (ms)',
-          },
-        },
-      ],
-    };
-
-    this.donutOptions = {
+      this.donutOptions = {
       series: this.statusFilter,
-      labels: ["No ejecutadas", "Superadas", "Fallidas", "Omitidas"],
+      labels: ['No ejecutadas', 'Superadas', 'Fallidas', 'Omitidas'],
       chart: {
         width: 380,
         type: 'donut'
@@ -383,9 +313,9 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    this.donutDefectsOptions = {
+      this.donutDefectsOptions = {
       series: this.defectFilter,
-      labels: ["Nuevos", "Aceptados", "Rechazados"],
+      labels: ['Nuevos', 'Aceptados', 'Rechazados'],
       chart: {
         width: 380,
         type: 'donut'
@@ -414,14 +344,86 @@ export class DashboardComponent implements OnInit {
             }
           }
         }
-      }
+      },
+        colors: ['#20A0E2', '#48b337', '#f50000'],
+    };
+
+      this.donutDesignCoverage = {
+      series: this.testsCoverageFilter,
+      labels: ['Pruebas asignadas',
+        'Pruebas No asignadas'],
+      chart: {
+        width: 380,
+        type: 'donut'
+      },
+      title: {
+        text: 'Cobertura de diseño de prueba ',
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        position: 'right',
+        offsetY: 0,
+        height: 230,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
+              }
+            }
+          }
+        }
+      },
+        colors: ['#48b337', '#f50000'],
+    };
+
+      this.donutDefectsCorrected = {
+      series: this.defectFixedFilter,
+      labels: ['Corregidos', 'No Corregidos'],
+      chart: {
+        width: 380,
+        type: 'donut'
+      },
+      title: {
+        text: 'Procentaje de defectos corregido',
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        position: 'right',
+        offsetY: 0,
+        height: 230,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
+              }
+            }
+          }
+        }
+      },
+        colors: ['#48b337', '#f50000']
     };
 
   }
 
   ngOnInit() {
     this.filterFormGroup = this._fb.group({
-      projects: ['',[Validators.required]]
+      projects: ['', [Validators.required]]
     });
     this.getProjects();
   }
@@ -437,7 +439,7 @@ export class DashboardComponent implements OnInit {
         };
       });
       this.priorityFilter = res.result.testsByPriority.map( (stat) => {
-        console.log(stat);
+
         return{
           states: stat.statuses.map((yes) => {
             return yes.num_tests;
@@ -445,28 +447,43 @@ export class DashboardComponent implements OnInit {
         };
       });
       this.statusFilter = res.result.testsByStatus.map( (stat) => {
-        console.log(stat);
         return Number(stat.num_tests);
       });
 
       this.defectFilter = res.result.defectsByStatus.map( (stat) => {
-        console.log(Number(stat.num_defects));
         return Number(stat.num_defects);
       });
+      this.severityDefectFilter = res.result.defectsBySeverity.map( (stat) => {
+        return Number(stat.num_defects);
+      });
+      // tslint:disable-next-line:max-line-length
+      const FilterCoverage: Array<number> = [Number(res.result.testDesignCoverage.assigned_tests), Number(res.result.testDesignCoverage.total_tests - res.result.testDesignCoverage.assigned_tests)];
+      // tslint:disable-next-line:max-line-length
+      const FilterFixed: Array<number> = [Number(res.result.defectsFixed.fixed_defects), Number(res.result.defectsFixed.accepted_defects - res.result.defectsFixed.fixed_defects)];
+      this.donutDesignCoverage.series = FilterCoverage;
+      this.donutDefectsCorrected.series = FilterFixed;
       this.donutOptions.series = this.statusFilter;
       this.donutDefectsOptions.series = this.defectFilter;
-      console.log(this.statusFilter);
-      console.log(this.defectFilter);
       this.priorityLoadDateStackecVerticalBars();
       this.severityLoadDateStackecVerticalBars();
+      this.severityDefectsLoadDateStackecVerticalBars();
     });
 
   }
 
+  severityDefectsLoadDateStackecVerticalBars(){
+    this.severityDefectsStackedBarVerticalOptions.series = [
+      {
+        data: this.severityDefectFilter,
+        colors: ['#48b337', '#f5a700', '#f50000'],
+      },
+    ];
+  }
+
   priorityLoadDateStackecVerticalBars(){
-    for(var i = 0; i < 3; i++){
-      for(var j = 1; j < 4; j++){
-        this.priorityStackedVerticalData[j-1][i] = this.priorityFilter[i].states[j];
+    for (let i = 0; i < 3; i++){
+      for (let j = 1; j < 4; j++){
+        this.priorityStackedVerticalData[j - 1][i] = this.priorityFilter[i].states[j];
       }
     }
     this.priorityStackedBarVerticalOptions.series = [
@@ -485,17 +502,18 @@ export class DashboardComponent implements OnInit {
           data: this.priorityStackedVerticalData[2],
           color: '#f5a700',
         },
-      ]
+      ];
   }
+
   severityLoadDateStackecVerticalBars(){
-    for(var i = 0; i < 3; i++){
-      for(var j = 1; j < 4; j++){
-        this.severityStackedVerticalData[j-1][i] = this.severityFilter[i].states[j];
+    for (let i = 0; i < 3; i++){
+      for (let j = 1; j < 4; j++){
+        this.severityStackedVerticalData[j - 1][i] = this.severityFilter[i].states[j];
       }
     }
-    for(var i = 0; i < 3; i++){
-      for(var j = 1; j < 4; j++){
-        this.priorityStackedVerticalData[j-1][i] = this.priorityFilter[i].states[j];
+    for (let i = 0; i < 3; i++){
+      for (let j = 1; j < 4; j++){
+        this.priorityStackedVerticalData[j - 1][i] = this.priorityFilter[i].states[j];
       }
     }
     this.severityStackedBarVerticalOptions.series = [
@@ -514,8 +532,9 @@ export class DashboardComponent implements OnInit {
           data: this.severityStackedVerticalData[2],
           color: '#f5a700',
         },
-      ]
+      ];
   }
+
   getProjects() {
     this.projectService.getTestProjects(null, null, '').subscribe(
       (res) =>
@@ -523,20 +542,21 @@ export class DashboardComponent implements OnInit {
         return{
           id: project.id,
           name: project.title
-        }
+        };
       }))
     );
   }
+
   selectProject(){
-    if(this.filterFormGroup.controls['projects'].value){
-      this.projectId = this.filterFormGroup.controls['projects'].value;
+    if (this.filterFormGroup.controls.projects.value){
+      this.projectId = this.filterFormGroup.controls.projects.value;
       this.getDashboardData();
     }else{
       Swal.fire(
         {
           title: 'Selecciona un proyecto',
-          showCloseButton:true,
-          icon:'info'
+          showCloseButton: true,
+          icon: 'info'
         });
     }
   }
