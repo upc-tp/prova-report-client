@@ -34,6 +34,10 @@ export class VersionService {
     return this.http.get<VersionsResponse>(BASE_URL + this.priority + `?page=${page}&pageSize=${pageSize}&projectId=${projectId}`);
   }
 
+  getVersionsForSelect(projectId: number) {
+    return this.http.get<VersionsResponse>(BASE_URL + this.priority + `?projectId=${projectId}`);
+  }
+
   private extractData(res: any) {
     let body = res;
     return body;

@@ -1,3 +1,5 @@
+
+
 export interface Project {
 	createdAt: string;
 	createdBy: string;
@@ -9,6 +11,17 @@ export interface Project {
 	title: string;
 	description: string;
 }
+
+export class Version{
+	description: string;
+	order: number;
+	title: string;
+	createdBy?: any;
+	deletedAt?: any;
+	createdAt?: any;
+	modifiedAt?: any;
+	id: number;
+}
 export interface PlanView {
 	createdAt: string;
 	createdBy: string;
@@ -19,6 +32,8 @@ export interface PlanView {
 	description: string;
 	project: string;
 	projectId: number;
+	version: string;
+	versionId: number;
 }
 
 export interface Plans {
@@ -31,6 +46,7 @@ export interface Plans {
 	id: number;
 	title: string;
 	description: string;
+	version: Version;
 	project: Project;
 }
 
@@ -45,9 +61,11 @@ export interface PlanResponse {
 
 export interface PlanCreated {
 	projectId: number;
+	versionId: number;
 	title: string;
 	description: string;
 	project: Project;
+	version: Version;
 	createdBy: string;
 	deletedAt?: any;
 	createdAt: string;
@@ -85,6 +103,7 @@ export interface Plan {
 	title: string;
 	description: string;
 	project: Project;
+	version: Version;
 }
 
 export interface SinglePlanResponse {
