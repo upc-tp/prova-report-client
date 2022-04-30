@@ -27,6 +27,10 @@ export class PlanService {
     return this.http.get<SinglePlanResponse>(BASE_URL + this.testPlan + `/${id}`)
   }
 
+  getPdf(id: number): Observable<Blob>{
+    return this.http.get(BASE_URL + this.testPlan + `/${id}/pdf`,{responseType: 'blob'});
+  }
+
   createTestPlan(title: string, description: string, projectId:number, versionId: number): Observable<PlanCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
