@@ -26,7 +26,7 @@
           <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es
             obligatorio</span>
         </div>
-        <div class="form-item" *ngIf="isVisibleProjectUpdateform">
+        <div class="form-item">
           <nz-form-label>
             Proyecto
           </nz-form-label>
@@ -36,7 +36,7 @@
           </nz-select>
           <span class="invalid-feedback" *ngIf="submitted && f.selectProject.errors?.required" >* Este campo es obligatorio</span>
         </div>
-        <div class="form-item" *ngIf="isVisibleProjectUpdateform">
+        <div class="form-item">
           <nz-form-label>
             Version
           </nz-form-label>
@@ -94,21 +94,38 @@
     <nz-modal [(nzVisible)]="isDetailVisible" nzTitle = "Detalle de Plan de Prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
         <div>
           <div>
-            <span>Título</span>
+            <h2><b>
+              Título
+            </b></h2>
             <h3>{{plan.title}}</h3>
-            <span>Descripcion</span>
+            <h2><b>
+              Descripcion
+            </b></h2>
             <div>
             <h3>{{plan.description}}</h3>
-            <span>Projecto</span>
+            <h2><b>
+              Projecto
+            </b></h2>
             <h3>{{plan.project}}</h3>
-            <span>Versión</span>
+            <h2><b>
+              Versión
+            </b></h2>
             <h3>{{plan.version}}</h3>
-            <span>Registrado por:</span>
-            <h3>{{plan.createdBy}}</h3>
-            <span>Fecha de Registro</span>
-            <h3>{{plan.createdAt}}</h3>
+            <h2><b>
+              Registrado por:
+            </b></h2>
+            <h3>{{plan.registerBy}}</h3>
+            <h2><b>
+              Fecha de Registro
+            </b></h2>
+            <h3>{{plan.registerDate}}</h3>
             </div>
           </div>
+          <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright" (click)="downloadReport()">
+          <span class="iconify" data-icon="ant-design:download-outlined" style="color: white" data-width="24"
+            data-height="24"></span>
+          <span>Descargar Reporte</span>
+        </button>
         </div>
         <div *nzModalFooter></div>
       </nz-modal>
@@ -142,7 +159,7 @@
             <button class="options" nz-button nzType="primary" (click)="updatePlan(data.id)">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </button>
-            <button class="options" nz-button nzType="primary" (click)="detailPlan(data.id)">
+            <button class="options" nz-button nzType="primary" (click)="detailPlan(data)">
               <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>

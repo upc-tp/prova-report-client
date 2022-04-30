@@ -44,8 +44,8 @@ export class PlanComponent implements OnInit, OnDestroy {
     value: number;
   }> = [];
   plan: PlanView = {
-    createdAt: '',
-	  createdBy: '',
+    registerDate: '',
+	  registerBy: '',
 	  modifiedAt: '',
 	  modifiedBy: '',
 	  id: 0,
@@ -104,6 +104,7 @@ export class PlanComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     this.submitted = true;
+    console.log(this.validateForm.controls['title'].value);
     if (this.validateForm.valid) {
       if (this.id) {
         this.planService
@@ -111,11 +112,12 @@ export class PlanComponent implements OnInit, OnDestroy {
             this.validateForm.controls['title'].value,
             this.validateForm.controls['description'].value,
             this.validateForm.controls['selectProject'].value,
+            this.validateForm.controls['selectVersion'].value,
             this.id
           )
           .subscribe(
             (plan) => {
-              this.fetchPlans(this.page, this.pageSize);
+              this.search();
               console.log('Response: ', plan);
               this.isVisible = false;
               this.submitted = false;
@@ -136,7 +138,6 @@ export class PlanComponent implements OnInit, OnDestroy {
           )
           .subscribe(
             (plan) => {
-              this.fetchPlans(this.page, this.pageSize);
               console.log('Response: ', plan);
               this.isVisible = false;
               this.submitted = false;
@@ -144,8 +145,11 @@ export class PlanComponent implements OnInit, OnDestroy {
               this.validateForm.controls['description'].setValue('');
               this.validateForm.controls['selectProject'].setValue(0);
               this.validateForm.controls['selectVersion'].setValue(null);
+
+              this.search();
             },
             (error) => console.log(error)
+            
           );
       }
     } else {
@@ -182,6 +186,7 @@ export class PlanComponent implements OnInit, OnDestroy {
           this.filterFormGroup.controls['projects'].value
         )
         .subscribe(res => {
+          console.log(res);
           this.data = res.result.map((tPlan) => {
             return {
               id: tPlan.id,
@@ -213,7 +218,10 @@ export class PlanComponent implements OnInit, OnDestroy {
           //this.Pagination();
     }
   }
+  downloadReport(){
 
+    
+  }
   /*getPlansByProjectId(){
     this.planService.getTestPlansByProject(null, null, '', this.projectId).subscribe( (res) => {
       this.data = res.result.map( (plan) => {
@@ -254,6 +262,7 @@ export class PlanComponent implements OnInit, OnDestroy {
 
   getVersions(projectId: number) {
     this.versionService.getVersionsForSelect(projectId).subscribe(res =>{
+      console.log(res);
       this.versions = res.result.map(tVersion => {
         console.log(tVersion);
         return{
@@ -265,23 +274,26 @@ export class PlanComponent implements OnInit, OnDestroy {
   }
 
   onSelectVersion(projectId: number) {
+    console.log(projectId)
     this.f['selectVersion'].setValue(null);
     this.getVersions(projectId);
   }
 
-  detailPlan(id: number){
-    this.id = id;
-        this.planService.getTestPlan(id).subscribe((res) => {
-            this.plan.id = this.id;
-            this.plan.title = res.result.title;
-            this.plan.description = res.result.description;
-            this.plan.project = res.result.project.title;
-            this.plan.version = res.result.version.title;
-            this.plan.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
-	          this.plan.createdBy = res.result.createdBy;
-	          this.plan.modifiedAt = res.result.modifiedAt;
-	          this.plan.modifiedBy = res.result.modifiedBy;
-        })
+  detailPlan(plan: PlanView)
+  {     
+    console.log(plan);
+        this.plan = plan;
+        // this.planService.getTestPlan(id).subscribe((res) => {
+        //     this.plan.id = this.id;
+        //     this.plan.title = res.result.title;
+        //     this.plan.description = res.result.description;
+        //     this.plan.project = res.result.project.title;
+        //     this.plan.version = res.result.version.title;
+        //     this.plan.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
+	      //     this.plan.createdBy = res.result.createdBy;
+	      //     this.plan.modifiedAt = res.result.modifiedAt;
+	      //     this.plan.modifiedBy = res.result.modifiedBy;
+        // })
         this.isDetailVisible = true;
   }
 
@@ -374,7 +386,7 @@ export class PlanComponent implements OnInit, OnDestroy {
       this.validateForm.get('title').setValue(res.result.title);
       this.validateForm.get('description').setValue(res.result.description);
       this.validateForm.get('selectProject').setValue(res.result.project.id);
-      this.validateForm.get('selectVersion').setValue(res.result.version.id);
+      this.validateForm.get('selectVersion').setValue(res.result.version?.id);
       this.isVisible = true;
       this.isVisibleProjectUpdateform = false;
     });

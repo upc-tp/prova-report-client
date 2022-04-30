@@ -23,8 +23,8 @@ export class Version{
 	id: number;
 }
 export interface PlanView {
-	createdAt: string;
-	createdBy: string;
+	registerDate: string;
+	registerBy: string;
 	modifiedAt: string;
 	modifiedBy: string;
 	id: number;

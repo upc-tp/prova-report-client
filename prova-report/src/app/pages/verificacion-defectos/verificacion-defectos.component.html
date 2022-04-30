@@ -1,106 +1,51 @@
 <div class="backgroundContent">
-  <div class="banner">Validacion de Defectos</div>
-  <!--VALIDAR BUG-->
-  <nz-modal
-    [(nzVisible)]="isVisible"
-    nzTitle="Validar Defectos"
-    (nzOnCancel)="handleCancel()"
-    (nzOnOk)="handleOk()"
-    [nzOkLoading]="isOkLoading"
-  >
-    <div class="form-item my-2" style="text-align: center">
-      ¿Quieres validar este defecto?
-    </div>
-    <div class="row" style="justify-content: center">
-      <div class="col-4">
-        <button
-          mat-flat-button
-          color="primary"
-          class="button-global ps-3 pe-3 button-bg-primary"
-          style="margin-top: 0.5rem"
-          (click)="validateDefect(3)"
-        >
-          Rechazar
-        </button>
-      </div>
-      <div class="col-4">
-        <button
-          mat-flat-button
-          color="primary"
-          class="button-global ps-3 pe-3 button-bg-primary"
-          style="margin-top: 0.5rem"
-          (click)="validateDefect(2)"
-        >
-          Aceptar
-        </button>
-      </div>
-    </div>
-    <div *nzModalFooter></div>
-  </nz-modal>
-  <!--DETALLE BUG-->
-  <nz-modal
-    [(nzVisible)]="isDetailVisible"
-    [nzTitle]="modalTitle"
-    (nzOnCancel)="handleCancel()"
-    (nzOnOk)="handleOk()"
-  >
-  <ng-template #modalTitle> 
-    <span>
-      Detalle Defecto
-    </span>
-    <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
-  </ng-template>
-    <div>
-      <div class="row">
-        <div class="mb-3">
-          <div class="col-12 mb-1">
-            <span class="text-fs-14 text-w-bold text-black">Título</span>
-          </div>
-          <div class="col-12">
-            <span class="text-fs-14 text-black">{{ defecto.title }}</span>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="col-12 mb-1">
-            <span class="text-fs-14 text-w-bold text-black">ReproSteps</span>
-          </div>
-          <div class="col-12">
-            <textarea
-              style="border-radius: 5px; width: 100%"
-              (resize)="(false)"
-              disabled="true"
-              >{{ defecto.repro_steps }}</textarea
-            >
-          </div>
-        </div>
+    <div class="banner">Verificacion de Defectos</div>
 
-        <div class="col-6 mb-3">
-          <div class="col-6 mb-1">
-            <span class="text-fs-14 text-w-bold text-black">Severidad</span>
-          </div>
-          <div class="col-6">
-            <span class="text-fs-14 text-black">
-              <img style="width: 1rem" [src]="defecto.severityIcon" />
-              {{ defecto.severity }}
-            </span>
-          </div>
-        </div>
+<!--VALIDAR BUG-->
+<nz-modal
+[(nzVisible)]="isVisible"
+nzTitle="Validar Defectos"
+(nzOnCancel)="handleCancel()"
+(nzOnOk)="handleOk()"
+[nzOkLoading]="isOkLoading"
+>
+<div class="form-item my-2" style="text-align: center">
+  ¿Quieres validar este defecto?
+</div>
+<div class="row" style="justify-content: center">
+  <div class="col-4">
+    <button
+      mat-flat-button
+      color="primary"
+      class="button-global ps-3 pe-3 button-bg-primary"
+      style="margin-top: 0.5rem"
+      (click)="validateDefect(5)"
+    >
+      En Observacion
+    </button>
+  </div>
+  <div class="col-4">
+    <button
+      mat-flat-button
+      color="primary"
+      class="button-global ps-3 pe-3 button-bg-primary"
+      style="margin-top: 0.5rem"
+      (click)="validateDefect(4)"
+    >
+      Corregido
+    </button>
+  </div>
+</div>
+<div *nzModalFooter></div>
+</nz-modal>
 
-        <div class="col-6 mb-3">
-          <div class="col-6 mb-1">
-            <span class="text-fs-14 text-w-bold text-black">Prioridad</span>
-          </div>
-          <div class="col-6">
-            <span class="text-fs-14 text-black">
-              <img style="width: 1rem" [src]="defecto.priorityIcon" />
-              {{ defecto.priority }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *nzModalFooter></div>
-  </nz-modal>
+<!--DETALLE BUG-->
+  <nz-modal
+  [(nzVisible)]="isDetailVisible"
+  [nzTitle]="modalTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
   <!--ACTUALIZAR BUG-->
   <nz-modal
     [(nzVisible)]="isUpdateVisible"
@@ -158,8 +103,68 @@
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
-  <!--FILTROS-->
-  <form [formGroup]="filterFormGroup">
+<ng-template #modalTitle> 
+  <span>
+    Detalle Defecto
+  </span>
+  <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
+</ng-template>
+
+
+  <div>
+    <div class="row">
+      <div class="mb-3">
+        <div class="col-12 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Título</span>
+        </div>
+        <div class="col-12">
+          <span class="text-fs-14 text-black">{{ defecto.title }}</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="col-12 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">ReproSteps</span>
+        </div>
+        <div class="col-12">
+          <textarea
+            style="border-radius: 5px; width: 100%"
+            (resize)="(false)"
+            disabled="true"
+            >{{ defecto.repro_steps }}</textarea
+          >
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Severidad</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+            <img style="width: 1rem" [src]="defecto.severityIcon" />
+            {{ defecto.severity }}
+          </span>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Prioridad</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+            <img style="width: 1rem" [src]="defecto.priorityIcon" />
+            {{ defecto.priority }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div *nzModalFooter></div>
+</nz-modal>
+
+<form [formGroup]="filterFormGroup">
     <div class="row d-flex">
       <div class="col-md-4">
         <span><b>Proyecto</b></span>
@@ -178,45 +183,6 @@
         </mat-form-field>
       </div>
 
-      <!-- <div class="col-md-4">
-              <span><b>Suite</b></span>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Seleccionar</mat-label>
-              <mat-select
-                formControlName="testSuite"
-                (selectionChange)="updateFilter($event)"
-              >
-              <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
-                {{tSuite.value}}
-              </mat-option>
-              </mat-select>
-              <mat-hint
-                *ngIf="validaciones('testSuite')"
-                class="form-text text-danger animate__animated animate__headShake"
-                >Seleccione uno</mat-hint
-              >
-            </mat-form-field>
-          </div> -->
-
-      <!-- <div class="col-md-4">
-            <span><b>Caso de Prueba</b></span>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Seleccionar</mat-label>
-            <mat-select
-              formControlName="testCase"
-              (selectionChange)="updateFilter($event)"
-            >
-            <mat-option *ngFor="let tCase of listTestCase" [value]="tCase.key">
-              {{tCase.value}}
-            </mat-option>
-            </mat-select>
-            <mat-hint
-              *ngIf="validaciones('testCase')"
-              class="form-text text-danger animate__animated animate__headShake"
-              >Seleccione uno</mat-hint
-            >
-          </mat-form-field>
-        </div> -->
       <div class="col-md-4" style="margin-top: 1rem">
         <button
           mat-flat-button
@@ -253,11 +219,6 @@
       </div>
     </div>
   </form>
-  <br />
-
-  <span class="my-2"><b>
-    Manuel tienes {{ count }} defectos por validar
-  </b></span>
   <div style="margin-top: 3rem">
     <nz-table
       #rowSelectionTable
@@ -329,4 +290,5 @@
       Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
     </ng-template>
   </div>
-</div>
+
+ </div>   

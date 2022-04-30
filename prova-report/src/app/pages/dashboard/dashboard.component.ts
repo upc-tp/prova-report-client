@@ -390,7 +390,7 @@ export class DashboardComponent implements OnInit {
 
     this.donutDefectsOptions = {
       series: this.defectFilter,
-      labels: ["Nuevos", "Aceptados", "Rechazados"],
+      labels: ["Nuevos", "Aceptados", "Rechazados", "Corregidos" , "En Observacion"],
       chart: {
         width: 380,
         type: 'donut'

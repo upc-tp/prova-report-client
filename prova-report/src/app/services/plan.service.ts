@@ -27,6 +27,11 @@ export class PlanService {
     return this.http.get<SinglePlanResponse>(BASE_URL + this.testPlan + `/${id}`)
   }
 
+  getReport(id:number){
+
+
+  }
+
   createTestPlan(title: string, description: string, projectId:number, versionId: number): Observable<PlanCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -45,7 +50,7 @@ export class PlanService {
     );
   }
 
-  updateTestPlan(title: string, description: string,projectId:number ,id: number): Observable<PlanCreatedResponse> {
+  updateTestPlan(title: string, description: string,projectId:number ,versionId:number,id: number): Observable<PlanCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -56,6 +61,7 @@ export class PlanService {
       title,
       description,
       projectId,
+      versionId
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
