@@ -12,6 +12,7 @@ import { Filter } from 'src/app/interfaces/global.model';
 import { UtilsService } from 'src/app/common/UtilsService';
 import Swal from 'sweetalert2';
 import { VersionService } from 'src/app/services/versions.services';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-plan',
@@ -258,6 +259,33 @@ export class PlanComponent implements OnInit, OnDestroy {
         })
       )
     );
+  }
+
+  generatePDF(id: number, name: string){
+    const navi = (window.navigator as any);
+    let datePdf = new Date();
+    this.planService.getPdf(id)
+        .subscribe(x => {
+            var newBlob = new Blob([x], { type: "application/pdf" });
+
+            if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+              (window.navigator as any).msSaveOrOpenBlob(newBlob, "plan-de-pruebas-" + this.utils.formatDate(datePdf));
+                return;
+            }
+            
+            const data = window.URL.createObjectURL(newBlob);
+            
+            var link = document.createElement('a');
+            link.href = data;
+            link.download = "plan-de-pruebas-" + this.utils.formatDate(datePdf);
+            
+            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+            
+            setTimeout(function () {
+                window.URL.revokeObjectURL(data);
+                link.remove();
+            }, 100);
+        });
   }
 
   getVersions(projectId: number) {
