@@ -219,10 +219,6 @@ export class PlanComponent implements OnInit, OnDestroy {
           //this.Pagination();
     }
   }
-  downloadReport(){
-
-    
-  }
   /*getPlansByProjectId(){
     this.planService.getTestPlansByProject(null, null, '', this.projectId).subscribe( (res) => {
       this.data = res.result.map( (plan) => {

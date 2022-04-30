@@ -351,7 +351,7 @@ export class DashboardComponent implements OnInit {
           }
         }
       },
-        colors: ['#20A0E2', '#48b337', '#f50000'],
+        colors: ['#20A0E2', '#48b337', '#f50000','#FF5414','#FFE15D'],
     };
 
       this.donutDesignCoverage = {

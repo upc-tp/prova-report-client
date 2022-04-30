@@ -425,7 +425,7 @@ export class ValidacionBugsComponent implements OnInit {
         this.setOfCheckedId.has(item.id)
       ) && !this.checked;
   }
-  validateDefect(state:number){
+  validateDefect(state:number,isFixed:number){
     console.log(this.setOfCheckedId);
     let Ids: Array<number> = new Array<number>();
     this.setOfCheckedId.forEach((ts)=>{
@@ -433,7 +433,7 @@ export class ValidacionBugsComponent implements OnInit {
       Ids.push(ts);
     });
 
-    this.defectService.updateStateDefect(Ids,state).subscribe(
+    this.defectService.updateStateDefect(Ids,state,isFixed).subscribe(
       (res) => {
         console.log(res);
         if(res.success === 'true'){

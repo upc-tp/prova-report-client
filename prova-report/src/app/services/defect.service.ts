@@ -43,7 +43,7 @@ export class DefectService{
             catchError(this.handleErrorObservable)
         );
     }
-    updateStateDefect(ids: number[],defectStateId:number){
+    updateStateDefect(ids: number[],defectStateId:number,isFixed:number){
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -52,6 +52,7 @@ export class DefectService{
 
         return this.http.post<DefectCreatedResponse>( BASE_URL + this.defect + '/bulk',{
             defectStateId: defectStateId,
+            is_fixed: isFixed,
             defectIds:ids
         },httpOptions).pipe(
             map(this.extractData),      
