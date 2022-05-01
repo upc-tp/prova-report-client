@@ -9,21 +9,20 @@ import { ProjectService } from 'src/app/services/projects.service';
 import { TestCaseService } from 'src/app/services/testcase.service';
 import Swal from 'sweetalert2';
 import { Subject, Subscription } from 'rxjs';
-import { Defect } from '../models/Defect.model';
 import { DefectService } from 'src/app/services/defect.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { DefectData, DefectView } from 'src/app/interfaces/defect';
+import { Defect, DefectData, DefectView } from 'src/app/interfaces/defect';
 import { PriorityService } from 'src/app/services/priority.services';
 import { SeverityService } from 'src/app/services/seveities.services';
 
 @Component({
-  selector: 'app-validacion-bugs',
-  templateUrl: './validacion-bugs.component.html',
-  styleUrls: ['./validacion-bugs.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-validacion-defectos',
+  templateUrl: './validacion-defectos.component.html',
+  styleUrls: ['./validacion-defectos.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ValidacionBugsComponent implements OnInit {
+export class ValidacionDefectosComponent implements OnInit {
   isDetailVisible = false;
   isUpdateVisible = false;
   isVisible = false;

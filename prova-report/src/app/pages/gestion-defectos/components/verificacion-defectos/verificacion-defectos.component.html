@@ -1,5 +1,4 @@
-<div class="backgroundContent">
-    <div class="banner">Verificacion de Defectos</div>
+<div>
 
 <!--VALIDAR BUG-->
 <nz-modal
@@ -59,6 +58,21 @@ nzTitle="Validar Defectos"
       [formGroup]="validateUpdateForm"
       (ngSubmit)="updateForm()"
     >
+    <div class="form-item">
+      <nz-form-label> Prioridad </nz-form-label>
+      <nz-select
+        nzSize="large"
+        formControlName="selectPriority"
+        class="select-input"
+        nzPlaceHolder="Seleccione Prioridad"
+        [nzOptions]="priorities"
+      >
+        <nz-option
+          nzValue="priority.value"
+          nzLabel="priority.label"
+        ></nz-option>
+      </nz-select>
+    </div>
       <div class="form-item">
         <nz-form-label> Severidad </nz-form-label>
         <nz-select
@@ -74,21 +88,7 @@ nzTitle="Validar Defectos"
           ></nz-option>
         </nz-select>
       </div>
-      <div class="form-item">
-        <nz-form-label> Prioridad </nz-form-label>
-        <nz-select
-          nzSize="large"
-          formControlName="selectPriority"
-          class="select-input"
-          nzPlaceHolder="Seleccione Prioridad"
-          [nzOptions]="priorities"
-        >
-          <nz-option
-            nzValue="priority.value"
-            nzLabel="priority.label"
-          ></nz-option>
-        </nz-select>
-      </div>
+
       <div class="form-item">
         <button
           nz-button
@@ -123,7 +123,7 @@ nzTitle="Validar Defectos"
       </div>
       <div class="mb-3">
         <div class="col-12 mb-1">
-          <span class="text-fs-14 text-w-bold text-black">ReproSteps</span>
+          <span class="text-fs-14 text-w-bold text-black">Pasos a Reproducir</span>
         </div>
         <div class="col-12">
           <textarea
@@ -137,24 +137,24 @@ nzTitle="Validar Defectos"
 
       <div class="col-6 mb-3">
         <div class="col-6 mb-1">
-          <span class="text-fs-14 text-w-bold text-black">Severidad</span>
-        </div>
-        <div class="col-6">
-          <span class="text-fs-14 text-black">
-            <img style="width: 1rem" [src]="defecto.severityIcon" />
-            {{ defecto.severity }}
-          </span>
-        </div>
-      </div>
-
-      <div class="col-6 mb-3">
-        <div class="col-6 mb-1">
           <span class="text-fs-14 text-w-bold text-black">Prioridad</span>
         </div>
         <div class="col-6">
           <span class="text-fs-14 text-black">
             <img style="width: 1rem" [src]="defecto.priorityIcon" />
             {{ defecto.priority }}
+          </span>
+        </div>
+      </div>
+
+      <div class="col-6 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Severidad</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+            <img style="width: 1rem" [src]="defecto.severityIcon" />
+            {{ defecto.severity }}
           </span>
         </div>
       </div>
@@ -243,7 +243,7 @@ nzTitle="Validar Defectos"
           <th>Defecto</th>
           <th>Prioridad</th>
           <th>Severidad</th>
-          <th>StepsRepro</th>
+          <th>Pasos a Reproducir</th>
           <th>Estado</th>
           <th>Opciones</th>
         </tr>
@@ -292,3 +292,4 @@ nzTitle="Validar Defectos"
   </div>
 
  </div>   
+

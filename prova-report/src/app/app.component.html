@@ -122,7 +122,7 @@
     <i nz-icon nzType="form"></i>
     <span>Ejecucion Casos de Prueba</span>
   </li>
-  <li
+  <!-- <li
     nz-menu-item
     nz-tooltip
     nzTooltipPlacement="right"
@@ -146,6 +146,19 @@
 >
   <i nz-icon nzType="form"></i>
   <span>Verificacion de Defectos</span>
+</li> -->
+
+<li
+nz-menu-item
+nz-tooltip
+nzTooltipPlacement="right"
+[nzTooltipTitle]="isCollapsed ? 'Gestion de Defectos' : ''"
+style="text-align: left"
+routerLink="/gestion-defectos"
+routerLinkActive="ant-menu-item-selected"
+>
+<i nz-icon nzType="form"></i>
+<span>Gestion de Defectos</span>
 </li>
 
   <li

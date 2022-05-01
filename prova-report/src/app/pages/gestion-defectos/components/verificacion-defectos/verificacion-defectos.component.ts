@@ -15,7 +15,7 @@ import { Filter } from 'src/app/interfaces/global.model';
   selector: 'app-verificacion-defectos',
   templateUrl: './verificacion-defectos.component.html',
   styleUrls: ['./verificacion-defectos.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class VerificacionDefectosComponent implements OnInit {
   isDetailVisible = false;
@@ -326,4 +326,5 @@ export class VerificacionDefectosComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
   }
+
 }
