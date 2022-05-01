@@ -205,7 +205,7 @@ export class PlanComponent implements OnInit, OnDestroy {
           if (res.result.length == 0) {
             this.isFilterVisible = true;
             Swal.fire({
-              title: 'El  no cuenta con planes de prueba',
+              title: 'El proyecto no cuenta con planes de prueba',
               showCloseButton: true,
               icon: 'info',
             });

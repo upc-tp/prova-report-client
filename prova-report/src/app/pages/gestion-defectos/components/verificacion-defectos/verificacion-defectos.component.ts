@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,7 +24,7 @@ export class VerificacionDefectosComponent implements OnInit {
   isOkLoading = false;
   id: number;
   validateUpdateForm: FormGroup;
-  listProjects: Filter[] = [];
+  @Input() listProjects: Filter[];
   defecto: DefectView = {
     id: 0,
     title: '',
@@ -36,14 +36,14 @@ export class VerificacionDefectosComponent implements OnInit {
     priorityId: 0,
     priorityIcon: '',
   };
-  priorities: Array<{
+  @Input() priorities: Array<{
     label: string;
     value: number;
-  }> = [];
-  severities: Array<{
+  }>;
+  @Input() severities: Array<{
     label: string;
     value: number;
-  }> = [];
+  }>;
   filterFormGroup: FormGroup;
 
   page: number = 1;
@@ -79,9 +79,6 @@ export class VerificacionDefectosComponent implements OnInit {
     this.filterFormGroup = this._fb.group({
       projects: ['', [Validators.required]],
     });
-    this.getPriorities();
-    this.getSeverities();
-    this.getProjects();
     this.validateUpdateForm = this._fb.group({
       selectPriority: [null, [Validators.required]],
       selectSeverity: [null, [Validators.required]],
@@ -145,40 +142,6 @@ export class VerificacionDefectosComponent implements OnInit {
     }, 3000);
   }
 
-  getProjects() {
-    this.ProjectService.getTestProjects(null, null, '').subscribe(
-      (res) => 
-        (this.listProjects = res.result.map((project) => {
-          const filtProject = new Filter();
-          filtProject.group = 0;
-          filtProject.key = project.id;
-          filtProject.value = project.title;
-          return filtProject;
-        }))
-    );
-  }
-  getPriorities() {
-    this.priorityService.getPriorities(null, null, '').subscribe(
-      (res) =>
-        (this.priorities = res.result.map((priority) => {
-          return {
-            label: priority.name,
-            value: priority.id,
-          };
-        }))
-    );
-  }
-  getSeverities() {
-    this.severityService.getSeverities(null, null, '').subscribe(
-      (res) =>
-        (this.severities = res.result.map((severity) => {
-          return {
-            label: severity.name,
-            value: severity.id,
-          };
-        }))
-    );
-  }
   validaciones(campo: string): boolean {
     return (
       this.filterFormGroup.get(campo).invalid &&
@@ -315,7 +278,7 @@ export class VerificacionDefectosComponent implements OnInit {
           this.search();
           this.handleCancel();
         }else{
-
+          this.search();
         }
         this.search();
       }

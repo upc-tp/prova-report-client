@@ -19,12 +19,12 @@ import { AuthService } from 'src/app/common/auth/auth.service';
 import { User } from 'src/app/interfaces/users';
 
 @Component({
-  selector: 'app-validacion-defectos',
-  templateUrl: './validacion-defectos.component.html',
-  styleUrls: ['./validacion-defectos.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-confirmacion-defectos',
+  templateUrl: './confirmacion-defectos.component.html',
+  styleUrls: ['./confirmacion-defectos.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
-export class ValidacionDefectosComponent implements OnInit {
+export class ConfirmacionDefectosComponent implements OnInit {
   isDetailVisible = false;
   isUpdateVisible = false;
   isVisible = false;
@@ -33,9 +33,13 @@ export class ValidacionDefectosComponent implements OnInit {
   id: number;
   page: number = 1;
   pageSize: number = 10;
+  count: number = 0;
+  page2: number = 1;
+  pageSize2: number = 10;
+  count2: number = 0;
   saved: boolean = false;
   updated: boolean = false;
-  count: number = 0;
+
   user : User;
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -53,11 +57,8 @@ export class ValidacionDefectosComponent implements OnInit {
     private _sanitizer: DomSanitizer,
     private iconRegistry: MatIconRegistry,
     private suiteService: SuitesService,
-    private ProjectService: ProjectService,
     private testCaseService: TestCaseService,
     private defectService: DefectService,
-    private priorityService: PriorityService,
-    private severityService: SeverityService,
     private authService: AuthService
   ) {
     this.iconRegistry.addSvgIcon(
@@ -69,6 +70,14 @@ export class ValidacionDefectosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   data: Array<{
+    id: number;
+    title: string;
+    repro_steps: string;
+    priority: string;
+    severity: string;
+    defectState: string;
+  }> = [];
+  data2: Array<{
     id: number;
     title: string;
     repro_steps: string;
@@ -124,6 +133,7 @@ export class ValidacionDefectosComponent implements OnInit {
   }
 
 
+
   getTestCases() {
     this.testCaseService.getTestCases(null, null, '', 1).subscribe((res) => {
       this.testCases = res.result.map((testCase) => {
@@ -149,7 +159,7 @@ export class ValidacionDefectosComponent implements OnInit {
           this.pageSize,
           '',
           this.filterFormGroup.controls['projects'].value,
-          1,
+          5,
           null
         )
         .subscribe((res) => {
@@ -179,6 +189,43 @@ export class ValidacionDefectosComponent implements OnInit {
           this.pageSize = res.pageSize;
           this.count = res.count;
         });
+
+        this.defectService
+        .getDefectbyProject(
+          this.page2,
+          this.pageSize2,
+          '',
+          this.filterFormGroup.controls['projects'].value,
+          4,
+          null
+        )
+        .subscribe((res) => {
+          this.data2 = res.result.map((defect) => {
+            return {
+              id: defect.id,
+              title: defect.title,
+              repro_steps: defect.repro_steps,
+              priority: defect.priority.name,
+              priorityIcon:
+                defect.priority.name === 'Baja'
+                  ? '/assets/images/low-priority.png'
+                  : defect.priority.name === 'Media'
+                  ? '/assets/images/middle-priority.png'
+                  : '/assets/images/high-priority.png',
+              severity: defect.severity.name,
+              severityIcon:
+                defect.severity.name === 'Trivial'
+                  ? '/assets/images/trivial.png'
+                  : defect.severity.name === 'Normal'
+                  ? '/assets/images/normal.png'
+                  : '/assets/images/critico.png',
+              defectState: defect.defectState.name,
+            };
+          });
+          this.page2 = res.page;
+          this.pageSize2 = res.pageSize;
+          this.count2 = res.count;
+        }).add( console.log(this.data2));
     }
   }
 
@@ -279,6 +326,7 @@ export class ValidacionDefectosComponent implements OnInit {
       }
     }
   }
+
   updateDefect(id: number) {
     this.id = id;
     this.defectService.getDefect(id).subscribe((res) => {
@@ -412,5 +460,4 @@ export class ValidacionDefectosComponent implements OnInit {
 
     );
   }
-
 }

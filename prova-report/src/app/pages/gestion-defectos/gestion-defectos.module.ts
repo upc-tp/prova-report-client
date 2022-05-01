@@ -17,11 +17,12 @@ import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableMod
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { MatOptionModule } from '@angular/material/core';
 import { GestionDefectosRoutingModule } from './gestion-defectos-routing.module';
+import { ConfirmacionDefectosComponent } from './components/confirmacion-defectos/confirmacion-defectos.component';
 
 
 
 @NgModule({
-  declarations: [GestionDefectosComponent, VerificacionDefectosComponent, ValidacionDefectosComponent],
+  declarations: [GestionDefectosComponent, VerificacionDefectosComponent, ValidacionDefectosComponent, ConfirmacionDefectosComponent],
   imports: [
     CommonModule,
     NzTabsModule,
