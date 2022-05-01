@@ -137,6 +137,17 @@
           [fill]="priorityStackedBarVerticalOptions.fill"
           [legend]="priorityStackedBarVerticalOptions.legend"
         ></apx-chart>
+        <apx-chart class="graphs"
+                   [series]="donutTestCoverage.series"
+                   [chart]="donutTestCoverage.chart"
+                   [xaxis]="donutTestCoverage.xaxis"
+                   [title]="donutTestCoverage.title"
+                   [dataLabels]="donutTestCoverage.dataLabels"
+                   [legend]="donutTestCoverage.legend"
+                   [labels]="donutTestCoverage.labels"
+                   [colors]="donutTestCoverage.colors"
+                   [plotOptions]="donutTestCoverage.plotOptions"
+        ></apx-chart>
       </div>
     </div>
   </div>

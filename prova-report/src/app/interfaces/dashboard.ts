@@ -4,6 +4,7 @@ export class Dashboard{
     defectsByStatus: Defect[];
     testsByPriority: TestsByPriority[];
     testDesignCoverage: TestDesignCoverage;
+    testCoverage: TestCoverage;
     defectsBySeverity: DefecstBySeverity[];
     defectsFixed: DefectsFixed;
 }
@@ -42,6 +43,11 @@ export class DefecstBySeverity{
 
 export class TestDesignCoverage{
   assigned_tests: number;
+  total_tests: number;
+}
+
+export class TestCoverage{
+  executed_tests: number;
   total_tests: number;
 }
 

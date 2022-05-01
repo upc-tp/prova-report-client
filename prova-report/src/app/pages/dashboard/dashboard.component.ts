@@ -56,6 +56,7 @@ export class DashboardComponent implements OnInit {
   public donutDefectsOptions: Partial<ChartOptions>;
   public donutDefectsCorrected: Partial<ChartOptions>;
   public donutDesignCoverage: Partial<ChartOptions>;
+  public donutTestCoverage: Partial<ChartOptions>;
   public priorityStackedBarVerticalOptions: Partial<ChartOptions>;
   filterFormGroup: FormGroup;
 
@@ -90,6 +91,7 @@ export class DashboardComponent implements OnInit {
   statusFilter: Array<number> = [];
   defectFilter: Array<number> = [];
 
+  testsDesignCoverageFilter: Array<number> = [];
   testsCoverageFilter: Array<number> = [];
   defectFixedFilter: Array<number> = [];
 
@@ -355,7 +357,7 @@ export class DashboardComponent implements OnInit {
     };
 
       this.donutDesignCoverage = {
-      series: this.testsCoverageFilter,
+      series: this.testsDesignCoverageFilter,
       labels: ['Pruebas asignadas',
         'Pruebas No asignadas'],
       chart: {
@@ -424,6 +426,43 @@ export class DashboardComponent implements OnInit {
       },
         colors: ['#48b337', '#f50000']
     };
+   
+    this.donutTestCoverage = {
+      series: this.testsCoverageFilter,
+      labels: ['Casos de prueba ejecutados',
+        'Casos de prueba No ejecutados'],
+      chart: {
+        width: 500,
+        type: 'donut'
+      },
+      title: {
+        text: 'Cobertura de casos de prueba',
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      legend: {
+        position: 'right',
+        offsetY: 0,
+        height: 230,
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total',
+                color: '#000',
+              }
+            }
+          }
+        }
+      },
+        colors: ['#48b337', '#f50000'],
+    };
+
 
   }
 
@@ -470,8 +509,11 @@ export class DashboardComponent implements OnInit {
       const FilterCoverage: Array<number> = [Number(res.result.testDesignCoverage.assigned_tests), Number(res.result.testDesignCoverage.total_tests - res.result.testDesignCoverage.assigned_tests)];
       // tslint:disable-next-line:max-line-length
       const FilterFixed: Array<number> = [Number(res.result.defectsFixed.fixed_defects), Number(res.result.defectsFixed.accepted_defects - res.result.defectsFixed.fixed_defects)];
+
+      const FilterCoverageTests: Array<number> = [Number(res.result.testCoverage.executed_tests), Number(res.result.testCoverage.total_tests - res.result.testCoverage.executed_tests)];
       this.donutDesignCoverage.series = FilterCoverage;
       this.donutDefectsCorrected.series = FilterFixed;
+      this.donutTestCoverage.series = FilterCoverageTests;
       this.donutOptions.series = this.statusFilter;
       this.donutDefectsOptions.series = this.defectFilter;
       this.priorityLoadDateStackecVerticalBars();
