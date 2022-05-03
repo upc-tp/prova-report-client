@@ -290,7 +290,7 @@
         <tbody>
           <tr *ngFor="let data of middleTable.data">
             <td
-              [nzChecked]="setOfCheckedId.has(data.id)"
+              [nzChecked]="setOfCheckedIdValidation.has(data.id)"
               (nzCheckedChange)="onItemChecked(data.id, $event)"
             ></td>
             <td>{{ data.title }}</td>

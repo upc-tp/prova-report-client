@@ -138,7 +138,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     } else {
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
-        testSuite: ['', [Validators.required]],
+        testSuite: ['', ]
       });
       this.filterItems = [];
     }
@@ -291,6 +291,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.getTestSteps();
           this.deleteFile();
           this.crearFormulario();
+          this.search()
+          this.disabledRegisterBug = false;
         });
     } else {
       Swal.fire({

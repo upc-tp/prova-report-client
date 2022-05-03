@@ -1,45 +1,47 @@
 <div class="backgroundContent">
   <div class="bannerDetSuite">
-    <button class="back-button" nz-button nzType="text" (click)="backTestSuites()">
+    <button
+      class="back-button"
+      nz-button
+      nzType="text"
+      (click)="backTestSuites()"
+    >
       <i nz-icon nzType="left" nzTheme="outline" (click)="backTestSuites()"></i>
     </button>
     Suite de Prueba
   </div>
   <div class="container-group">
     <div class="suite-info">
-      <h3>
-        Título
-      </h3>
-      <span>{{suite.title}}</span>
-      <h3>
-        Descripcion
-      </h3>
-      <span>{{suite.description}}</span>
-      <h3>
-        Proyecto
-      </h3>
-      <span>{{suite.project}}</span>
+      <h2>
+        <b> Título </b>
+      </h2>
+      <span>{{ suite.title }}</span>
+      <h2><b> Descripcion </b></h2>
+      <span>{{ suite.description }}</span>
+      <h2><b> Proyecto </b></h2>
+      <span>{{ suite.project }}</span>
     </div>
     <div class="suite-infor">
-      <h3>
-        Registrado por
-      </h3>
-      <span>{{suite.createdBy}}</span>
-      <h3>
-        Fecha de Registro
-      </h3>
-      <span>{{suite.createdAt}}</span>
+      <h2><b> Registrado por </b></h2>
+      <span>{{ suite.createdBy }}</span>
+      <h2><b> Fecha de Registro </b></h2>
+      <span>{{ suite.createdAt }}</span>
     </div>
   </div>
-  <h3>
-    Casos de Prueba
-  </h3>
+  <br />
+  <h2><b> Casos de Prueba </b></h2>
   <div>
     <div class="container-inputs">
       <div>
         <i nz-icon nzType="search"></i>&nbsp;&nbsp;
-        <input style="font-size: 12px !important; width: 200px;" (keyup)="inputChanged($event)" name="search" type="text"
-          id="search" placeholder="Buscar por título o descripción" />
+        <input
+          style="font-size: 12px !important; width: 200px"
+          (keyup)="inputChanged($event)"
+          name="search"
+          type="text"
+          id="search"
+          placeholder="Buscar por título o descripción"
+        />
       </div>
       <div>
         <label>Ingrese un nuevo caso de prueba</label>
@@ -48,9 +50,18 @@
         </button>
       </div>
     </div>
-    <nz-table #middleTable nzSize="middle" [nzData]="testCases" [nzFrontPagination]="false" [nzPageIndex]="page"
-      [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
-      (nzPageIndexChange)="onPageIndexChange($event)">
+    <nz-table
+      #middleTable
+      nzSize="middle"
+      [nzData]="testCases"
+      [nzFrontPagination]="false"
+      [nzPageIndex]="page"
+      [nzPageSize]="pageSize"
+      [nzShowPagination]="true"
+      [nzTotal]="count"
+      [nzShowTotal]="rangeTemplate"
+      (nzPageIndexChange)="onPageIndexChange($event)"
+    >
       <thead>
         <tr>
           <th>Etiqueta</th>
@@ -69,26 +80,40 @@
           <td>{{ data.tag }}</td>
           <td>{{ data.title }}</td>
           <td>
-            <span [ngClass]="{
-              'test-state-passed': data.testStatus == 'Superado',
-              'test-state-non-executed': data.testStatus == 'No ejecutado',
-              'test-state-skipped': data.testStatus == 'Omitido',
-              'test-state-failed': data.testStatus == 'Fallido'
-            }">
+            <span
+              [ngClass]="{
+                'test-state-passed': data.testStatus == 'Superado',
+                'test-state-non-executed': data.testStatus == 'No ejecutado',
+                'test-state-skipped': data.testStatus == 'Omitido',
+                'test-state-failed': data.testStatus == 'Fallido'
+              }"
+            >
               {{ data.testStatus }}
             </span>
           </td>
-          <td><img style="width: 1rem;" [src]="data.priorityIcon" /> {{ data.priority }} </td>
-          <td><img style="width: 1rem;" [src]="data.severityIcon" /> {{ data.severity }} </td>
           <td>
-            <div *ngIf="data.collaborator == null; else elseBlock"> - </div>
-            <ng-template #elseBlock> {{data.collaborator.firstName}}
+            <img style="width: 1rem" [src]="data.priorityIcon" />
+            {{ data.priority }}
+          </td>
+          <td>
+            <img style="width: 1rem" [src]="data.severityIcon" />
+            {{ data.severity }}
+          </td>
+          <td>
+            <div *ngIf="data.collaborator == null; else elseBlock">-</div>
+            <ng-template #elseBlock>
+              {{ data.collaborator.firstName }}
             </ng-template>
           </td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
           <td class="containerbuttons">
-            <button class="edit" nz-button nzType="primary" (click)="updateCase(data.id)">
+            <button
+              class="edit"
+              nz-button
+              nzType="primary"
+              (click)="updateCase(data.id)"
+            >
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </button>
           </td>
@@ -100,73 +125,140 @@
     </ng-template>
   </div>
 </div>
-<br>
+<br />
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Caso de Prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-  [nzOkLoading]="isOkLoading">
-  <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Caso de Prueba"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading"
+>
+  <form
+    nz-form
+    class="create-form"
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+  >
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label>
-          Título
-        </nz-form-label>
-        <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"/>
-        <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
+        <nz-form-label> Título </nz-form-label>
+        <input
+          nz-input
+          name="title"
+          formControlName="title"
+          type="text"
+          id="title"
+          placeholder="Título"
+          [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+        />
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.title.errors?.required"
+          >* Este campo es obligatorio</span
+        >
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label>
-          Descripción
-        </nz-form-label>
-        <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
-          <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es obligatorio</span>
+        <nz-form-label> Descripción </nz-form-label>
+        <input
+          nz-input
+          name="description"
+          formControlName="description"
+          type="text"
+          id="description"
+          placeholder="Descripción"
+          [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+        />
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.description.errors?.required"
+          >* Este campo es obligatorio</span
+        >
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label>
-          Prioridad
-        </nz-form-label>
-        <nz-select nzSize="large" formControlName="selectPriority" class="select-input"
-          nzPlaceHolder="Seleccione el nivel de prioridad" [nzOptions]="priorities" [ngClass]="{ 'is-invalid': submitted && f.selectPriority.errors }">
-          <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
+        <nz-form-label> Prioridad </nz-form-label>
+        <nz-select
+          nzSize="large"
+          formControlName="selectPriority"
+          class="select-input"
+          nzPlaceHolder="Seleccione el nivel de prioridad"
+          [nzOptions]="priorities"
+          [ngClass]="{ 'is-invalid': submitted && f.selectPriority.errors }"
+        >
+          <nz-option
+            nzValue="priorities.value"
+            nzLabel="priorities.label"
+          ></nz-option>
         </nz-select>
-        <span class="invalid-feedback" *ngIf="submitted && f.selectPriority.errors?.required">* Este campo es obligatorio</span>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.selectPriority.errors?.required"
+          >* Este campo es obligatorio</span
+        >
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label>
-          Severidad
-        </nz-form-label>
-        <nz-select nzSize="large" formControlName="selectSeverity" class="select-input"
-          nzPlaceHolder="Seleccione el nivel de severidad" [nzOptions]="severities" [ngClass]="{ 'is-invalid': submitted && f.selectSeverity.errors }">
-          <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
+        <nz-form-label> Severidad </nz-form-label>
+        <nz-select
+          nzSize="large"
+          formControlName="selectSeverity"
+          class="select-input"
+          nzPlaceHolder="Seleccione el nivel de severidad"
+          [nzOptions]="severities"
+          [ngClass]="{ 'is-invalid': submitted && f.selectSeverity.errors }"
+        >
+          <nz-option
+            nzValue="severities.value"
+            nzLabel="severities.label"
+          ></nz-option>
         </nz-select>
-        <span class="invalid-feedback" *ngIf="submitted && f.selectSeverity.errors?.required">* Este campo es obligatorio</span>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.selectSeverity.errors?.required"
+          >* Este campo es obligatorio</span
+        >
       </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label>
-          Asignar Responsable
-        </nz-form-label>
-        <nz-select nzSize="large" formControlName="selectCollaborator" class="select-input"
-          nzPlaceHolder="Seleccione Responsable" [nzOptions]="collaborators" [ngClass]="{ 'is-invalid': submitted && f.selectCollaborator.errors }">
-          <nz-option nzValue="collaborators.value" nzLabel="collaborators.label"></nz-option>
+        <nz-form-label> Asignar Responsable </nz-form-label>
+        <nz-select
+          nzSize="large"
+          formControlName="selectCollaborator"
+          class="select-input"
+          nzPlaceHolder="Seleccione Responsable"
+          [nzOptions]="collaborators"
+          [ngClass]="{ 'is-invalid': submitted && f.selectCollaborator.errors }"
+        >
+          <nz-option
+            nzValue="collaborators.value"
+            nzLabel="collaborators.label"
+          ></nz-option>
         </nz-select>
-        <span class="invalid-feedback" *ngIf="submitted && f.selectCollaborator.errors?.required">* Este campo es obligatorio</span>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.selectCollaborator.errors?.required"
+          >* Este campo es obligatorio</span
+        >
       </nz-form-control>
     </nz-form-item>
-
 
     <div class="form-item">
-      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+      <button
+        nz-button
+        nzBlock
+        nzSize="large"
+        nzType="primary"
+        [nzLoading]="isOkLoading"
+      >
         Guardar
       </button>
     </div>

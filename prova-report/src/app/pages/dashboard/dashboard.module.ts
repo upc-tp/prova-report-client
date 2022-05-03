@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatOptionModule } from '@angular/material/core';
+import { MatOptionModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -39,6 +39,7 @@ import { DashboardComponent } from './dashboard.component';
     MatDatepickerModule,
     MatNativeDateModule
   ],
+  providers: [{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}],
   declarations: [DashboardComponent],
   exports: [DashboardComponent]
 })

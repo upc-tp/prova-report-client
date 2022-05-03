@@ -60,6 +60,17 @@
   <div class="gutter-example" *ngIf="this.projectId != null">
     <div nz-row [nzGutter]="[hGutter, vGutter]" class="container-gutter">
       <div class="gutter-row">
+        <apx-chart class="graphs" id="testExecutionLineChart"
+        [series]="testExecutionTrendOptions.series"
+        [chart]="testExecutionTrendOptions.chart"
+        [xaxis]="testExecutionTrendOptions.xaxis"
+        [dataLabels]="testExecutionTrendOptions.dataLabels"
+        [title]="testExecutionTrendOptions.title"
+        [stroke]="testExecutionTrendOptions.stroke"
+        > 
+        </apx-chart>
+      </div>
+      <div class="gutter-row">
         <apx-chart class="graphs"
           [series]="donutOptions.series"
           [chart]="donutOptions.chart"
@@ -148,6 +159,20 @@
                    [colors]="donutTestCoverage.colors"
                    [plotOptions]="donutTestCoverage.plotOptions"
         ></apx-chart>
+      </div>
+      <div nz-col class="gutter-row">
+          <apx-chart class="graphs"
+            [series]="requirementsStackedBarHorizontalOptions.series"
+            [chart]="requirementsStackedBarHorizontalOptions.chart"
+            [title]="requirementsStackedBarHorizontalOptions.title"
+            [xaxis]="requirementsStackedBarHorizontalOptions.xaxis"
+            [dataLabels]="requirementsStackedBarHorizontalOptions.dataLabels"
+            [plotOptions]="requirementsStackedBarHorizontalOptions.plotOptions"
+            [stroke]="requirementsStackedBarHorizontalOptions.stroke"
+            [legend]="requirementsStackedBarHorizontalOptions.legend"
+            [fill]="requirementsStackedBarHorizontalOptions.fill"
+          >
+          </apx-chart>
       </div>
     </div>
   </div>

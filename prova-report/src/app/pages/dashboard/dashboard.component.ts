@@ -13,13 +13,14 @@ import {
   ApexLegend,
   ApexDataLabels,
 } from 'ng-apexcharts';
-import {Dashboard} from 'src/app/interfaces/dashboard';
+import {Dashboard, requirementsCoverage} from 'src/app/interfaces/dashboard';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/projects.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import Swal from 'sweetalert2';
 import { formatDate } from '@angular/common';
+import { executionTrend } from '../../interfaces/dashboard';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
@@ -49,6 +50,8 @@ export class DashboardComponent implements OnInit {
   @ViewChild('lineColumn') lineColumn: ChartComponent;
   @ViewChild('donut') donut: ChartComponent;
   @ViewChild('priorityStackedBarVertical') priorityStackedBarVertical: ChartComponent;
+  @ViewChild('requirementsStakedBar') requirementsStackedBarHorizontal: ChartComponent;
+  @ViewChild('testExecutionLineChart') testExecutionLineChart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
   public severityStackedBarVerticalOptions: Partial<ChartOptions>;
   public severityDefectsStackedBarVerticalOptions: Partial<ChartOptions>;
@@ -58,6 +61,8 @@ export class DashboardComponent implements OnInit {
   public donutDesignCoverage: Partial<ChartOptions>;
   public donutTestCoverage: Partial<ChartOptions>;
   public priorityStackedBarVerticalOptions: Partial<ChartOptions>;
+  public requirementsStackedBarHorizontalOptions: Partial<ChartOptions>;
+  public testExecutionTrendOptions: Partial<ChartOptions>;
   filterFormGroup: FormGroup;
 
 
@@ -94,7 +99,8 @@ export class DashboardComponent implements OnInit {
   testsDesignCoverageFilter: Array<number> = [];
   testsCoverageFilter: Array<number> = [];
   defectFixedFilter: Array<number> = [];
-
+  requirementsCoverage: requirementsCoverage;
+  testExecutionTrend: executionTrend[];
 
   severityDefectStackedVerticalData = [];
 
@@ -463,7 +469,70 @@ export class DashboardComponent implements OnInit {
         colors: ['#48b337', '#f50000'],
     };
 
+    this.requirementsStackedBarHorizontalOptions = {
+      series:[],
+      chart:{
+        type:"bar",
+        height:350,
+        stacked:true
+      },
+      plotOptions:{
+        bar:{
+          horizontal:true
+        }
+      },
+      stroke: {
+        width:1,
+        colors:["#fff"]
+      },
+      title:{
+        text: "Cobertura de Requisitos"
+      },
+      xaxis:{
+        categories:['']
+      },
+      yaxis:{
+        title:{
+          text:undefined
+        }
+      },
+      fill:{
+        opacity: 1
+      },
+      legend: {
+        position: "top",
+        horizontalAlign:"left",
+        offsetX:40
+      }
 
+
+    };
+
+    this.testExecutionTrendOptions = {
+      series: [
+        {
+          name:"Ejecuciones",
+          data:[]
+        }
+      ],
+      chart: {
+        height:350,
+        type: "line",
+        zoom:{
+          enabled:false
+        },
+      },
+      dataLabels:{
+        enabled:true
+      },
+      stroke:{
+        curve:"smooth"
+      },
+      title:{
+        text: "Tendencia de pruebas ejecutadas por día",
+        align:"left"
+      },
+    };
   }
 
   ngOnInit() {
@@ -505,6 +574,11 @@ export class DashboardComponent implements OnInit {
       this.severityDefectFilter = res.result.defectsBySeverity.map( (stat) => {
         return Number(stat.num_defects);
       });
+
+      this.requirementsCoverage = res.result.requirementCoverage;
+      this.testExecutionTrend = res.result.testExecutionTrend;
+      console.log(this.testExecutionTrend);
+      console.log(this.requirementsCoverage.categories)
       // tslint:disable-next-line:max-line-length
       const FilterCoverage: Array<number> = [Number(res.result.testDesignCoverage.assigned_tests), Number(res.result.testDesignCoverage.total_tests - res.result.testDesignCoverage.assigned_tests)];
       // tslint:disable-next-line:max-line-length
@@ -516,6 +590,25 @@ export class DashboardComponent implements OnInit {
       this.donutTestCoverage.series = FilterCoverageTests;
       this.donutOptions.series = this.statusFilter;
       this.donutDefectsOptions.series = this.defectFilter;
+      this.requirementsStackedBarHorizontalOptions.series = this.requirementsCoverage.series;
+      this.requirementsStackedBarHorizontalOptions = { ...this.requirementsStackedBarHorizontalOptions,...{
+        xaxis: {
+          categories:this.requirementsCoverage.categories}
+      }};
+      console.log(this.testExecutionTrend.map(x => x.tests_executed_by_day))
+      this.testExecutionTrendOptions = {
+        ...this.testExecutionTrendOptions,...{
+          series:[
+            {
+              name:"Ejecuciones",
+              data:this.testExecutionTrend.map(x => x.tests_executed_by_day)
+            }
+          ],
+          xaxis:{
+            categories:this.testExecutionTrend.map(x => x.day)
+          }
+        }
+      }
       this.priorityLoadDateStackecVerticalBars();
       this.severityLoadDateStackecVerticalBars();
       this.severityDefectsLoadDateStackecVerticalBars();

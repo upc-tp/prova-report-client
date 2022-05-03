@@ -150,9 +150,9 @@ export class VerificacionDefectosComponent implements OnInit {
   }
   updateCheckedSet(id: number, checked: boolean): void {
     if (checked) {
-      this.setOfCheckedId.add(id);
+      this.setOfCheckedIdVerification.add(id);
     } else {
-      this.setOfCheckedId.delete(id);
+      this.setOfCheckedIdVerification.delete(id);
     }
   }
 
@@ -161,7 +161,7 @@ export class VerificacionDefectosComponent implements OnInit {
   indeterminate = false;
   listOfCurrentPageData: readonly DefectData[] = [];
   listOfData: readonly DefectData[] = [];
-  setOfCheckedId = new Set<number>();
+  setOfCheckedIdVerification = new Set<number>();
 
   detailDefect(id: number) {
     this.id = id;
@@ -255,18 +255,18 @@ export class VerificacionDefectosComponent implements OnInit {
 
   refreshCheckedStatus(): void {
     this.checked = this.listOfCurrentPageData.every((item) =>
-      this.setOfCheckedId.has(item.id)
+      this.setOfCheckedIdVerification.has(item.id)
     );
     this.indeterminate =
       this.listOfCurrentPageData.some((item) =>
-        this.setOfCheckedId.has(item.id)
+        this.setOfCheckedIdVerification.has(item.id)
       ) && !this.checked;
   }
 
   validateDefect(state:number,isFixed:number){
-    console.log(this.setOfCheckedId);
+    console.log(this.setOfCheckedIdVerification);
     let Ids: Array<number> = new Array<number>();
-    this.setOfCheckedId.forEach((ts)=>{
+    this.setOfCheckedIdVerification.forEach((ts)=>{
       console.log(ts)
       Ids.push(ts);
     });

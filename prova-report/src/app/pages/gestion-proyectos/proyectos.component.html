@@ -58,12 +58,12 @@
         <td>{{ data.description }}</td>
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
-        <td class="containerbuttons">
-          <button class="options" nz-button nzType="primary" (click)="detailProject(data.id)"
+        <td>
+          <button nz-button nzType="primary" (click)="detailProject(data.id)"
             style="margin-right: 0.5rem;">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
-          <button class="options" nz-button nzType="primary" (click)="updateProject(data.id)">
+          <button nz-button nzType="primary" (click)="updateProject(data.id)">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
           </button>
         </td>

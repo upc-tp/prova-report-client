@@ -402,13 +402,13 @@ export class ConfirmacionDefectosComponent implements OnInit {
   indeterminate = false;
   listOfCurrentPageData: readonly DefectData[] = [];
   listOfData: readonly DefectData[] = [];
-  setOfCheckedId = new Set<number>();
+  setOfCheckedIdConfirmation = new Set<number>();
 
   updateCheckedSet(id: number, checked: boolean): void {
     if (checked) {
-      this.setOfCheckedId.add(id);
+      this.setOfCheckedIdConfirmation.add(id);
     } else {
-      this.setOfCheckedId.delete(id);
+      this.setOfCheckedIdConfirmation.delete(id);
     }
   }
 
@@ -431,17 +431,17 @@ export class ConfirmacionDefectosComponent implements OnInit {
 
   refreshCheckedStatus(): void {
     this.checked = this.listOfCurrentPageData.every((item) =>
-      this.setOfCheckedId.has(item.id)
+      this.setOfCheckedIdConfirmation.has(item.id)
     );
     this.indeterminate =
       this.listOfCurrentPageData.some((item) =>
-        this.setOfCheckedId.has(item.id)
+        this.setOfCheckedIdConfirmation.has(item.id)
       ) && !this.checked;
   }
   validateDefect(state:number,isFixed:number){
-    console.log(this.setOfCheckedId);
+    console.log(this.setOfCheckedIdConfirmation);
     let Ids: Array<number> = new Array<number>();
-    this.setOfCheckedId.forEach((ts)=>{
+    this.setOfCheckedIdConfirmation.forEach((ts)=>{
       console.log(ts)
       Ids.push(ts);
     });

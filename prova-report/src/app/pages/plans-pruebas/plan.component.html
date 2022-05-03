@@ -150,14 +150,14 @@
           <td>{{ data.version }}</td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
-          <td class="containerbuttons">
-            <button class="options" nz-button nzType="primary" (click)="updatePlan(data.id)">
+          <td>
+            <button style="margin-right: 0.5rem;" nz-button nzType="primary" (click)="updatePlan(data.id)">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </button>
-            <button class="options" nz-button nzType="primary" (click)="detailPlan(data)">
+            <button style="margin-right:0.5rem" nz-button nzType="primary" (click)="detailPlan(data)">
               <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
-            <button class="options" nz-button nzType="primary" (click)="generatePDF(data.id, data.title)">
+            <button style="margin-right:0.5rem" nz-button nzType="primary" (click)="generatePDF(data.id, data.title)">
               <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
             </button>
           </td>

@@ -5,9 +5,32 @@ export class Dashboard{
     testsByPriority: TestsByPriority[];
     testDesignCoverage: TestDesignCoverage;
     testCoverage: TestCoverage;
+    requirementCoverage:requirementsCoverage;
     defectsBySeverity: DefecstBySeverity[];
     defectsFixed: DefectsFixed;
+    testExecutionTrend:executionTrend[];
 }
+
+export class executionTrend{
+  day:string;
+  tests_executed_by_day:number;
+  total_duration:number;
+}
+
+
+export class requirementsCoverage{
+  categories:Category[];
+  series:Series[];
+  }
+  
+  export class Category {
+      name:string;
+  }
+  
+  export class Series{
+      name:string;
+      data: number[];
+  }
 
 export class TestsBySeverity{
     id: number;
