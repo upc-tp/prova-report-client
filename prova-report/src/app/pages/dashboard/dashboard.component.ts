@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
         },
       },
       title: {
-        text: 'Severidad por Defecto',
+        text: 'Defectos por severidad',
       },
       plotOptions: {
         bar: {
@@ -211,7 +211,7 @@ export class DashboardComponent implements OnInit {
         },
       },
       title: {
-        text: 'Severidad',
+        text: 'Pruebas por severidad',
       },
       plotOptions: {
         bar: {
@@ -264,7 +264,7 @@ export class DashboardComponent implements OnInit {
         },
       },
       title: {
-        text: 'Prioridad',
+        text: 'Pruebas por prioridad',
       },
       plotOptions: {
         bar: {
@@ -295,7 +295,7 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       title: {
-        text: 'Indicador de éxito de las pruebas',
+        text: 'Pruebas por estado',
       },
       dataLabels: {
         enabled: true,
@@ -329,7 +329,7 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       title: {
-        text: 'Indicador de defectos de las pruebas por Estado',
+        text: 'Defectos por estado',
       },
       dataLabels: {
         enabled: true,
@@ -365,7 +365,7 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       title: {
-        text: 'Cobertura de diseño de prueba ',
+        text: 'Cobertura de diseño de pruebas',
       },
       dataLabels: {
         enabled: true,
@@ -394,13 +394,13 @@ export class DashboardComponent implements OnInit {
 
       this.donutDefectsCorrected = {
       series: this.defectFixedFilter,
-      labels: ['Corregidos', 'No Corregidos'],
+      labels: ['Defectos corregidos', 'Defectos no corregidos'],
       chart: {
         width: 380,
         type: 'donut'
       },
       title: {
-        text: 'Procentaje de defectos corregido',
+        text: 'Defectos corregidos',
       },
       dataLabels: {
         enabled: true,
@@ -436,7 +436,7 @@ export class DashboardComponent implements OnInit {
         type: 'donut'
       },
       title: {
-        text: 'Cobertura de casos de prueba',
+        text: 'Cobertura de pruebas',
       },
       dataLabels: {
         enabled: true,
