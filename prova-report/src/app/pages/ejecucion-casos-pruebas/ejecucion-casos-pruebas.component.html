@@ -396,7 +396,8 @@ nzWidth="65%"
         Responsable
       </b>
     </h2>
-    <h3>{{testCaseDetailSelected.userInCharge.firstName}} {{testCaseDetailSelected.userInCharge.lastName}}</h3>
+    <h3 *ngIf="testCaseDetailSelected.userInCharge != null">{{testCaseDetailSelected.userInCharge.firstName}} {{testCaseDetailSelected.userInCharge.lastName}}</h3>
+    <h3 *ngIf="testCaseDetailSelected.userInCharge == null">Sin responsable</h3>
     <h2>
       <b>
         Fecha de Registro
