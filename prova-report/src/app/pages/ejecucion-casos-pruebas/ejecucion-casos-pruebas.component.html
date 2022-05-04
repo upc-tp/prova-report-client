@@ -114,7 +114,7 @@
       <ng-container matColumnDef="opciones">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <button class="details" nz-button nzType="primary" (click)="detailsExecutionTestCase(element.id)">
+          <button class="details" nz-button nzType="primary" (click)="showDetail(element)">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
         </td>
@@ -370,6 +370,78 @@
     </form>
   </div>
 </div>
+
+<!--Modal Detalle Ejecuciones-->
+<nz-modal
+[(nzVisible)]="DetalleVisible"
+*ngIf="testCaseDetailSelected != null"
+nzTitle="Detalle Caso de Prueba"
+(nzOnCancel)="handleCancel()"
+nzWidth="65%"
+>
+<div>
+  <div>
+    <h2>
+      <b>
+        Título
+      </b>
+    </h2>
+    <h3>{{testCaseDetailSelected.title}}</h3>
+    <h2><b>
+      Descripcion
+    </b></h2>
+    <h3>{{testCaseDetailSelected.description}}</h3>
+    <h2>
+      <b>
+        Responsable
+      </b>
+    </h2>
+    <h3>{{testCaseDetailSelected.userInCharge.firstName}} {{testCaseDetailSelected.userInCharge.lastName}}</h3>
+    <h2>
+      <b>
+        Fecha de Registro
+      </b>
+    </h2>
+    <h3>{{testCaseDetailSelected.createdAt}}</h3>
+  </div>
+  <nz-table #middleTable nzSize="small" [nzData]="listTestExecutions" [nzFrontPagination]="false" [(nzPageIndex)]="page"
+  [nzPageSize]="pageSize" [nzTotal]="count" [nzShowTotal]="rangeTemplate" [nzShowPagination]="true"
+  (nzPageIndexChange)="onPageIndexChange($event)"
+  >
+  <thead>
+    <tr>
+      <th>Orden</th>
+      <th>Estado</th>
+      <th>Comentarios</th>
+      <th>Fecha Inicio</th>
+      <th>Fecha Fin</th>
+      <th>Duracion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of middleTable.data">
+      <td>#{{data.order}}</td>
+      <td [ngClass]="{
+        'test-state-passed': data.testState.name == 'Superado',
+        'test-state-non-executed': data.testState.name == 'No ejecutado',
+        'test-state-skipped': data.testState.name == 'Omitido',
+        'test-state-failed': data.testState.name == 'Fallido'
+      }">{{data.testState.name}}</td>
+      <td>{{data.comments}}</td>
+      <td>{{data.startTime}}</td>
+      <td>{{data.endTime}}</td>
+      <td>{{data.duration}}</td>
+    </tr>
+  </tbody>
+  </nz-table>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+  </ng-template>
+</div>
+<div *nzModalFooter></div>
+</nz-modal>
+
+
 
 <nz-modal 
 [(nzVisible)]="isVisible"

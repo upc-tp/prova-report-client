@@ -1,3 +1,4 @@
+import { TestExecutionStep } from "src/app/interfaces/testcase";
 
 export class TestCase {
 	createdAt: string;
@@ -70,4 +71,21 @@ export class TestCaseSteps{
 	duration:number;
 	created_at:string;
 	created_by:string;
+}
+
+export class TestExecutionDetail{
+	createdAt: string;
+    createdBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id: number;
+	order: number;
+	startTime: string;
+	endTime: string;
+	comments:string;
+	duration:number;
+	testState: TestState;
+	testExecutionSteps: TestExecutionStep[];
 }

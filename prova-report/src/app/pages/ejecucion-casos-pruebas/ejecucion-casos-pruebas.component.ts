@@ -24,6 +24,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { DefectService } from 'src/app/services/defect.service';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { PriorityService } from 'src/app/services/priority.services';
+import { TestExecution } from '../../interfaces/testcase';
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -36,9 +37,11 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   isVisible = false;
   id: number;
   isOkLoading = false;
+  DetalleVisible = false;
   validateAddForm!: FormGroup;
   page: number = 1;
   pageSize: number = 10;
+  count: number = 0;
   defects: Array<{
     title: string;
     repro_steps: string;
@@ -58,6 +61,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   listTestSuite: Filter[] = [];
   listTestCase: TestCase[] = [];
   listTestCaseSteps: TestCaseSteps[] = [];
+  listTestExecutions: TestExecution[] = [];
+
+
   file: any;
   xmlData: string[] = [];
   chargeTestSteps = 0;
@@ -95,6 +101,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.crearFormulario();
   }
   testCaseSelected: TestCase;
+  testCaseDetailSelected: TestCase;
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginatorTestCase') paginatorTestCase: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -381,6 +388,33 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       );
     }
   }
+  showDetail(testCase:any){
+    console.log(this.page);
+    console.log(this.pageSize);
+    console.log(this.count);
+    this.testCaseDetailSelected = testCase;
+    this.spinnerService.isLoading.next(true);
+    this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res)=>{
+      this.page= res.page;
+      this.count = res.count;
+      this.listTestExecutions = res.result;
+    });
+    this.DetalleVisible = true;
+  }
+
+  fetchExecutions(page: number, pageSize: number,search:string,id:number){
+    this.testCaseService.getTestExecutions(page,pageSize,search,id).subscribe(
+    (res)=>{
+      this.listTestExecutions = res.result;
+      this.page= res.page;
+      this.pageSize = res.pageSize;
+      this.count = res.count;
+    });
+  }
+
+  onPageIndexChange(selectedPage: number) {
+    this.fetchExecutions(selectedPage,this.pageSize,'',this.testCaseDetailSelected.id);
+  }
 
   deleteFile() {
     this.file = null;
@@ -390,10 +424,11 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   showModal(){
     this.isVisible = true;
   }
-
   handleCancel(): void {
     this.isVisible = false;
+    this.DetalleVisible = false;
     this.id = null;
+    this.listTestExecutions = [];
   }
   handleOk(): void {
     this.isOkLoading = true;

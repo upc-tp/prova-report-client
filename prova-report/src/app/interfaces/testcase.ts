@@ -34,6 +34,9 @@ export interface TestExecutionResponse{
     message: string;
 	success: boolean;
     result: TestExecution[];
+	page:number;
+	pageSize:number;
+	count:number;
 }
 
 export interface SingleTestExecutionResponse{
