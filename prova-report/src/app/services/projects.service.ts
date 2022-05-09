@@ -56,6 +56,10 @@ export class ProjectService {
     return this.http.get<CollaboratorsResponse>(BASE_URL + this.testProject + `/${id}` + '/collaborators' + `?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
 
+  getNoCollaborators(page: number, pageSize: number, search: string, id: number): Observable<CollaboratorsResponse> {
+    return this.http.get<CollaboratorsResponse>(BASE_URL + this.testProject + `/${id}` + '/no-collaborators' + `?page=${page}&pageSize=${pageSize}&search=${search}`);
+  }
+
   createCollaborator(firstName: string, lastName: string, email: string, role: string, password: string, id: number): Observable<CollaboratorCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -69,6 +73,20 @@ export class ProjectService {
       email,
       role,
       password
+    }, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleErrorObservable)
+    );
+  }
+
+  assignCollaborator(id: number, userId: number): Observable<CollaboratorCreatedResponse> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+
+    return this.http.post<CollaboratorCreatedResponse>(BASE_URL+this.testProject+`/${id}`+'/collaborators' + `/${userId}`, {
     }, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleErrorObservable)
