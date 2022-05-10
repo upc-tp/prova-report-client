@@ -66,6 +66,9 @@
           ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/" formControlName="password"
           placeholder="Contraseña" (ngModelChange)="updateConfirmValidator()" nzErrorTip="Introduzca su contraseña!"
           required />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">* Este campo es obligatorio</div>
+          </div>
       </nz-input-group>
       <ng-template #suffixEye1>
         <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
