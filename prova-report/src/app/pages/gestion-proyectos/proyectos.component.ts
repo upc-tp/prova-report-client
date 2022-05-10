@@ -24,6 +24,7 @@ export class ProyectosComponent implements OnInit {
   isOkLoading = false;
   submitted = false;
   validateForm: FormGroup;
+
   id: number;
   page: number = 1;
   pageSize: number = 10;
@@ -106,6 +107,8 @@ export class ProyectosComponent implements OnInit {
     }
   }
 
+
+
   fetchProjects(page: number, pageSize: number, search: string = '') {
     this.projectService.getTestProjects(page, pageSize, search).subscribe(
       (res) => {
@@ -147,6 +150,7 @@ export class ProyectosComponent implements OnInit {
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
   }
+
 
   inputChanged(event) {
     this.modelChanged.next(event.target.value);
