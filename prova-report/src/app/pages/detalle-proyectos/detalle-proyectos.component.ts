@@ -117,7 +117,7 @@ export class DetalleProyectosComponent implements OnInit {
                 orden: tversion.order,
                 title: tversion.title,
                 description: tversion.description,
-                registerDate: tversion.createdAt,
+                registerDate: this.utils.formatDate(new Date(tversion.createdAt)),
                 registerBy: tversion.createdBy
               };
             })
