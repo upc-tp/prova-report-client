@@ -16,7 +16,7 @@
       <h2>
         <b>
           Descripcion
-        </b> 
+        </b>
       </h2>
       <span>{{project.description}}</span>
     </div>
@@ -46,8 +46,12 @@
           <div>
 
           </div>
-          <div>
+          <div >
             <label>Ingrese un nuevo colaborador</label>
+
+            <button nz-button nzType="primary" (click)="showModalAssign()" style="margin-right: 1rem;">
+              <span>Asignar</span>
+            </button>
             <button nz-button nzType="primary" (click)="showModal()">
               <span>Nuevo</span>
             </button>
@@ -175,6 +179,32 @@
     </nz-form-item>
     <div class="form-item">
       <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Guardar
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
+</nz-modal>
+<nz-modal [(nzVisible)]="isVisibleAssign" nzTitle="Asignar un colaborador" (nzOnCancel)="handleCancelAssign()"
+  (nzOnOk)="handleOkAssign()" [nzOkLoading]="isOkLoadingAssign">
+  <form  class="create-form" [formGroup]="validateFormAssign" (ngSubmit)="submitFormAssign()">
+    <div class="row d-flex">
+      <mat-form-field appearance="outline" class="w-100" style="width: 99%;">
+        <mat-label>
+          Colaboradores
+        </mat-label>
+        <mat-select  formControlName="collaborators" >
+          <mat-option *ngFor="let coll of listCollaborators" [value]="coll.id">
+            {{coll.name}}
+          </mat-option>
+          <mat-option  *ngIf="listCollaborators.length == 0" [disabled]="true">
+            No hay colaboradores disponibles
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingAssign">
         Guardar
       </button>
     </div>
