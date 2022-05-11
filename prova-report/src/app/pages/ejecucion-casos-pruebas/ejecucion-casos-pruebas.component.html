@@ -282,20 +282,20 @@
           </mat-form-field>
 
           <div class="iconify-mright">
-            <mat-label class="text-fs-24 text-w-bold col-12" style="margin-right: 1rem">Reporte Bugs</mat-label>
+            <mat-label class="text-fs-24 text-w-bold col-12" style="margin-right: 1rem">Reporte Defectos</mat-label>
             <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
             <button type="button" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright" [disabled]="disabledRegisterBug"
               style="margin-left: 2rem" (click)="showModal()">
               <span class="iconify" data-icon="ant-design:plus-circle-filled" style="color: white" data-width="24"
                 data-height="24"></span>
-              <span>Reportar Bug</span>
+              <span>Reportar Defecto</span>
             </button>
           </div>
         </div>
       </div>
 
       <div style="margin-left: 3rem">
-        <mat-label class="text-fs-24 text-w-bold col-12">Test Steps</mat-label>
+        <mat-label class="text-fs-24 text-w-bold col-12">Pasos de ejecución</mat-label>
         <div [hidden]="chargeTestSteps == 0">
           <table mat-table class="table-hover" style="width: 100%" [dataSource]="dataSourceTestSteps">
             <ng-container matColumnDef="name">
@@ -338,7 +338,7 @@
             <tr mat-row *matRowDef="let row; columns: headerColumnTestCaseSteps"></tr>
             <tr class="mat-row text-center" *matNoDataRow>
               <td class="mat-cell" colspan="5">
-                No se encontraron TestSteps <i class="bi bi-journals"></i>
+                No se encontraron Pasos de ejecución <i class="bi bi-journals"></i>
               </td>
             </tr>
           </table>
@@ -446,7 +446,7 @@ nzWidth="65%"
 
 <nz-modal 
 [(nzVisible)]="isVisible"
-nzTitle = "Añadir Bug"
+nzTitle = "Añadir Defecto"
 (nzOnCancel) = "handleCancel()"
 (nzOnOk)="handleOk()"
 [nzOkLoading]="isOkLoading"
@@ -475,7 +475,7 @@ nzTitle = "Añadir Bug"
   <nz-form-item>
     <nz-form-control class="form-item w-100">
       <nz-form-label>
-        Steps Repro
+        Pasos a reproducir
       </nz-form-label>
       <input
         nz-input
@@ -511,7 +511,7 @@ nzTitle = "Añadir Bug"
   </nz-form-item>
     <div class="form-item">
       <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
-        Registrar Bug
+        Registrar Defecto
       </button>
     </div>
   </form>
