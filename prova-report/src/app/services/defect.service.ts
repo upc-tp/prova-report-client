@@ -79,6 +79,23 @@ export class DefectService{
         );
     }
 
+    updateDefectState(severityId: number, priorityId: number, id: number, defectStateId:number): Observable<DefectCreatedResponse> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.put<DefectCreatedResponse>(BASE_URL + this.defect + `/${id}`, {
+            severityId,
+            priorityId,
+            defectStateId
+        }, httpOptions).pipe(
+            map(this.extractData),
+            catchError(this.handleErrorObservable)
+        );
+    }
+
     private extractData(res: any) {
         let body = res;
         return body;

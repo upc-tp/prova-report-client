@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ProjectService } from '../../services/projects.service';
 import { PriorityService } from '../../services/priority.services';
 import { SeverityService } from '../../services/seveities.services';
@@ -8,20 +8,69 @@ import { SuitesService } from 'src/app/services/suites.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DefectService } from 'src/app/services/defect.service';
 import { UtilsService } from 'src/app/common/UtilsService';
+import { DefectView } from 'src/app/interfaces/defect';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 
 @Component({
   selector: 'app-gestion-defectos',
   templateUrl: './gestion-defectos.component.html',
-  styleUrls: ['./gestion-defectos.component.scss']
+  styleUrls: ['./gestion-defectos.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class GestionDefectosComponent implements OnInit {
   listProjects: Filter[] = [];
   listTestSuite: Filter[] = [];
+  listDefectState: Filter[] = [{group:2,key:1,value:'Nuevo'},{group:2,key:2,value:'Aceptado'},
+  {group:2,key:3,value:'Rechazado'},{group:2,key:4,value:'Corregido'},{group:2,key:5,value:'En Observacion'}];
   filterFormGroup: FormGroup;
-
+  filterDefectsGroup: FormGroup;
+  validateUpdateForm: FormGroup;
+  isUpdateVisible = false;
   isVisible = false;
+  isDetailVisible = false;
   submitted = false;
   isOkLoading = false;
+  testCaseId: number;
+  updated: boolean = false;
+
+  page: number = 1;
+  pageSize: number = 10;
+  count: number = 0;
+
+  id: number
+
+  data: Array<{
+    id: number;
+    title: string;
+    repro_steps: string;
+    priority: string;
+    severity: string;
+    defectState: string;
+  }> = [];
+
+  defecto: DefectView = {
+    id: 0,
+    title: '',
+    repro_steps: '',
+    severity: '',
+    severityId: 0,
+    severityIcon: '',
+    priority: '',
+    priorityId: 0,
+    priorityIcon: '',
+  };
+
+  defects: Array<{
+    id: number;
+    title: string;
+    repro_steps: string;
+    priority: string;
+    priorityIcon: string;
+    severityIcon: string;
+    severity: string;
+  }> = [];
 
   priorities: Array<{
     label: string;
@@ -35,6 +84,14 @@ export class GestionDefectosComponent implements OnInit {
     label: string;
     value: number;
   }> = [];
+  defectStates: Array<{
+    label: string;
+    value: number;
+  }> = [{label:"Nuevo",value:1},
+  {label:"Aceptado",value:2},
+  {label:"Rechazado",value:3},
+  {label:"Corregido",value:4},
+  {label:"En Observacion",value:5}];
   constructor(
     private ProjectService: ProjectService,
     private priorityService: PriorityService,
@@ -43,8 +100,16 @@ export class GestionDefectosComponent implements OnInit {
     private suiteService: SuitesService,
     private defectService: DefectService,
     private _fb: FormBuilder,
-    private utils: UtilsService
-  ) { }
+    private utils: UtilsService,
+    private _sanitizer: DomSanitizer,
+    private iconRegistry: MatIconRegistry,
+    private spinnerService: SpinnerService
+  ) {
+    this.iconRegistry.addSvgIcon(
+      'BugIcon',
+      this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/bug.svg')
+    );
+   }
 
   ngOnInit(): void {
     this.getProjects();
@@ -54,6 +119,66 @@ export class GestionDefectosComponent implements OnInit {
       projects: ['', [Validators.required]],
       testSuite: ['', [Validators.required]]
     });
+    this.filterDefectsGroup = this._fb.group({
+      projects: ['', [Validators.required]],
+      stateDefect: ['']
+    });
+    this.validateUpdateForm = this._fb.group({
+      selectPriority: [null, [Validators.required]],
+      selectSeverity: [null, [Validators.required]],
+      updateState: [null,[Validators.required]]
+    });
+  }
+
+  search() {
+    var defects;
+    if(this.filterDefectsGroup.controls['stateDefect'].value){
+      defects = this.filterDefectsGroup.controls['stateDefect'].value;
+      defects.join();
+      console.log(defects);
+    }else{
+      defects = '1,2,3,4';
+      console.log(defects);
+    }
+
+    if (!this.filterDefectsGroup.invalid) {
+      this.defectService
+        .getDefectbyProject(
+          this.page,
+          this.pageSize,
+          '',
+          this.filterDefectsGroup.controls['projects'].value,
+          defects,
+          null
+        )
+        .subscribe((res) => {
+          this.data = res.result.map((defect) => {
+            return {
+              id: defect.id,
+              title: defect.title,
+              repro_steps: defect.repro_steps,
+              priority: defect.priority.name,
+              priorityIcon:
+                defect.priority.name === 'Baja'
+                  ? '/assets/images/low-priority.png'
+                  : defect.priority.name === 'Media'
+                  ? '/assets/images/middle-priority.png'
+                  : '/assets/images/high-priority.png',
+              severity: defect.severity.name,
+              severityIcon:
+                defect.severity.name === 'Trivial'
+                  ? '/assets/images/trivial.png'
+                  : defect.severity.name === 'Normal'
+                  ? '/assets/images/normal.png'
+                  : '/assets/images/critico.png',
+              defectState: defect.defectState.name,
+            };
+          });
+          this.page = res.page;
+          this.pageSize = res.pageSize;
+          this.count = res.count;
+        });
+    }
   }
 
   getProjects() {
@@ -87,6 +212,13 @@ export class GestionDefectosComponent implements OnInit {
           });
         });
     }
+  }
+
+  validacionesDefects(campo:string){
+    return (
+      this.filterDefectsGroup.get(campo).invalid &&
+      this.filterDefectsGroup.get(campo).touched
+    );
   }
 
   validaciones(campo: string): boolean {
@@ -136,6 +268,34 @@ export class GestionDefectosComponent implements OnInit {
     this.isVisible = true;
   }
 
+  handleOkDetail(): void{
+    this.isOkLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isOkLoading = false;
+      this.isDetailVisible = false;
+      this.isUpdateVisible = false;
+    }, 3000);
+  }
+  handleCancelDetail(): void{
+    this.defecto = {
+      id: 0,
+      title: '',
+      repro_steps: '',
+      severity: '',
+      severityId: 0,
+      severityIcon: '',
+      priority: '',
+      priorityId: 0,
+      priorityIcon: '',
+    };
+    this.isDetailVisible = false;
+    this.isVisible = false;
+    this.isDetailVisible = false;
+    this.isUpdateVisible = false;
+    this.id = null;
+  }
+
   handleOk(): void {
     this.isOkLoading = true;
     setTimeout(() => {
@@ -151,7 +311,6 @@ export class GestionDefectosComponent implements OnInit {
     this.filterFormGroup.controls['projects'].setValue('');
     this.filterFormGroup.controls['testSuite'].setValue('')
   }
-
 
 
   generatePDF() {
@@ -197,4 +356,132 @@ export class GestionDefectosComponent implements OnInit {
     }
   }
 
+  onPageIndexChange(selectedPage: number){
+    
+  }
+
+  fetchDefects(page: number, pageSize: number, search: string = '') {
+    var defects;
+    if(this.filterDefectsGroup.controls['stateDefect'].value){
+      defects = this.filterDefectsGroup.controls['stateDefect'].value;
+      defects.join();
+      console.log(defects);
+    }else{
+      defects = '1,2,3,4';
+      console.log(defects);
+    }
+    this.defectService
+      .getDefectbyProject(page, pageSize, search,this.filterDefectsGroup.controls['projects'].value,defects,null)
+      .subscribe((res) => {
+        this.data = res.result.map((defect) => {
+          return {
+            id: defect.id,
+            title: defect.title,
+            repro_steps: defect.repro_steps,
+            priority: defect.priority.name,
+            priorityIcon:
+              defect.priority.name === 'Baja'
+                ? '/assets/images/low-priority.png'
+                : defect.priority.name === 'Media'
+                ? '/assets/images/middle-priority.png'
+                : '/assets/images/high-priority.png',
+            severity: defect.severity.name,
+            severityIcon:
+              defect.severity.name === 'Trivial'
+                ? '/assets/images/trivial.png'
+                : defect.severity.name === 'Normal'
+                ? '/assets/images/normal.png'
+                : '/assets/images/critico.png',
+            defectState: defect.defectState.name,
+          };
+        });
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      });
+  }
+
+  updateForm(): void {
+    if (this.validateUpdateForm.valid) {
+      if (this.id) {
+        this.defectService
+          .updateDefectState(
+            this.validateUpdateForm.controls['selectSeverity'].value,
+            this.validateUpdateForm.controls['selectPriority'].value,
+            this.id,
+            this.validateUpdateForm.controls['updateState'].value
+          )
+          .subscribe((defect) => {
+            this.fetchDefects(this.page, this.pageSize);
+            this.search();
+            console.log('Response: ', defect);
+            this.isUpdateVisible = false;
+            this.id = null;
+            this.updated = true;
+            setTimeout(
+              function () {
+                this.updated = false;
+                console.log('Updated: ', this.updated);
+              }.bind(this),
+              10000
+            );
+            this.validateUpdateForm.controls['selectSeverity'].setValue(0);
+            this.validateUpdateForm.controls['selectPriority'].setValue(0);
+            this.validateUpdateForm.controls['updateState'].setValue(0);
+          });
+      } else {
+        Object.values(this.validateUpdateForm.controls).forEach((control) => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+    }
+  }
+
+  updateDefect(id: number) {
+    this.id = id;
+    this.defectService.getDefect(id).subscribe((res) => {
+      console.log(res.result);
+      this.validateUpdateForm
+        .get('selectSeverity')
+        .setValue(res.result.severity.id);
+      this.validateUpdateForm
+        .get('selectPriority')
+        .setValue(res.result.priority.id);
+      this.validateUpdateForm
+        .get('updateState')
+        .setValue(res.result.defectState.id);
+        
+      this.isUpdateVisible = true;
+    });
+  }
+
+  detailDefect(id: number) {
+    this.spinnerService.isLoading.next(true);
+    this.id = id;
+    this.defectService.getDefect(id).subscribe((res) => {
+      this.defecto.id = this.id;
+      this.defecto.title = res.result.title;
+      this.defecto.repro_steps = res.result.repro_steps;
+      this.defecto.severity = res.result.severity.name;
+      this.defecto.severityId = res.result.severity.id;
+      (this.defecto.severityIcon =
+        res.result.severity.name === 'Trivial'
+          ? '/assets/images/trivial.png'
+          : res.result.severity.name === 'Normal'
+          ? '/assets/images/normal.png'
+          : '/assets/images/critico.png'),
+        (this.defecto.priority = res.result.priority.name);
+      this.defecto.priorityId = res.result.priority.id;
+      this.defecto.priorityIcon =
+        res.result.priority.name === 'Baja'
+          ? '/assets/images/low-priority.png'
+          : res.result.priority.name === 'Media'
+          ? '/assets/images/middle-priority.png'
+          : '/assets/images/high-priority.png';
+    });
+    this.isDetailVisible = true;
+  }
 }
