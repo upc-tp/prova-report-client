@@ -1,14 +1,61 @@
 <div class="backgroundContent">
-    <div class="banner">Gestion de Defectos</div>
+    <div class="banner">
+        Gestion de Defectos
+
+        <div>
+            <button nz-button nzType="primary" (click)="showModal()" style="margin-right: 1rem;">
+                <span>Descargar Defectos</span>
+            </button>
+        </div>
+    </div>
     <nz-tabset>
         <nz-tab nzTitle="Validación Defectos">
-            <app-validacion-defectos [listProjects]="listProjects" [priorities]="priorities" [severities]="severities"></app-validacion-defectos>
+            <app-validacion-defectos [listProjects]="listProjects" [priorities]="priorities" [severities]="severities">
+            </app-validacion-defectos>
         </nz-tab>
         <nz-tab nzTitle="Verificación Defectos">
-            <app-verificacion-defectos [listProjects]="listProjects" [priorities]="priorities" [severities]="severities"></app-verificacion-defectos>
+            <app-verificacion-defectos [listProjects]="listProjects" [priorities]="priorities"
+                [severities]="severities"></app-verificacion-defectos>
         </nz-tab>
         <nz-tab nzTitle="Confirmación de Defectos">
-            <app-confirmacion-defectos [listProjects]="listProjects" [priorities]="priorities" [severities]="severities"></app-confirmacion-defectos>
+            <app-confirmacion-defectos [listProjects]="listProjects" [priorities]="priorities"
+                [severities]="severities"></app-confirmacion-defectos>
         </nz-tab>
     </nz-tabset>
-</div> 
+</div>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Asignar un colaborador" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading">
+    <form [formGroup]="filterFormGroup" (ngSubmit)="generatePDF()">
+        <div class="row d-flex">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Proyectos</mat-label>
+                <mat-select formControlName="projects" (selectionChange)="updateFilter($event)">
+                    <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
+                        {{ pro.value }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="validaciones('projects')"
+                    class="form-text text-danger animate__animated animate__headShake">
+                    Seleccione uno</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Test Suite</mat-label>
+                <mat-select formControlName="testSuite" (selectionChange)="updateFilter($event)">
+                    <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
+                        {{ tSuite.value }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="row d-flex">
+            <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+                Guardar
+            </button>
+        </div>
+    </form>
+    <div *nzModalFooter></div>
+</nz-modal>

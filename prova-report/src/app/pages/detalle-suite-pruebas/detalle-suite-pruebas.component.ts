@@ -89,8 +89,6 @@ export class DetalleSuitePruebasComponent implements OnInit {
       selectPriority: [null, [Validators.required]],
       selectSeverity: [null, [Validators.required]]
     });
-  
-    this.getProjectCollaborators();
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
       .subscribe((search: string) => {
@@ -110,6 +108,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.createdAt = this.utils.formatDateTime(new Date(res.result.createdAt));
       this.suite.project = res.result.project.title;
       this.suite.projectId = res.result.project.id;
+      // Una vez que carga el suite de pruebas, obtiene los colaboradores del suite seleccionado
+      this.getProjectCollaborators();
     });
   }
 
