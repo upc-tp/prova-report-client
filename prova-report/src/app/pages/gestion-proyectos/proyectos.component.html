@@ -15,12 +15,16 @@
         <input [ngClass]="{ 'is-invalid': submitted && f.title.errors }" nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
         <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required" >* Este campo es obligatorio</span>
       </div>
+
       <div class="form-item">
         <div class="form-label">
           Descripción
         </div>
-        <input nz-input name="description" formControlName="description" type="text" id="description"
-          placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+        <textarea nz-input formControlName = "description" id = "description"  placeholder="Descripción" autocomplete="off"
+        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" style="height:5rem;width: 100%;padding: 0.5rem;border-radius: 5px;"
+        ></textarea>
+        <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
+          placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/> -->
           <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required" >* Este campo es obligatorio</span>
       </div>
 

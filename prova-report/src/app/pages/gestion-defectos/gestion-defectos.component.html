@@ -104,7 +104,6 @@
           <th>Defecto</th>
           <th>Prioridad</th>
           <th>Severidad</th>
-          <th>Pasos a Reproducir</th>
           <th>Estado</th>
           <th>Opciones</th>
         </tr>
@@ -120,7 +119,6 @@
             <img style="width: 1rem" [src]="data.priorityIcon" />
             {{ data.priority }}
           </td>
-          <td>{{ data.repro_steps }}</td>
           <td>{{ data.defectState }}</td>
           <td class="containerbuttons">
             <button
@@ -311,7 +309,7 @@
         </div>
         <div class="col-12">
           <textarea
-            style="border-radius: 5px; width: 100%"
+            style="border-radius: 5px; width: 100%; height: 5rem;padding: 0.5rem;"
             (resize)="(false)"
             disabled="true"
             >{{ defecto.repro_steps }}</textarea

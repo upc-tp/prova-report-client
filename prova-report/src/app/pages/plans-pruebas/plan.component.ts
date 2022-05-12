@@ -105,7 +105,7 @@ export class PlanComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     this.submitted = true;
-    console.log(this.validateForm.controls['title'].value);
+    console.log(this.validateForm.controls['selectProject'].value);
     if (this.validateForm.valid) {
       if (this.id) {
         this.planService
@@ -365,7 +365,7 @@ export class PlanComponent implements OnInit, OnDestroy {
     this.id = null;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
-    this.validateForm.controls['selectProject'].setValue(0);
+    this.validateForm.controls['selectProject'].setValue(null);
     this.validateForm.controls['selectVersion'].setValue(null);
   }
 

@@ -36,6 +36,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   filterFormGroup: FormGroup;
   isVisible = false;
   id: number;
+  submitted = false;
   isOkLoading = false;
   DetalleVisible = false;
   validateAddForm!: FormGroup;
@@ -161,7 +162,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (!this.toExecutionPage) localStorage.removeItem('filterItems');
   }
-
+  get f() { return this.validateAddForm.controls; }
   Pagination() {
     this.dataSourceTestCase.paginator = this.paginator;
     this.dataSourceTestCase.sort = this.sort;
@@ -427,6 +428,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   handleCancel(): void {
     this.isVisible = false;
     this.DetalleVisible = false;
+    this.submitted = false;
     this.id = null;
     this.listTestExecutions = [];
   }
@@ -439,6 +441,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   }
 
   submitForm(): void {
+    this.submitted = true;
     if (this.validateAddForm.valid) {
       this.defectService
       .createDefect(

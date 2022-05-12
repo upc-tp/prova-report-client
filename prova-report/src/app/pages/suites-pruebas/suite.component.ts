@@ -62,8 +62,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      selectProject: [null, Validators.required],
-      selectPlan: [null]
+      selectProject: [null, [Validators.required]],
+      selectPlan: [null, [Validators.required]]
     });
 
 

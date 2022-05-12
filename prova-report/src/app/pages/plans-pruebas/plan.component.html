@@ -21,8 +21,13 @@
           <nz-form-label>
             Descripción
           </nz-form-label>
-          <input nz-input name="description" formControlName="description" type="text" id="description"
-            placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+          <textarea nz-input formControlName="description" type="text" id="description"
+          placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" 
+          style="height:5rem;width: 100%;border-radius: 5px;padding: 0.5rem;"
+          >
+          </textarea>
+          <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
+            placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" /> -->
           <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es
             obligatorio</span>
         </div>
@@ -102,7 +107,7 @@
               Descripcion
             </b></h2>
             <div>
-            <h3>{{plan.description}}</h3>
+            <textarea style="height:5rem;width:100%; border-radius: 5px;padding: 0.5rem;" disabled="true">{{plan.description}}</textarea>
             <h2><b>
               Projecto
             </b></h2>
