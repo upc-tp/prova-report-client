@@ -44,6 +44,7 @@ export interface Plans {
 	deletedAt?: any;
 	deletedBy?: any;
 	id: number;
+	tag: string;
 	title: string;
 	description: string;
 	version: Version;

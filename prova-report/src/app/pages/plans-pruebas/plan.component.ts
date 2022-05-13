@@ -29,6 +29,7 @@ export class PlanComponent implements OnInit, OnDestroy {
   projectId: number;
   data: Array<{
     id: number;
+    tag: string;
     title: string;
     project: string;
     version: string;
@@ -192,6 +193,7 @@ export class PlanComponent implements OnInit, OnDestroy {
             return {
               id: tPlan.id,
               title: tPlan.title,
+              tag: tPlan.tag,
               description: tPlan.description,
               version: tPlan.version?.title,
               project: tPlan.project.title,
@@ -327,6 +329,7 @@ export class PlanComponent implements OnInit, OnDestroy {
         this.data = res.result.map((tPlan) => {
           return {
             id: tPlan.id,
+            tag: tPlan.tag,
             title: tPlan.title,
             description: tPlan.description,
             version: tPlan.version.title,
