@@ -265,8 +265,3 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 0.25rem;
     border-radius: 0.25rem;
   }
-
-  tr[mat-row]:hover {
-    opacity: 0.75;
-    transition: opacity 0.25s;
-  }
