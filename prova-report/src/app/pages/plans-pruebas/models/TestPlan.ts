@@ -6,6 +6,7 @@ export class TestPlan {
 	deletedAt?: any;
 	deletedBy?: any;
     id: number;
+    tag: string;
     title: string;
     description: string;
 }
