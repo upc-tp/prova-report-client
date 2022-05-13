@@ -89,7 +89,7 @@
   <div style="margin-top: 3rem">
     <nz-table
       #middleTable
-      nzSize="middle"
+      nzSize="small"
       [nzData]="data"
       [nzFrontPagination]="false"
       [nzPageIndex]="page"
@@ -101,7 +101,10 @@
     >
       <thead>
         <tr>
+          <th>Etiqueta</th>
           <th>Defecto</th>
+          <th>Plan de Prueba</th>
+          <th>Suite de Prueba</th>
           <th>Prioridad</th>
           <th>Severidad</th>
           <th>Estado</th>
@@ -110,7 +113,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of middleTable.data">
+          <td>{{ data.tag }}</td>
           <td>{{ data.title }}</td>
+          <td>{{ data.testPlan }}</td>
+          <td>{{ data.testSuite }}</td>
           <td>
             <img style="width: 1rem" [src]="data.severityIcon" />
             {{ data.severity }}
@@ -119,8 +125,16 @@
             <img style="width: 1rem" [src]="data.priorityIcon" />
             {{ data.priority }}
           </td>
-          <td>{{ data.defectState }}</td>
-          <td class="containerbuttons">
+          <td><span [ngClass]="{
+            'defect-state-new' : data.defectState == 'Nuevo',
+            'defect-state-accepted' : data.defectState == 'Aceptado',
+            'defect-state-rejected' : data.defectState == 'Rechazado',
+            'defect-state-fixed' : data.defectState == 'Corregido',
+            'defect-state-obs' : data.defectState == 'En Observacion'
+          }">
+            {{ data.defectState }}
+          </span></td>
+          <td>
             <button
               class="options"
               nz-button
@@ -284,7 +298,7 @@
   (nzOnOk)="handleOkDetail()"
 >
   <ng-template #modalTitle>
-    <span> Detalle Defecto </span>
+    <span> {{ defecto.tag }} - {{ defecto.title }} </span>
     <mat-icon
       class="BugIcon"
       svgIcon="BugIcon"
@@ -294,11 +308,14 @@
   <div>
     <div class="row">
       <div class="mb-3">
-        <div class="col-12 mb-1">
-          <span class="text-fs-14 text-w-bold text-black">Título</span>
-        </div>
-        <div class="col-12">
-          <span class="text-fs-14 text-black">{{ defecto.title }}</span>
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Estado  <span [ngClass]="{
+            'defect-state-new' : defecto.state == 'Nuevo',
+            'defect-state-accepted' : defecto.state == 'Aceptado',
+            'defect-state-rejected' : defecto.state == 'Rechazado',
+            'defect-state-fixed' : defecto.state == 'Corregido',
+            'defect-state-obs' : defecto.state == 'En Observacion'
+          }"> {{defecto.state}} </span></span>
         </div>
       </div>
       <div class="mb-3">
@@ -337,6 +354,36 @@
           <span class="text-fs-14 text-black">
             <img style="width: 1rem" [src]="defecto.severityIcon" />
             {{ defecto.severity }}
+          </span>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Plan de Prueba</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+              {{ defecto.testPlan }}
+          </span>
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Suite de Prueba</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+              {{ defecto.testSuite }}
+          </span>
+        </div>
+      </div>
+      <div class="col-12 mb-3">
+        <div class="col-6 mb-1">
+          <span class="text-fs-14 text-w-bold text-black">Caso de Prueba</span>
+        </div>
+        <div class="col-6">
+          <span class="text-fs-14 text-black">
+              {{ defecto.testCase }}
           </span>
         </div>
       </div>

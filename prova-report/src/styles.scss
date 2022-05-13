@@ -239,6 +239,44 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background: #ffff;padding: 2rem;
     border-radius: 4px;
 }
+
+.defect-state-new{
+    color:#d4f1ff;
+    background-color: #20A0E2;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.defect-state-accepted{
+    color:#bcffb1;
+    background-color: #48b337;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.defect-state-rejected{
+    color:#ffcbcb;
+    background-color: #f50000;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.defect-state-fixed{
+    color:#f1d6cf;
+    background-color: #FF5414;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+.defect-state-obs{
+    color:#fff8da;
+    background-color: #FFE15D;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+
+
+
 .test-state-passed {
     color:rgb(210, 250, 161);
     background-color: rgb(116, 198, 17);

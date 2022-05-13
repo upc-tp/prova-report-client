@@ -48,6 +48,9 @@ export class GestionDefectosComponent implements OnInit {
     priority: string;
     severity: string;
     defectState: string;
+    tag:string;
+    testPlan:string;
+    testSuite:string;
   }> = [];
 
   defecto: DefectView = {
@@ -60,6 +63,11 @@ export class GestionDefectosComponent implements OnInit {
     priority: '',
     priorityId: 0,
     priorityIcon: '',
+    testPlan:'',
+    testSuite:'',
+    testCase:'',
+    tag: '',
+    state: ''
   };
 
   defects: Array<{
@@ -137,8 +145,7 @@ export class GestionDefectosComponent implements OnInit {
       defects.join();
       console.log(defects);
     }else{
-      defects = '1,2,3,4';
-      console.log(defects);
+      defects = '1,2,3,4,5';
     }
 
     if (!this.filterDefectsGroup.invalid) {
@@ -172,6 +179,9 @@ export class GestionDefectosComponent implements OnInit {
                   ? '/assets/images/normal.png'
                   : '/assets/images/critico.png',
               defectState: defect.defectState.name,
+              tag: defect.tag,
+              testPlan: defect.testCase.testSuite.testPlan?.title,
+              testSuite: defect.testCase.testSuite.title
             };
           });
           this.page = res.page;
@@ -288,6 +298,11 @@ export class GestionDefectosComponent implements OnInit {
       priority: '',
       priorityId: 0,
       priorityIcon: '',
+      testPlan:'',
+      testSuite:'',
+      testCase:'',
+      tag: '',
+      state: ''
     };
     this.isDetailVisible = false;
     this.isVisible = false;
@@ -393,6 +408,9 @@ export class GestionDefectosComponent implements OnInit {
                 ? '/assets/images/normal.png'
                 : '/assets/images/critico.png',
             defectState: defect.defectState.name,
+            tag: defect.tag,
+            testPlan: defect.testCase.testSuite.testPlan?.title,
+            testSuite: defect.testCase.testSuite.title
           };
         });
         this.page = res.page;
@@ -467,6 +485,11 @@ export class GestionDefectosComponent implements OnInit {
       this.defecto.repro_steps = res.result.repro_steps;
       this.defecto.severity = res.result.severity.name;
       this.defecto.severityId = res.result.severity.id;
+      this.defecto.testPlan = res.result.testCase.title;
+      this.defecto.testSuite = res.result.testCase.testSuite.title;
+      this.defecto.testCase = res.result.testCase.title;
+      this.defecto.state = res.result.defectState.name;
+      this.defecto.tag = res.result.tag;
       (this.defecto.severityIcon =
         res.result.severity.name === 'Trivial'
           ? '/assets/images/trivial.png'

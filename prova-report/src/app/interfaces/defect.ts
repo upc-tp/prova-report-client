@@ -1,5 +1,6 @@
 
 export interface Defect {
+  	tag: any;
     createdAt: string;
 	createdBy: string;
 	modifiedAt: string;
@@ -27,6 +28,11 @@ export interface DefectView {
 	priority: string;
 	priorityId: number;
 	priorityIcon: string;
+	testPlan:string;
+	testSuite:string;
+	testCase:string;
+	tag:string;
+	state:string;
 }
 export interface DefectResponse {
 	page: number;
@@ -74,8 +80,38 @@ export interface TestCase {
 	deletedAt?: any;
 	deletedBy?: any;
     id: number;
+	tag:string;
     title: string;
-    description: string
+    description: string;
+	lastExecution: number;
+	testSuite: TestSuiteDef;
+}
+
+export interface TestSuiteDef{
+	createdAt:string;
+    createdBy: string;
+    modifiedAt: string;
+    modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id:number;
+	tag: string;
+	title:string;
+	description:string;
+	testPlan: TestPlanDef;
+}
+
+export interface TestPlanDef{
+	createdAt:string;
+    createdBy: string;
+    modifiedAt: string;
+    modifiedBy: string;
+	deletedAt?: any;
+	deletedBy?: any;
+	id:number;
+	tag:string;
+	title:string;
+	description:string;
 }
 
 export interface TestExecution {

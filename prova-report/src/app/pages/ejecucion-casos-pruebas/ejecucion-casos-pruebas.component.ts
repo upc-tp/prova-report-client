@@ -232,7 +232,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
               (testCase.testSuite = tCase.testSuite),
               (testCase.lastExecution = tCase.lastExecution),
               (testCase.userInCharge = tCase.userInCharge);
-            (testCase.createdAt = this.utils.formatDateTime(
+            (testCase.createdAt = this.utils.formatDate(
               new Date(tCase.createdAt)
             )),
               (testCase.createdBy = tCase.createdBy);
@@ -396,9 +396,10 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.testCaseDetailSelected = testCase;
     this.spinnerService.isLoading.next(true);
     this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res)=>{
+      console.log(res.result)
+      this.listTestExecutions = res.result;
       this.page= res.page;
       this.count = res.count;
-      this.listTestExecutions = res.result;
     });
     this.DetalleVisible = true;
   }

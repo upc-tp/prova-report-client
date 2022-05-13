@@ -21,6 +21,29 @@ export interface TestCase {
 	userStoryCriteria: UserStoryCriteria;
 }
 
+export class TestCaseSelected {
+	registerDate: string;
+	registerBy: string;
+	modifiedAt: string;
+	modifiedBy: string;
+	testStatus: string;
+  	severity: Severities;
+  	priority: Priorities;
+	userInCharge: User;
+	deletedAt?: any;
+	deletedBy?: any;
+	lastExecution:number;
+    id: number;
+	tag: string;
+    title: string;
+    description: string;
+    testState: TestState;
+    testSuite: TestSuite;
+	userStoryCriteria: UserStoryCriteria;
+	severityIcon: string;
+	priorityIcon: string;
+}
+
 export interface TestCaseView {
 	createdAt: string;
 	description: string;

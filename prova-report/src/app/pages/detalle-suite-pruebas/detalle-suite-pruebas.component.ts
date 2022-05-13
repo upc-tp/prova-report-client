@@ -11,6 +11,7 @@ import { ProjectService } from 'src/app/services/projects.service';
 import { PriorityService } from 'src/app/services/priority.services';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { UtilsService } from 'src/app/common/UtilsService';
+import { TestCaseSelected } from '../../interfaces/testcase';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -32,6 +33,9 @@ export class DetalleSuitePruebasComponent implements OnInit {
     registerDate: string;
     registerBy: string;
   }> = [];
+
+ tCaseSelected: TestCaseSelected;
+
   priorities: Array<{
     label: string;
     value: number;
@@ -71,6 +75,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
+  isDetailVisible: boolean = false;
 
   constructor(private route:ActivatedRoute, public utils: UtilsService, private projectService:ProjectService,  private priorityService: PriorityService, private seveityService: SeverityService, private suiteService:SuitesService, private testCaseService:TestCaseService, private router: Router,private fb:FormBuilder) { }
 
@@ -157,7 +162,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               severityIcon: tCase.severity.name === "Trivial" ? '/assets/images/trivial.png'  : tCase.severity.name === "Normal" ? '/assets/images/normal.png' : '/assets/images/critico.png',
               severity: tCase.severity.name,
               collaborator: tCase.userInCharge,
-              registerDate: this.utils.formatDateTime(new Date(tCase.createdAt)),
+              registerDate: this.utils.formatDate(new Date(tCase.createdAt)),
               registerBy: tCase.createdBy
             };
           }
@@ -179,6 +184,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
     this.isVisible = false;
     this.submitted = false;
     this.id = null;
+    this.tCaseSelected = null;
+    this.isDetailVisible = false;
     this.validateForm.controls['title'].setValue('');
     this.validateForm.controls['description'].setValue('');
     this.validateForm.controls['selectPriority'].setValue(0);
@@ -209,6 +216,12 @@ export class DetalleSuitePruebasComponent implements OnInit {
           })
         )
       )
+  }
+
+  detailCase(tCaseSelect: TestCaseSelected){
+    console.log(tCaseSelect);
+    this.tCaseSelected = tCaseSelect;
+    this.isDetailVisible = true;
   }
 
   backTestSuites(){

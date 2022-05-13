@@ -17,7 +17,11 @@
       </h2>
       <span>{{ suite.title }}</span>
       <h2><b> Descripcion </b></h2>
-      <textarea style="width:80%; height:7rem; border-radius: 5px;padding: 0.5rem;" disabled="true">{{ suite.description }}</textarea>
+      <textarea
+        style="width: 80%; height: 7rem; border-radius: 5px; padding: 0.5rem"
+        disabled="true"
+        >{{ suite.description }}</textarea
+      >
       <h2><b> Proyecto </b></h2>
       <span>{{ suite.project }}</span>
     </div>
@@ -107,14 +111,23 @@
           </td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
-          <td class="containerbuttons">
+          <td>
             <button
               class="edit"
               nz-button
               nzType="primary"
+              style="margin-right: 0.5rem"
               (click)="updateCase(data.id)"
             >
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button
+              style="margin-right: 0.5rem"
+              nz-button
+              nzType="primary"
+              (click)="detailCase(data)"
+            >
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>
         </tr>
@@ -140,44 +153,52 @@
     [formGroup]="validateForm"
     (ngSubmit)="submitForm()"
   >
-    <nz-form-item>
-      <nz-form-control class="form-item">
-        <nz-form-label> Título </nz-form-label>
-        <input
-          nz-input
-          name="title"
-          formControlName="title"
-          type="text"
-          id="title"
-          placeholder="Título"
-          [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
-        />
-        <span
-          class="invalid-feedback"
-          *ngIf="submitted && f.title.errors?.required"
-          >* Este campo es obligatorio</span
-        >
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-control class="form-item">
-        <nz-form-label> Descripción </nz-form-label>
-        <input
-          nz-input
-          name="description"
-          formControlName="description"
-          type="text"
-          id="description"
-          placeholder="Descripción"
-          [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
-        />
-        <span
-          class="invalid-feedback"
-          *ngIf="submitted && f.description.errors?.required"
-          >* Este campo es obligatorio</span
-        >
-      </nz-form-control>
-    </nz-form-item>
+    <div class="form-item">
+      <nz-form-label> Título </nz-form-label>
+      <input
+        nz-input
+        name="title"
+        formControlName="title"
+        type="text"
+        id="title"
+        placeholder="Título"
+        [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+      />
+      <span
+        class="invalid-feedback"
+        *ngIf="submitted && f.title.errors?.required"
+        >* Este campo es obligatorio</span
+      >
+    </div>
+
+    <div class="form-item">
+      <nz-form-label> Descripción </nz-form-label>
+      <textarea
+        nz-input
+        name="description"
+        formControlName="description"
+        type="text"
+        id="description"
+        placeholder="Descripción"
+        style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
+        [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+      >
+      </textarea>
+      <!-- <input
+        nz-input
+        name="description"
+        formControlName="description"
+        type="text"
+        id="description"
+        placeholder="Descripción"
+        [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+      /> -->
+      <span
+        class="invalid-feedback"
+        *ngIf="submitted && f.description.errors?.required"
+        >* Este campo es obligatorio</span
+      >
+    </div>
 
     <nz-form-item>
       <nz-form-control class="form-item">
@@ -229,7 +250,7 @@
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label> Asignar Responsable </nz-form-label>
+        <nz-form-label> Responsable </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectCollaborator"
@@ -263,5 +284,62 @@
       </button>
     </div>
   </form>
+  <div *nzModalFooter></div>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isDetailVisible"
+  [nzTitle]="testCaseTitle"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-template #testCaseTitle>
+    <b>{{ tCaseSelected?.tag }} - {{ tCaseSelected?.title }} <span class="text-fs-14" [ngClass]="{
+      'test-state-passed': tCaseSelected?.testStatus == 'Superado',
+      'test-state-non-executed': tCaseSelected?.testStatus == 'No ejecutado',
+      'test-state-skipped': tCaseSelected?.testStatus == 'Omitido',
+      'test-state-failed':tCaseSelected?.testStatus == 'Fallido'
+    }"> {{tCaseSelected?.testStatus}} </span></b>
+  </ng-template>
+  <div>
+    <div>
+      <h2><b> Descripcion </b></h2>
+      <textarea
+        style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
+        disabled="true"
+        >{{ tCaseSelected?.description }}</textarea
+      >
+      <div class="row mt-4">
+        <div class="col-6">
+          <h2><b> Prioridad </b></h2>
+          <span class="text-fs-14 text-black">
+            <img style="width: 1rem" [src]="tCaseSelected?.priorityIcon" />
+            {{ tCaseSelected?.priority }}
+          </span>
+        </div>
+        <div class="col-6">
+          <h2><b> Severidad </b></h2>
+          <span class="text-fs-14 text-black">
+            <img style="width: 1rem" [src]="tCaseSelected?.severityIcon" />
+            {{ tCaseSelected?.severity }}
+          </span>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-6">
+          <h2><b> Responsable </b></h2>
+          <span class="text-fs-14 text-black">
+            {{ tCaseSelected?.registerBy}}
+          </span>
+        </div>
+        <div class="col-6">
+          <h2><b> Fecha de Registro </b></h2>
+          <span class="text-fs-14 text-black">
+            {{ tCaseSelected?.registerDate }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
   <div *nzModalFooter></div>
 </nz-modal>

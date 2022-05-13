@@ -1,175 +1,301 @@
 <div class="backgroundContent">
-    <div class="banner">
-      <span>Plan pruebas</span>
-      <button nz-button nzType="primary" (click)="showModal()">
-        <span>Nuevo</span>
-      </button>
-    </div>
-  
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Plan de prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
-      [nzOkLoading]="isOkLoading">
-      <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <div class="form-item">
-          <nz-form-label>
-            Título
-          </nz-form-label>
-          <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título"
-            autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"/>
-          <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
-        </div>
-        <div class="form-item">
-          <nz-form-label>
-            Descripción
-          </nz-form-label>
-          <textarea nz-input formControlName="description" type="text" id="description"
-          placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" 
-          style="height:5rem;width: 100%;border-radius: 5px;padding: 0.5rem;"
-          >
-          </textarea>
-          <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
+  <div class="banner">
+    <span>Plan pruebas</span>
+    <button nz-button nzType="primary" (click)="showModal()">
+      <span>Nuevo</span>
+    </button>
+  </div>
+
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Plan de prueba"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    [nzOkLoading]="isOkLoading"
+  >
+    <form
+      nz-form
+      class="create-form"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
+      <div class="form-item">
+        <nz-form-label> Título </nz-form-label>
+        <input
+          nz-input
+          name="title"
+          formControlName="title"
+          type="text"
+          id="title"
+          placeholder="Título"
+          autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+        />
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.title.errors?.required"
+          >* Este campo es obligatorio</span
+        >
+      </div>
+      <div class="form-item">
+        <nz-form-label> Descripción </nz-form-label>
+        <textarea
+          nz-input
+          formControlName="description"
+          type="text"
+          id="description"
+          placeholder="Descripción"
+          autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+          style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
+        >
+        </textarea>
+        <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
             placeholder="Descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" /> -->
-          <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es
-            obligatorio</span>
-        </div>
-        <div class="form-item">
-          <nz-form-label>
-            Proyecto
-          </nz-form-label>
-          <nz-select nzSize="large" formControlName="selectProject" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }"
-            nzPlaceHolder="Seleccione Proyecto" [nzOptions]="projects" (ngModelChange)="onSelectVersion($event)">
-            <nz-option nzValue="project.value" nzLabel="project.label"></nz-option>
-          </nz-select>
-          <span class="invalid-feedback" *ngIf="submitted && f.selectProject.errors?.required" >* Este campo es obligatorio</span>
-        </div>
-        <div class="form-item">
-          <nz-form-label>
-            Version
-          </nz-form-label>
-          <nz-select nzSize="large" formControlName="selectVersion" class="select-input" [ngClass]="{ 'is-invalid': submitted && f.selectVersion.errors }"
-            nzPlaceHolder="Seleccione Version" [nzOptions]="versions">
-            <nz-option nzValue="version.value" nzLabel="version.label"></nz-option>
-          </nz-select>
-          <span class="invalid-feedback" *ngIf="submitted && f.selectVersion.errors?.required" >* Este campo es obligatorio</span>
-        </div>
-        <div class="form-item">
-          <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
-            Guardar
-          </button>
-        </div>
-      </form>
-      <div *nzModalFooter></div>
-    </nz-modal>
-    <form [formGroup]="filterFormGroup">
-      <div class="row d-flex">
-        <div class="col-md-3">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Proyectos</mat-label>
-            <mat-select formControlName="projects">
-              <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
-                {{ pro.value }}
-              </mat-option>
-            </mat-select>
-            <mat-hint *ngIf="validaciones('projects')" class="form-text text-danger animate__animated animate__headShake">
-              Seleccione uno</mat-hint>
-          </mat-form-field>
-        </div>
-        <div class="col-md-3">
-          <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
-            style="margin-top: 0.5rem" (click)="search()">
-            <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
-              data-height="24"></span>
-            <span>Aplicar Filtros</span>
-          </button>
-        </div>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.description.errors?.required"
+          >* Este campo es obligatorio</span
+        >
+      </div>
+      <div class="form-item">
+        <nz-form-label> Proyecto </nz-form-label>
+        <nz-select
+          nzSize="large"
+          formControlName="selectProject"
+          class="select-input"
+          [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }"
+          nzPlaceHolder="Seleccione Proyecto"
+          [nzOptions]="projects"
+          (ngModelChange)="onSelectVersion($event)"
+        >
+          <nz-option
+            nzValue="project.value"
+            nzLabel="project.label"
+          ></nz-option>
+        </nz-select>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.selectProject.errors?.required"
+          >* Este campo es obligatorio</span
+        >
+      </div>
+      <div class="form-item">
+        <nz-form-label> Version </nz-form-label>
+        <nz-select
+          nzSize="large"
+          formControlName="selectVersion"
+          class="select-input"
+          [ngClass]="{ 'is-invalid': submitted && f.selectVersion.errors }"
+          nzPlaceHolder="Seleccione Version"
+          [nzOptions]="versions"
+        >
+          <nz-option
+            nzValue="version.value"
+            nzLabel="version.label"
+          ></nz-option>
+        </nz-select>
+        <span
+          class="invalid-feedback"
+          *ngIf="submitted && f.selectVersion.errors?.required"
+          >* Este campo es obligatorio</span
+        >
+      </div>
+      <div class="form-item">
+        <button
+          nz-button
+          nzBlock
+          nzSize="large"
+          nzType="primary"
+          [nzLoading]="isOkLoading"
+        >
+          Guardar
+        </button>
       </div>
     </form>
-    <div class="col-12 centerItems" style="margin-top: 3rem" *ngIf="data.length == 0">
-      <div style="width: 50%; overflow: hidden; text-align: center">
-        <div>
-          <mat-icon class="NoTest" svgIcon="NoTest"></mat-icon>
-        </div>
-        <div class="text-w-bold text-fs-32 text-purple title-table-photo text-center">
-          Selecciona tus filtros
-        </div>
-        <div class="text-w-400 text-fs-14 text-center text-gray">
-          Para poder mostrarte los Casos de Prueba a ejecutar
-        </div>
+    <div *nzModalFooter></div>
+  </nz-modal>
+  <form [formGroup]="filterFormGroup">
+    <div class="row d-flex">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Proyectos</mat-label>
+          <mat-select formControlName="projects">
+            <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
+              {{ pro.value }}
+            </mat-option>
+          </mat-select>
+          <mat-hint
+            *ngIf="validaciones('projects')"
+            class="form-text text-danger animate__animated animate__headShake"
+          >
+            Seleccione uno</mat-hint
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <button
+          mat-flat-button
+          color="primary"
+          class="button-global ps-3 pe-3 iconify-mright"
+          style="margin-top: 0.5rem"
+          (click)="search()"
+        >
+          <span
+            class="iconify"
+            data-icon="charm:paper-plane"
+            style="color: white"
+            data-width="24"
+            data-height="24"
+          ></span>
+          <span>Aplicar Filtros</span>
+        </button>
       </div>
     </div>
-    <nz-modal [(nzVisible)]="isDetailVisible" nzTitle = "Detalle de Plan de Prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  </form>
+  <div
+    class="col-12 centerItems"
+    style="margin-top: 3rem"
+    *ngIf="data.length == 0"
+  >
+    <div style="width: 50%; overflow: hidden; text-align: center">
+      <div>
+        <mat-icon class="NoTest" svgIcon="NoTest"></mat-icon>
+      </div>
+      <div
+        class="text-w-bold text-fs-32 text-purple title-table-photo text-center"
+      >
+        Selecciona tus filtros
+      </div>
+      <div class="text-w-400 text-fs-14 text-center text-gray">
+        Para poder mostrarte los Casos de Prueba a ejecutar
+      </div>
+    </div>
+  </div>
+  <nz-modal
+    [(nzVisible)]="isDetailVisible"
+    [nzTitle]="detailTitle"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+  >
+    <ng-template #detailTitle>
+      <b>{{ plan.tag }} - {{ plan.title }}</b>
+    </ng-template>
+    <div>
+      <div>
+        <h2><b> Descripcion </b></h2>
         <div>
-          <div>
-            <h2><b>
-              Título
-            </b></h2>
-            <h3>{{plan.title}}</h3>
-            <h2><b>
-              Descripcion
-            </b></h2>
-            <div>
-            <textarea style="height:5rem;width:100%; border-radius: 5px;padding: 0.5rem;" disabled="true">{{plan.description}}</textarea>
-            <h2><b>
-              Projecto
-            </b></h2>
-            <h3>{{plan.project}}</h3>
-            <h2><b>
-              Versión
-            </b></h2>
-            <h3>{{plan.version}}</h3>
-            <h2><b>
-              Registrado por:
-            </b></h2>
-            <h3>{{plan.registerBy}}</h3>
-            <h2><b>
-              Fecha de Registro
-            </b></h2>
-            <h3>{{plan.registerDate}}</h3>
+          <textarea
+            style="
+              height: 5rem;
+              width: 100%;
+              border-radius: 5px;
+              padding: 0.5rem;
+            "
+            disabled="true"
+            >{{ plan.description }}</textarea
+          >
+
+          <div class="row mt-4">
+            <div class="col-6">
+              <h2><b> Projecto </b></h2>
+              <h3>{{ plan.project }}</h3>
+            </div>
+            <div class="col-6">
+              <h2><b> Versión </b></h2>
+              <h3>{{ plan.version }}</h3>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-6">
+              <h2><b> Registrado por: </b></h2>
+              <h3>{{ plan.registerBy }}</h3>
+            </div>
+            <div class="col-6">
+              <h2><b> Fecha de Registro </b></h2>
+              <h3>{{ plan.registerDate }}</h3>
             </div>
           </div>
         </div>
-        <div *nzModalFooter></div>
-      </nz-modal>
-    <div [hidden]="isFilterVisible" class="filters-container">
-      <i nz-icon nzType="search"></i>&nbsp;&nbsp;
-      <input (change)="inputChanged($event)" name="search" type="text" id="search"
-        placeholder="Buscar por título o descripción" />
-      <hr style="border-color: white;">
+      </div>
     </div>
-    <nz-table #middleTable nzSize="middle" [hidden]="isFilterVisible" [nzData]="data" [nzFrontPagination]="false" [nzPageIndex]="page"
-      [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
-      (nzPageIndexChange)="onPageIndexChange($event)">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Proyecto</th>
-          <th>Versión</th>
-          <th>Fecha de registro</th>
-          <th>Registrado por</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of middleTable.data">
-          <td>{{ data.title }}</td>
-          <td>{{ data.project }}</td>
-          <td>{{ data.version }}</td>
-          <td>{{ data.registerDate }}</td>
-          <td>{{ data.registerBy }}</td>
-          <td>
-            <button style="margin-right: 0.5rem;" nz-button nzType="primary" (click)="updatePlan(data.id)">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </button>
-            <button style="margin-right:0.5rem" nz-button nzType="primary" (click)="detailPlan(data)">
-              <i nz-icon nzType="profile" nzTheme="outline"></i>
-            </button>
-            <button style="margin-right:0.5rem" nz-button nzType="primary" (click)="generatePDF(data.id, data.title)">
-              <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-    <ng-template #rangeTemplate let-range="range" let-total>
-      Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
-    </ng-template>
+    <div *nzModalFooter></div>
+  </nz-modal>
+
+  <div [hidden]="isFilterVisible" class="filters-container">
+    <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+    <input
+      (change)="inputChanged($event)"
+      name="search"
+      type="text"
+      id="search"
+      placeholder="Buscar por título o descripción"
+    />
+    <hr style="border-color: white" />
   </div>
+  <nz-table
+    #middleTable
+    nzSize="middle"
+    [hidden]="isFilterVisible"
+    [nzData]="data"
+    [nzFrontPagination]="false"
+    [nzPageIndex]="page"
+    [nzPageSize]="pageSize"
+    [nzShowPagination]="true"
+    [nzTotal]="count"
+    [nzShowTotal]="rangeTemplate"
+    (nzPageIndexChange)="onPageIndexChange($event)"
+  >
+    <thead>
+      <tr>
+        <th>Etiqueta</th>
+        <th>Título</th>
+        <th>Proyecto</th>
+        <th>Versión</th>
+        <th>Fecha de registro</th>
+        <th>Registrado por</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of middleTable.data">
+        <td>{{ data.tag }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.project }}</td>
+        <td>{{ data.version }}</td>
+        <td>{{ data.registerDate }}</td>
+        <td>{{ data.registerBy }}</td>
+        <td>
+          <button
+            style="margin-right: 0.5rem"
+            nz-button
+            nzType="primary"
+            (click)="updatePlan(data.id)"
+          >
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button
+            style="margin-right: 0.5rem"
+            nz-button
+            nzType="primary"
+            (click)="detailPlan(data)"
+          >
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
+          </button>
+          <button
+            style="margin-right: 0.5rem"
+            nz-button
+            nzType="primary"
+            (click)="generatePDF(data.id, data.title)"
+          >
+            <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+  </ng-template>
+</div>

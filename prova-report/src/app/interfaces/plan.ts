@@ -34,6 +34,7 @@ export interface PlanView {
 	projectId: number;
 	version: string;
 	versionId: number;
+	tag:string;
 }
 
 export interface Plans {
@@ -48,6 +49,7 @@ export interface Plans {
 	description: string;
 	version: Version;
 	project: Project;
+	tag:string;
 }
 
 export interface PlanResponse {
