@@ -195,7 +195,6 @@ export class PlanComponent implements OnInit, OnDestroy {
               tag: tPlan.tag,
               id: tPlan.id,
               title: tPlan.title,
-              tag: tPlan.tag,
               description: tPlan.description,
               version: tPlan.version?.title,
               project: tPlan.project.title,
@@ -332,7 +331,6 @@ export class PlanComponent implements OnInit, OnDestroy {
           return {
             tag: tPlan.tag,
             id: tPlan.id,
-            tag: tPlan.tag,
             title: tPlan.title,
             description: tPlan.description,
             version: tPlan.version.title,
