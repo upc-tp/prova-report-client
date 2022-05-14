@@ -20,7 +20,7 @@
       (ngSubmit)="submitForm()"
     >
       <div class="form-item">
-        <nz-form-label> Título </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Título </nz-form-label>
         <input
           nz-input
           name="title"
@@ -38,7 +38,7 @@
         >
       </div>
       <div class="form-item">
-        <nz-form-label> Descripción </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Descripción </nz-form-label>
         <textarea
           nz-input
           formControlName="description"
@@ -59,7 +59,7 @@
         >
       </div>
       <div class="form-item">
-        <nz-form-label> Proyecto </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Proyecto </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectProject"
@@ -81,7 +81,7 @@
         >
       </div>
       <div class="form-item">
-        <nz-form-label> Version </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Version </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectVersion"
@@ -270,6 +270,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="updatePlan(data.id)"
           >
@@ -278,6 +279,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="detailPlan(data)"
           >
@@ -286,6 +288,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Exportar PDF" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="generatePDF(data.id, data.title)"
           >

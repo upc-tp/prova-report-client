@@ -129,7 +129,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Nombres
+          <span style="color: #f36d6a;">*&nbsp;</span>Nombres
         </nz-form-label>
         <input nz-input name="firstName" formControlName="firstName" type="text" id="firstName" placeholder="Nombre" />
       </nz-form-control>
@@ -137,7 +137,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Apellidos
+          <span style="color: #f36d6a;">*&nbsp;</span>Apellidos
         </nz-form-label>
         <input nz-input name="lastName" formControlName="lastName" type="text" id="lastName" placeholder="Apellido" />
       </nz-form-control>
@@ -145,7 +145,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Correo Electrónico
+          <span style="color: #f36d6a;">*&nbsp;</span>Correo Electrónico
         </nz-form-label>
         <input nz-input name="email" formControlName="email" type="text" id="email" placeholder="Email" />
       </nz-form-control>
@@ -153,7 +153,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Contraseña
+          <span style="color: #f36d6a;">*&nbsp;</span>Contraseña
         </nz-form-label>
         <nz-input-group [nzSuffix]="suffixTemplate">
           <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Contraseña actual" id="password"
@@ -168,7 +168,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Rol
+          <span style="color: #f36d6a;">*&nbsp;</span>Rol
         </nz-form-label>
         <nz-select nzSize="large" formControlName="role" class="select-input"
           nzPlaceHolder="Seleccione el nivel de severidad">
@@ -191,7 +191,7 @@
     <div class="row d-flex">
       <mat-form-field appearance="outline" class="w-100" style="width: 99%;">
         <mat-label>
-          Colaboradores
+          <span style="color: #f36d6a;">*&nbsp;</span>Colaboradores
         </mat-label>
         <mat-select  formControlName="collaborators" >
           <mat-option *ngFor="let coll of listCollaborators" [value]="coll.id">
@@ -217,7 +217,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Versión
+          <span style="color: #f36d6a;">*&nbsp;</span>Versión
         </nz-form-label>
         <input nz-input name="version" formControlName="version" type="text" id="version" placeholder="Versión" />
       </nz-form-control>
@@ -225,7 +225,7 @@
     <nz-form-item>
       <nz-form-control class="form-item">
         <nz-form-label>
-          Descripción
+          <span style="color: #f36d6a;">*&nbsp;</span>Descripción
         </nz-form-label>
         <textarea rows="4" nz-input style="resize: none;" name="descripcion" formControlName="descripcion" type="text"
           id="descripcion" placeholder="Descripción"></textarea>

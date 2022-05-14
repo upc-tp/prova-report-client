@@ -20,7 +20,6 @@ import { TestCaseService } from '../../services/testcase.service';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from 'src/app/common/spinner/spinner.service';
-import { ThrowStmt } from '@angular/compiler';
 import { DefectService } from 'src/app/services/defect.service';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { PriorityService } from 'src/app/services/priority.services';

@@ -13,36 +13,13 @@
       </button>
     </div>
   </div>
-  <!-- <nz-tabset>
-    <nz-tab nzTitle="Validación Defectos">
-      <app-validacion-defectos
-        [listProjects]="listProjects"
-        [priorities]="priorities"
-        [severities]="severities"
-      >
-      </app-validacion-defectos>
-    </nz-tab>
-    <nz-tab nzTitle="Verificación Defectos">
-      <app-verificacion-defectos
-        [listProjects]="listProjects"
-        [priorities]="priorities"
-        [severities]="severities"
-      ></app-verificacion-defectos>
-    </nz-tab>
-    <nz-tab nzTitle="Confirmación de Defectos">
-      <app-confirmacion-defectos
-        [listProjects]="listProjects"
-        [priorities]="priorities"
-        [severities]="severities"
-      ></app-confirmacion-defectos>
-    </nz-tab>
-  </nz-tabset> -->
+
   <form [formGroup]="filterDefectsGroup">
     <div class="row d-flex">
       <div class="col-md-3">
         <span><b>Proyecto</b></span>
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Seleccionar</mat-label>
+          <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Proyecto</mat-label>
           <mat-select formControlName="projects">
             <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
               {{ pro.value }}
@@ -58,7 +35,7 @@
       <div class="col-md-3">
         <span><b>Estado Defecto</b></span>
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Seleccionar</mat-label>
+          <mat-label>Estados</mat-label>
           <mat-select formControlName="stateDefect" multiple>
             <mat-option *ngFor="let pro of listDefectState" [value]="pro.key">
               {{ pro.value }}
@@ -138,18 +115,20 @@
             <button
               class="options"
               nz-button
-              nzType="primary"
-              (click)="detailDefect(data.id)"
-            >
-              <i nz-icon nzType="profile" nzTheme="outline"></i>
-            </button>
-            <button
-              class="options"
-              nz-button
+              nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft" 
               nzType="primary"
               (click)="updateDefect(data.id)"
             >
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button
+              class="options"
+              nz-button
+              nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
+              nzType="primary"
+              (click)="detailDefect(data.id)"
+            >
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>
         </tr>
@@ -231,7 +210,7 @@
     (ngSubmit)="updateForm()"
   >
     <div class="form-item">
-      <nz-form-label> Prioridad </nz-form-label>
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Prioridad </nz-form-label>
       <nz-select
         nzSize="large"
         formControlName="selectPriority"
@@ -246,7 +225,7 @@
       </nz-select>
     </div>
     <div class="form-item">
-      <nz-form-label> Severidad </nz-form-label>
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Severidad </nz-form-label>
       <nz-select
         nzSize="large"
         formControlName="selectSeverity"
@@ -261,7 +240,7 @@
       </nz-select>
     </div>
     <div class="form-item">
-      <nz-form-label> Estado </nz-form-label>
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Estado </nz-form-label>
       <nz-select
         nzSize="large"
         formControlName="updateState"

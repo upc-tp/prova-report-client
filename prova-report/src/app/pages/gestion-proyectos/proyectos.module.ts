@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule, NzDropDownModule , NzSelectModule, NzPaginationModule } from 'ng-zorro-antd';
+import { NzModalModule, NzToolTipModule, NzButtonModule, NzFormModule, NzAlertModule, NzDropDownModule , NzSelectModule, NzPaginationModule } from 'ng-zorro-antd';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ProyectosRoutingModule } from './proyectos-routing.module';
 import { ProyectosComponent } from './proyectos.component';
@@ -17,6 +17,7 @@ import { IconsProviderModule } from 'src/app/icons-provider.module';
     NzButtonModule,
     NzFormModule,
     NzAlertModule,
+    NzToolTipModule,
     NzPaginationModule,
     NzDropDownModule,
     NzSelectModule,

@@ -77,8 +77,8 @@
     <div class="row d-flex">
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Proyectos</mat-label>
-          <mat-select [(ngModel)]="this.projectId"  formControlName="projects" (selectionChange)="updateFilter($event)">
+          <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Proyecto</mat-label>
+          <mat-select [(ngModel)]="this.projectId" formControlName="projects" (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
               {{ pro.name }}
             </mat-option>
@@ -90,7 +90,8 @@
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Plan de Pruebas</mat-label>
-          <mat-select [(ngModel)]="this.testPlanId" formControlName="testPlans"(selectionChange)="updateFilter($event)">
+          <mat-select [(ngModel)]="this.testPlanId" formControlName="testPlans"
+            (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let tPlan of listTestPlan" [value]="tPlan.key">
               {{ tPlan.value }}
             </mat-option>
@@ -122,9 +123,9 @@
   </form>
   <div *ngIf="this.selected" style="margin-top: 2rem">
     <div class="filters-container">
-        <i nz-icon nzType="search"></i>&nbsp;&nbsp;
-        <input  (keyup)="inputChanged($event)" name="search" type="text"
-          id="search" placeholder="Buscar por título o descripción" />
+      <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+      <input (keyup)="inputChanged($event)" name="search" type="text" id="search"
+        placeholder="Buscar por título o descripción" />
     </div>
     <nz-table #middleTable nzSize="middle" [nzData]="userStories" [nzFrontPagination]="false" [nzPageIndex]="page"
       [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
@@ -144,15 +145,16 @@
           <td>{{ data.tag }}</td>
           <td>{{ data.name }}</td>
           <td>{{ data.testPlan }}</td>
-          <td>{{ data.createdAt }} </td>
           <td>{{ data.createdBy }} </td>
+          <td>{{ data.createdAt }} </td>
           <td class="containerbuttons">
-            <button style="margin-right: 0.5rem;" class="details" nz-button nzType="primary"
-              (click)="getDetailsUserStory(data.id)">
-              <i nz-icon nzType="profile" nzTheme="outline"></i>
-            </button>
-            <button class="details" nz-button nzType="primary" (click)="updateUserStory(data.id)">
+            <button style="margin-right: 0.5rem;" class="details" nz-button nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft" 
+            nzType="primary" (click)="updateUserStory(data.id)">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button  class="details" nz-button nz-tooltip nzTooltipTitle="Ver Detalles"
+              nzTooltipPlacement="bottomLeft" nzType="primary" (click)="getDetailsUserStory(data.id)">
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>
         </tr>

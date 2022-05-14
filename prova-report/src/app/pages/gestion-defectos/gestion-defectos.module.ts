@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GestionDefectosComponent } from './gestion-defectos.component';
-import { NzTabsModule } from 'ng-zorro-antd';
+import { NzTabsModule, NzToolTipModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,6 +29,7 @@ import { GestionDefectosRoutingModule } from './gestion-defectos-routing.module'
     MatIconModule,
     MatPaginatorModule,
     MatSortModule,
+    NzToolTipModule,
     NzModalModule,
     IconsProviderModule,
     NzTableModule,

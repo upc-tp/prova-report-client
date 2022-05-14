@@ -9,7 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule, NzSelectModule } from 'ng-zorro-antd';
+import { NzModalModule, NzButtonModule, NzFormModule, NzAlertModule, NzSelectModule, NzToolTipModule } from 'ng-zorro-antd';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { PlanRoutingModule } from './plan-routing.module';
@@ -25,6 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     NzButtonModule,
     NzFormModule,
     NzAlertModule,
+    NzToolTipModule,
     IconsProviderModule,
     NzSelectModule,
     ReactiveFormsModule,

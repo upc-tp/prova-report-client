@@ -117,7 +117,7 @@ export class DetalleProyectosComponent implements OnInit {
     this.getNoCollaborators();
   }
   getProject() {
-    this.projectService.getTestProject(this.projectId).subscribe((res) => {
+      this.projectService.getTestProject(this.projectId).subscribe((res) => {
       this.project.id = this.projectId;
       this.project.title = res.result.title;
       this.project.description = res.result.description;
