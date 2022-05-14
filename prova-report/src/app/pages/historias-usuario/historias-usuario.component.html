@@ -77,7 +77,7 @@
     <div class="row d-flex">
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Proyectos</mat-label>
+          <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Proyecto</mat-label>
           <mat-select [(ngModel)]="this.projectId" formControlName="projects" (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
               {{ pro.name }}

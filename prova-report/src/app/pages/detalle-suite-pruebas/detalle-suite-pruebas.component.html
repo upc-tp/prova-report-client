@@ -156,7 +156,7 @@
     (ngSubmit)="submitForm()"
   >
     <div class="form-item">
-      <nz-form-label> Título </nz-form-label>
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Título </nz-form-label>
       <input
         nz-input
         name="title"
@@ -174,7 +174,7 @@
     </div>
 
     <div class="form-item">
-      <nz-form-label> Descripción </nz-form-label>
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Descripción </nz-form-label>
       <textarea
         nz-input
         name="description"
@@ -204,7 +204,7 @@
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label> Prioridad </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Prioridad </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectPriority"
@@ -228,7 +228,7 @@
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label> Severidad </nz-form-label>
+        <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Severidad </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectSeverity"
@@ -252,7 +252,7 @@
 
     <nz-form-item>
       <nz-form-control class="form-item">
-        <nz-form-label> Responsable </nz-form-label>
+        <nz-form-label>Responsable </nz-form-label>
         <nz-select
           nzSize="large"
           formControlName="selectCollaborator"
@@ -266,11 +266,6 @@
             nzLabel="collaborators.label"
           ></nz-option>
         </nz-select>
-        <span
-          class="invalid-feedback"
-          *ngIf="submitted && f.selectCollaborator.errors?.required"
-          >* Este campo es obligatorio</span
-        >
       </nz-form-control>
     </nz-form-item>
 

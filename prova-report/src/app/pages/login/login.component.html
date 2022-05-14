@@ -6,17 +6,18 @@
         </div>
         <div class="form-item my-3 mx-4">
             <div class="form-label text-fs-16">
-                Correo electrónico
+                <span style="color: #f36d6a;">*&nbsp;</span>Correo electrónico
             </div>
             <input nz-input name="email" formControlName="email" type="email" id="email"
                 placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                 <div *ngIf="f.email.errors.required">* Este campo es obligatorio</div>
+                <div *ngIf="f.email.errors.email">* Debe ingresar un correo electrónico válido. Ejemplo: test@gmail.com</div>
             </div>
         </div>
         <div class="form-item my-3 mx-4">
             <div class="form-label text-fs-16">
-                Contraseña
+                <span style="color: #f36d6a;">*&nbsp;</span>Contraseña
             </div>
             <input nz-input name="password" formControlName="password" type="password" id="password"
                 placeholder="Contraseña" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />

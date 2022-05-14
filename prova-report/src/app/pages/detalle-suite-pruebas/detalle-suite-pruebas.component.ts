@@ -90,7 +90,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
-      selectCollaborator: [null, [Validators.required]],
+      selectCollaborator: [null],
       selectPriority: [null, [Validators.required]],
       selectSeverity: [null, [Validators.required]]
     });

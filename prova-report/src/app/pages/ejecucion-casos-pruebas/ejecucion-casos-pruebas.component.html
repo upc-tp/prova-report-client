@@ -9,7 +9,7 @@
     <div class="row d-flex">
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Proyectos</mat-label>
+          <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Proyecto</mat-label>
           <mat-select formControlName="projects" (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let pro of listProjects" [value]="pro.key">
               {{ pro.value }}
@@ -22,7 +22,7 @@
 
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Test Suite</mat-label>
+          <mat-label>Suite de prueba</mat-label>
           <mat-select formControlName="testSuite" (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
               {{ tSuite.value }}

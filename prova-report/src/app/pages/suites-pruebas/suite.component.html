@@ -94,7 +94,7 @@
     <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="form-item">
         <nz-form-label>
-          Título
+          <span style="color: #f36d6a;">*&nbsp;</span>Título
         </nz-form-label>
         <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título"
           autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
@@ -102,7 +102,7 @@
       </div>
       <div class="form-item">
         <nz-form-label>
-          Descripción
+          <span style="color: #f36d6a;">*&nbsp;</span>Descripción
         </nz-form-label>
         <textarea nz-input name="description" formControlName="description" type="text" id="description"
         placeholder="Ingrese la descripción" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
@@ -117,7 +117,7 @@
       </div>
       <div class="form-item">
         <nz-form-label>
-          Proyecto
+          <span style="color: #f36d6a;">*&nbsp;</span>Proyecto
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectProject" class="select-input"
           [ngClass]="{ 'is-invalid': submitted && f.selectProject.errors }" nzPlaceHolder="Seleccione Proyecto"
@@ -129,7 +129,7 @@
       </div>
       <div class="form-item">
         <nz-form-label>
-          Plan de prueba
+          <span style="color: #f36d6a;">*&nbsp;</span>Plan de prueba
         </nz-form-label>
         <nz-select nzSize="large" formControlName="selectPlan" class="select-input"
           [ngClass]="{ 'is-invalid': submitted && f.selectPlan.errors }" nzPlaceHolder="Seleccione Plan de prueba"

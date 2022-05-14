@@ -10,7 +10,7 @@
     <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="form-item">
         <div class="form-label">
-          Título
+          <span style="color: #f36d6a;">*&nbsp;</span>Título
         </div>
         <input [ngClass]="{ 'is-invalid': submitted && f.title.errors }" nz-input name="title" formControlName="title"
           type="text" id="title" placeholder="Título" />
@@ -19,7 +19,7 @@
 
       <div class="form-item">
         <div class="form-label">
-          Descripción
+          <span style="color: #f36d6a;">*&nbsp;</span>Descripción
         </div>
         <textarea nz-input formControlName="description" id="description" placeholder="Descripción" autocomplete="off"
           [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
