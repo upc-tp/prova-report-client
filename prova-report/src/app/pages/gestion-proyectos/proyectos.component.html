@@ -12,20 +12,22 @@
         <div class="form-label">
           Título
         </div>
-        <input [ngClass]="{ 'is-invalid': submitted && f.title.errors }" nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" />
-        <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required" >* Este campo es obligatorio</span>
+        <input [ngClass]="{ 'is-invalid': submitted && f.title.errors }" nz-input name="title" formControlName="title"
+          type="text" id="title" placeholder="Título" />
+        <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
       </div>
 
       <div class="form-item">
         <div class="form-label">
           Descripción
         </div>
-        <textarea nz-input formControlName = "description" id = "description"  placeholder="Descripción" autocomplete="off"
-        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" style="height:5rem;width: 100%;padding: 0.5rem;border-radius: 5px;"
-        ></textarea>
+        <textarea nz-input formControlName="description" id="description" placeholder="Descripción" autocomplete="off"
+          [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+          style="height:5rem;width: 100%;padding: 0.5rem;border-radius: 5px;"></textarea>
         <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
           placeholder="Descripción" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/> -->
-          <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required" >* Este campo es obligatorio</span>
+        <span class="invalid-feedback" *ngIf="submitted && f.description.errors?.required">* Este campo es
+          obligatorio</span>
       </div>
 
 
@@ -63,12 +65,13 @@
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
         <td>
-          <button nz-button nzType="primary" (click)="detailProject(data.id)"
-            style="margin-right: 0.5rem;">
-            <i nz-icon nzType="profile" nzTheme="outline"></i>
-          </button>
-          <button nz-button nzType="primary" (click)="updateProject(data.id)">
+          <button nz-button nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft" nzType="primary" (click)="updateProject(data.id)"
+          style="margin-right: 0.5rem;">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft"
+          nzType="primary" (click)="detailProject(data.id)">
+            <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
         </td>
       </tr>

@@ -138,18 +138,20 @@
             <button
               class="options"
               nz-button
-              nzType="primary"
-              (click)="detailDefect(data.id)"
-            >
-              <i nz-icon nzType="profile" nzTheme="outline"></i>
-            </button>
-            <button
-              class="options"
-              nz-button
+              nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft" 
               nzType="primary"
               (click)="updateDefect(data.id)"
             >
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button
+              class="options"
+              nz-button
+              nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
+              nzType="primary"
+              (click)="detailDefect(data.id)"
+            >
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>
         </tr>

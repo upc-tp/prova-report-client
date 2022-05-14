@@ -102,7 +102,9 @@
           </td>
 
           <td>
-            <button class="details" nz-button nzType="primary" (click)="showDetail(data)">
+            <button class="details" 
+            nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
+            nzType="primary" (click)="showDetail(data)">
               <i nz-icon nzType="profile" nzTheme="outline"></i>
             </button>
           </td>

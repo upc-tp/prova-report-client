@@ -270,6 +270,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="updatePlan(data.id)"
           >
@@ -278,6 +279,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="detailPlan(data)"
           >
@@ -286,6 +288,7 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
+            nz-tooltip nzTooltipTitle="Exportar PDF" nzTooltipPlacement="bottomLeft"
             nzType="primary"
             (click)="generatePDF(data.id, data.title)"
           >

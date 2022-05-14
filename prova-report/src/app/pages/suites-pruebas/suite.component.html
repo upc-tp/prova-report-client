@@ -176,10 +176,12 @@
         <td>{{ data.registerDate }}</td>
         <td>{{ data.registerBy }}</td>
         <td>
-          <button style="margin-right: 0.5rem" nz-button nzType="primary" (click)="updateSuite(data.id)">
+          <button style="margin-right: 0.5rem" nz-button nz-tooltip nzTooltipTitle="Editar" nzTooltipPlacement="bottomLeft"
+          nzType="primary" (click)="updateSuite(data.id)">
             <i nz-icon nzType="edit" nzTheme="outline"></i>
           </button>
-          <button nz-button nzType="primary" (click)="detailTestSuite(data.id)">
+          <button nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft"
+          nzType="primary" (click)="detailTestSuite(data.id)">
             <i nz-icon nzType="profile" nzTheme="outline"></i>
           </button>
         </td>

@@ -11,7 +11,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
-import { NzButtonModule, NzFormModule, NzModalModule, NzSelectModule } from 'ng-zorro-antd';
+import { NzButtonModule, NzFormModule, NzModalModule, NzSelectModule, NzToolTipModule } from 'ng-zorro-antd';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 
@@ -30,6 +30,7 @@ MatIconModule,
 MatPaginatorModule,
 MatSortModule,
 NzButtonModule,
+NzToolTipModule,
 NzIconModule,
 NzModalModule,
 NzFormModule,
