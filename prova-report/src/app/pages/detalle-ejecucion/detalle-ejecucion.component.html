@@ -1,0 +1,31 @@
+<div class="backgroundContent">
+    <div class="bannerEjeCasos">
+        <button
+        class="back-button"
+        nz-button
+        nzType="text"
+        (click)="backtestCaseExecution()"
+      >
+        <i nz-icon nzType="left" nzTheme="outline" (click)="backtestCaseExecution()"></i>
+      </button>
+      Detalle Ejecución
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-12">
+                <span> {{executionSelected.testCase.tag}} - {{executionSelected.testCase.title}} </span>
+            </div>
+
+        </div>
+        <span> Ejecucion #{{executionSelected.order }} </span>
+        <h2><b> Fecha Inicio </b></h2>
+        <span> {{executionSelected.startTime}} </span>
+        <h2><b> Fecha Fin </b></h2>
+        <span> {{executionSelected.endTime}} </span>
+        <h2><b> Duración </b></h2>
+        <span> {{executionSelected.duration}} </span>
+        <h2><b> Comentarios </b></h2>
+        <textarea style="height: 5rem; width:60%; border-radius: 5px; padding: 0.5rem;" disabled="true"> {{executionSelected.comments}} </textarea>
+    </div>
+</div>
+

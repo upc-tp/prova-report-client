@@ -69,13 +69,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of middleTableTestCases.data">
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.tag }}
           </td>
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.title }}
           </td>
-          <td (click)="enterTestCase(data)">
+          <td>
             <span [ngClass]="{
                 'test-state-passed': data.testState.name == 'Superado',
                 'test-state-non-executed':
@@ -84,28 +84,36 @@
                 'test-state-failed': data.testState.name == 'Fallido'
               }">{{ data.testState.name }}</span>
           </td>
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.priority.name }}
           </td>
 
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.severity.name }}
           </td>
 
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.createdAt }}
           </td>
 
-          <td (click)="enterTestCase(data)">
+          <td>
             {{ data.userInCharge?.firstName }}
             {{ data.userInCharge?.lastName }}
           </td>
 
-          <td>
-            <button class="details" 
-            nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
-            nzType="primary" (click)="showDetail(data)">
-              <i nz-icon nzType="profile" nzTheme="outline"></i>
+          <td class="col">
+              <button class="details" style="margin-right: 0.5rem;"
+              nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
+              nzType="primary" (click)="showDetail(data)">
+                <i nz-icon nzType="profile" nzTheme="outline"></i>
+              </button>
+              <button
+              nz-button
+              nzType="primary"
+              class="details"
+              (click)="enterTestCase(data)"
+            >
+            <i nz-icon nzType="play-square" nzTheme="fill"></i>
             </button>
           </td>
         </tr>
@@ -387,6 +395,9 @@
 
       <h2>
         <b> Fecha de Registro </b>
+      </h2><br>
+      <h2>
+        <b> Historial de ejecuciones </b>
       </h2>
       <h3>{{ testCaseDetailSelected.createdAt }}</h3>
     </div>
