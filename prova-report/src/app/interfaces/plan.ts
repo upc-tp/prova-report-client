@@ -50,7 +50,6 @@ export interface Plans {
 	description: string;
 	version: Version;
 	project: Project;
-	tag:string;
 }
 
 export interface PlanResponse {

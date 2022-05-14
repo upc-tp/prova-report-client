@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GestionDefectosComponent } from './gestion-defectos.component';
 import { NzTabsModule } from 'ng-zorro-antd';
-import { VerificacionDefectosComponent } from './components/verificacion-defectos/verificacion-defectos.component';
-import { ValidacionDefectosComponent } from './components/validacion-defectos/validacion-defectos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,12 +15,12 @@ import { NzFormModule, NzModalModule, NzButtonModule, NzSelectModule, NzTableMod
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { MatOptionModule } from '@angular/material/core';
 import { GestionDefectosRoutingModule } from './gestion-defectos-routing.module';
-import { ConfirmacionDefectosComponent } from './components/confirmacion-defectos/confirmacion-defectos.component';
+
 
 
 
 @NgModule({
-  declarations: [GestionDefectosComponent, VerificacionDefectosComponent, ValidacionDefectosComponent, ConfirmacionDefectosComponent],
+  declarations: [GestionDefectosComponent],
   imports: [
     CommonModule,
     NzTabsModule,
