@@ -122,7 +122,7 @@
       </tbody>
     </nz-table>
     <ng-template #rangeTemplateTestCases let-range="range" let-total>
-      Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+      Mostrando {{ range[0] }}-{{ range[1] }} de {{ countTestCases }} resultados
     </ng-template>
   </div>
 
@@ -284,7 +284,7 @@
         </div>
       </div>
 
-      <div style="margin-left: 3rem">
+      <!-- <div style="margin-left: 3rem">
         <mat-label class="text-fs-24 text-w-bold col-12">Pasos de ejecución</mat-label>
         <div [hidden]="chargeTestSteps == 0">
           <nz-table #middleTableSteps nzSize="middle" [nzData]="listTestCaseSteps" [nzFrontPagination]="false"
@@ -351,7 +351,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="d-flex flex-row-reverse">
         <button type="submit" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright">
           <span class="iconify" data-icon="ant-design:plus-circle-filled" style="color: white" data-width="24"
@@ -397,11 +397,12 @@
 
       <h2>
         <b> Fecha de Registro </b>
-      </h2><br>
+      </h2>
+      <h3>{{ testCaseDetailSelected.createdAt }}</h3><br>
       <h2>
         <b> Historial de ejecuciones </b>
       </h2>
-      <h3>{{ testCaseDetailSelected.createdAt }}</h3>
+
     </div>
     <nz-table #middleTable nzSize="small" [nzData]="listTestExecutions" [nzFrontPagination]="false"
       [(nzPageIndex)]="page" [nzPageSize]="pageSize" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
@@ -414,23 +415,34 @@
           <th>Fecha Inicio</th>
           <th>Fecha Fin</th>
           <th>Duracion</th>
+          <th>Opciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of middleTable.data">
           <td>#{{ data.order }}</td>
-          <td [ngClass]="{
+          <td>
+            <span [ngClass]="{
               'test-state-passed': data.testState.name == 'Superado',
               'test-state-non-executed': data.testState.name == 'No ejecutado',
               'test-state-skipped': data.testState.name == 'Omitido',
               'test-state-failed': data.testState.name == 'Fallido'
             }">
-            {{ data.testState.name }}
+              {{ data.testState.name }}
+            </span>
           </td>
           <td>{{ data.comments }}</td>
           <td>{{ data.startTime }}</td>
           <td>{{ data.endTime }}</td>
           <td>{{ data.duration }}</td>
+          <td>
+            <!-- <a target="_blank" [routerLink]="['/detalles-ejecucion',data.id]">Hola</a> -->
+            <button class="details"
+            nz-button nz-tooltip nzTooltipTitle="Ver Detalles" nzTooltipPlacement="bottomLeft" 
+            nzType="primary" (click)="showDetailExecution(data)">
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </nz-table>

@@ -111,7 +111,7 @@ export interface TestExecution {
 	startTime: string;
 	endTime: string;
 	comments:string;
-	duration:number;
+	duration:string;
 	testState: TestState;
 	testExecutionSteps: TestExecutionStep[];
 }

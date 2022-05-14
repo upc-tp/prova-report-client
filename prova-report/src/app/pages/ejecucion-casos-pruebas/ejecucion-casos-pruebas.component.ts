@@ -23,9 +23,9 @@ import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 import { DefectService } from 'src/app/services/defect.service';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { PriorityService } from 'src/app/services/priority.services';
-import { TestExecution } from '../../interfaces/testcase';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { TestExecution } from 'src/app/interfaces/testcase';
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -236,7 +236,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.filterFormGroup.controls['testSuite'].value
         )
         .subscribe((res) => {
-          console.log(res.result);
+          console.log(res.count);
           this.pageTestCases = res.page;
           this.pageSizeTestCases = res.pageSize;
           this.countTestCases = res.count;
@@ -300,6 +300,32 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         });
     }
   }
+
+  showDetailExecution(d:any)
+  {
+    console.log(d.id);
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/detalles-ejecucion/'],{
+       queryParams: {
+         executionId : d.id
+       }
+      }));
+
+     window.open(url,'_blank') 
+  }
+
+  detailsExecutionTestCase(id: number) {
+    this.addFilterItem(this.actualFilterTestSuite);
+    this.addFilterItem(this.actualFilterProject);
+    if (this.filterItems.length > 0) {
+      localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
+    }
+    this.toExecutionPage = true;
+    this.router.navigate(['detalles-ejecucion-caso-prueba'], {
+      queryParams: { testCaseId: id },
+    });
+  }
+
 
   crearFormulario() {
     this.formulario = this._fb.group({
@@ -386,17 +412,6 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     // this.PaginationTestCase();
   }
 
-  detailsExecutionTestCase(id: number) {
-    this.addFilterItem(this.actualFilterTestSuite);
-    this.addFilterItem(this.actualFilterProject);
-    if (this.filterItems.length > 0) {
-      localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
-    }
-    this.toExecutionPage = true;
-    this.router.navigate(['detalles-ejecucion-caso-prueba'], {
-      queryParams: { testCaseId: id },
-    });
-  }
 
   addFilterItem(item: string) {
     if (!this.filterItems.includes(item)) {
@@ -419,8 +434,20 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.spinnerService.isLoading.next(true);
     this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res) => {
       console.log(res.result)
-      this.listTestExecutions = res.result;
+      this.listTestExecutions = res.result.map(
+        (tExec) => {
+          tExec.id = tExec.id;
+          tExec.createdAt = this.utils.formatDate(new Date(tExec.createdAt));
+          tExec.createdBy = this.utils.formatDate(new Date(tExec.createdBy));
+          tExec.startTime = this.utils.formatDateTime(new Date(tExec.startTime));
+          tExec.endTime = this.utils.formatDateTime(new Date(tExec.endTime));
+          tExec.order =  tExec.order;
+          tExec.duration = this.utils.msToTime(Number(tExec.duration));
+          return tExec;
+        }
+      );
       this.page = res.page;
+      this.pageSize = res.pageSize;
       this.count = res.count;
     });
     this.DetalleVisible = true;
@@ -429,7 +456,18 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   fetchExecutions(page: number, pageSize: number, search: string, id: number) {
     this.testCaseService.getTestExecutions(page, pageSize, search, id).subscribe(
       (res) => {
-        this.listTestExecutions = res.result;
+        this.listTestExecutions = res.result.map(
+          (tExec) => {
+            tExec.id = tExec.id;
+            tExec.createdAt = this.utils.formatDate( new Date(tExec.createdAt));
+            tExec.createdBy = this.utils.formatDate(new Date(tExec.createdBy));
+            tExec.startTime = this.utils.formatDateTime(new Date(tExec.startTime));
+            tExec.endTime = this.utils.formatDateTime(new Date(tExec.endTime));
+            tExec.order =  tExec.order;
+            tExec.duration = this.utils.msToTime(Number(tExec.duration));
+            return tExec;
+          }
+        );
         this.page = res.page;
         this.pageSize = res.pageSize;
         this.count = res.count;

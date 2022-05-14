@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'Perfil', canActivate: [AuthGuard], loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)},
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)},
   { path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)},
-  { path:'detalles-ejecucion-caso-prueba', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalles-ejecucion-caso-prueba/detalles-ejecucion-caso-prueba.module').then(m => m.DetallesEjecucionCasoPruebaModule)},
+  { path:'detalles-ejecucion', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalle-ejecucion/detalle-ejecucion.module').then(m => m.DetalleEjecucionModule)},
   { path:'historias-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/historias-usuario/historias-usuario.module').then(m => m.HistoriasUsuarioModule)},
   { path:'registrar-historia-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/registrar-historia-usuario/registrar-historia-usuario.module').then(m => m.RegistrarHistoriaUsuarioModule)},
   { path: 'detalles-historia-usuario', canActivate: [AuthGuard],loadChildren: () => import('./pages/detalles-historia-usuario/detalles-historia-usuario.module').then(m => m.DetallesHistoriaUsuarioModule)},

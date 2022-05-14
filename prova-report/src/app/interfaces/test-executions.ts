@@ -1,12 +1,12 @@
 
-export interface TestExecution {
+export class TestExecution {
 	createdAt: string;
     createdBy: string;
 	modifiedAt: string;
 	modifiedBy: string;
 	deletedAt?: any;
 	deletedBy?: any;
-	id: number;
+	id?: number;
 	order: number;
 	startTime: string;
 	endTime: string;
@@ -14,7 +14,7 @@ export interface TestExecution {
 	duration:string;
 	testState: TestState;
 	testExecutionSteps: TestExecutionStep[];
-    testCase: TestCaseExecution;
+    testCase?: TestCaseExecution;
 }
 
 export interface SingleTestExecutionResponse{

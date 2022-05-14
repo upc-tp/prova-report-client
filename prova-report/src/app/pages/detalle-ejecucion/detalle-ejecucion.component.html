@@ -1,31 +1,85 @@
 <div class="backgroundContent">
-    <div class="bannerEjeCasos">
-        <button
-        class="back-button"
-        nz-button
-        nzType="text"
-        (click)="backtestCaseExecution()"
-      >
-        <i nz-icon nzType="left" nzTheme="outline" (click)="backtestCaseExecution()"></i>
-      </button>
+    <div class="bannerDetalleEje">
       Detalle Ejecución
     </div>
-    <div>
+    <div style="padding: 0.5rem;">
         <div class="row">
-            <div class="col-12">
-                <span> {{executionSelected.testCase.tag}} - {{executionSelected.testCase.title}} </span>
+            <div class="col-6">
+                <h2><b> {{executionSelected?.testCase.tag}} - {{executionSelected?.testCase.title}} - Ejecución #{{executionSelected?.order }} </b></h2>
             </div>
 
         </div>
-        <span> Ejecucion #{{executionSelected.order }} </span>
-        <h2><b> Fecha Inicio </b></h2>
-        <span> {{executionSelected.startTime}} </span>
-        <h2><b> Fecha Fin </b></h2>
-        <span> {{executionSelected.endTime}} </span>
-        <h2><b> Duración </b></h2>
-        <span> {{executionSelected.duration}} </span>
-        <h2><b> Comentarios </b></h2>
-        <textarea style="height: 5rem; width:60%; border-radius: 5px; padding: 0.5rem;" disabled="true"> {{executionSelected.comments}} </textarea>
+
+        <div class="row">
+            <div class="col-6">
+                <h2><b> Fecha Inicio </b></h2>
+                <span> {{executionSelected?.startTime | date:'dd/M/yy H:mm:ss'}} </span>
+            </div>
+            <div class="col-6">
+                <h2><b> Fecha Fin </b></h2>
+                <span> {{executionSelected?.endTime | date:'dd/M/yy H:mm:ss'}} </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <h2><b> Comentarios </b></h2>
+                <textarea style="height: 7rem; width:80%; border-radius: 5px; padding: 0.5rem;" disabled="true"> {{executionSelected?.comments}} </textarea>
+            </div>
+            <div class="col-6">
+                <h2><b> Duración </b></h2>
+                <span> {{ utils.msToTime(executionSelected?.duration) }} </span>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <h2><b> Pasos de Ejecución </b></h2>
+        <nz-table #middleTableSteps nzSize="middle" [nzData]="testExecutionSteps"
+            [nzFrontPagination]="true"
+            [nzPageIndex]="pageSteps" [nzPageSize]="pageSizeSteps" [nzShowPagination]="true"
+            [nzTotal]="countSteps" [nzShowTotal]="rangeTemplateSteps"
+            (nzPageIndexChange)="onPageIndexChangeSteps($event)">
+        <thead>
+            <tr>
+              <th>Título</th>
+              <th>Estado</th>
+              <th>Tiempo Inicio</th>
+              <th>Tiempo Fin</th>
+              <th>Duración</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of middleTableSteps.data">
+              <td>
+                {{ data.name }}
+              </td>
+              <td>
+                <span [ngClass]="{
+                  'test-state-passed': data.testState.name == 'Superado',
+                  'test-state-non-executed':
+                    data.testState.name == 'No ejecutado',
+                  'test-state-skipped': data.testState.name == 'Omitido',
+                  'test-state-failed': data.testState.name == 'Fallido'
+                }">{{ data.testState.name }}</span>
+              </td>
+              <td>
+                {{ data.startTime | date:'dd/M/yy H:mm:ss' }}
+              </td>
+
+              <td>
+                {{ data.endTime  | date:'dd/M/yy H:mm:ss' }}
+              </td>
+
+              <td>
+                {{ utils.msToTime(data.duration) }}
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <ng-template #rangeTemplateSteps let-range="range" let-total>
+            Mostrando {{ range[0] }}-{{ range[1] }} de {{ countSteps }} resultados
+          </ng-template>
     </div>
 </div>
 
