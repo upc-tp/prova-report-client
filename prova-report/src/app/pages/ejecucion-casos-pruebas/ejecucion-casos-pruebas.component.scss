@@ -138,6 +138,43 @@ input {
   }
 }
 
+.filters-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
+  flex-flow: row wrap;
+
+  & input {
+    width: 50%;
+    border-radius: 1.5rem;
+  }
+
+  & i {
+    color: black;
+    font-size: large;
+  }
+
+  & nz-alert {
+    margin: 1rem auto;
+    flex: 1 100%;
+  }
+}
+
+input {
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.5px solid rgb(218, 218, 218);
+  border-radius: 2px;
+  outline: none;
+  transition: all .3s;
+  &:focus {
+    outline: none;
+    border: 0.5px solid #3849AA;
+  }
+}
+
 button.options {
   width: 50%;
   margin: 0.5rem;

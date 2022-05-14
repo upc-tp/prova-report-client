@@ -13,11 +13,11 @@ export class UserStoryService {
   constructor(private http: HttpClient) {}
 
   getUserStories(
-    page: number, pageSize: number, sortOrder: string, projectId: number): Observable<UserStoryResponse> {
+    page: number, pageSize: number, sortOrder: string, projectId: number, testPlanId: number ,search: string): Observable<UserStoryResponse> {
     return this.http.get<UserStoryResponse>(
       BASE_URL +
         this.userStory +
-        `?page=${page}&pageSize=${pageSize}&sortOrder=${sortOrder}&projectId=${projectId}`
+        `?page=${page}&pageSize=${pageSize}&sortOrder=${sortOrder}&projectId=${projectId}&search=${search}&testPlanId=${testPlanId}`
     );
   }
 

@@ -10,24 +10,26 @@
       </button>
     </div>
   </div>
-  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Suite de prueba" (nzOnCancel)="handleCancelMassive()" (nzOnOk)="handleOkMassive()"
-    [nzOkLoading]="isOkLoadingMassive">
+  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Suite de prueba" (nzOnCancel)="handleCancelMassive()"
+    (nzOnOk)="handleOkMassive()" [nzOkLoading]="isOkLoadingMassive">
     <div>
-        <a nz-button nzBlock nzSize="large" nzType="primary" style="color: white; margin-bottom: 2rem;" nz-button nzBlock="" download="user-stories.csv" target="_blank" href="../../../assets/files/user-stories.csv">
-          <span class="iconify" data-icon="ant-design:download-outlined" style="color: white;" data-width="24"
-            data-height="24"></span>
-          Descargar formato de ejemplo
-        </a>
-   
+      <a nz-button nzBlock nzSize="large" nzType="primary" style="color: white; margin-bottom: 2rem;" nz-button
+        nzBlock="" download="user-stories.csv" target="_blank" href="../../../assets/files/user-stories.csv">
+        <span class="iconify" data-icon="ant-design:download-outlined" style="color: white;" data-width="24"
+          data-height="24"></span>
+        Descargar formato de ejemplo
+      </a>
+
     </div>
     <form>
-      <div >
+      <div>
         <div>
           <div class="fileSection">
             <div>
               <mat-label class="text-fs-20 text-w-bold col-12">Carga de Archivo</mat-label>
             </div>
-            <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null" style="width: 100%;">
+            <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null"
+              style="width: 100%;">
               <div class="text-center" style="margin-bottom: 1.5rem; margin-top: 1.5rem">
                 <div *ngIf="file == null">
                   <span class="iconify" data-icon="fa-solid:file-upload" data-width="85px" data-height="95px"
@@ -48,8 +50,7 @@
                       {{ file?.name }}
                     </h4>
                   </div>
-                  <button mat-flat-button class="button-global ps-3 pe-3"
-                    (click)="deleteFile()">
+                  <button mat-flat-button class="button-global ps-3 pe-3" (click)="deleteFile()">
                     <span class="iconify" data-icon="ant-design:delete-filled" data-width="24px" data-height="24px"
                       style="color: #f10000"></span>
                   </button>
@@ -57,16 +58,18 @@
               </div>
               <div *ngIf="file == null" class="text-center">
                 <span class="text-fs-16 text-black">Solo se permiten archivos en formato CSV</span><br />
-                <input #FileClick id="FileClick" type="file" style="display: none" accept="text/csv" (change)="fileChanged($event)" />
+                <input #FileClick id="FileClick" type="file" style="display: none" accept="text/csv"
+                  (change)="fileChanged($event)" />
                 <a href="javascript:void(0)" (click)="FileClick.click()" for="FileClick">Busca en tu ordenador</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-          <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive" (click)="enviarCsvData()">
-            Guardar
-          </button>
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive"
+        (click)="enviarCsvData()">
+        Guardar
+      </button>
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
@@ -75,7 +78,7 @@
       <div class="col-md-3">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Proyectos</mat-label>
-          <mat-select [(ngModel)]="this.projectId" (ngModelChange)="this.selectProject()" formControlName="projects">
+          <mat-select [(ngModel)]="this.projectId"  formControlName="projects" (selectionChange)="updateFilter($event)">
             <mat-option *ngFor="let pro of listProjects" [value]="pro.id">
               {{ pro.name }}
             </mat-option>
@@ -83,6 +86,24 @@
           <mat-hint *ngIf="validaciones('projects')" class="form-text text-danger animate__animated animate__headShake">
             Seleccione uno</mat-hint>
         </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Plan de Pruebas</mat-label>
+          <mat-select [(ngModel)]="this.testPlanId" formControlName="testPlans"(selectionChange)="updateFilter($event)">
+            <mat-option *ngFor="let tPlan of listTestPlan" [value]="tPlan.key">
+              {{ tPlan.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
+          style="margin-top: 0.5rem" (click)="this.selectProject()">
+          <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
+            data-height="24"></span>
+          <span>Aplicar Filtros</span>
+        </button>
       </div>
       <div class="col-12 centerItems" style="margin-top: 3rem" *ngIf="this.selected == false">
         <div style="overflow: hidden; text-align: center">
@@ -99,66 +120,46 @@
       </div>
     </div>
   </form>
-  <div *ngIf="this.selected" style="margin-top: 3rem">
-    <div class="col-12">
-      <mat-form-field appearance="outline" class="w-100 filter-table">
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-label>Filtrar</mat-label>
-        <input matInput autocomplete="off" (keyup)="filterUserStories($event)" #inputFilter />
-      </mat-form-field>
+  <div *ngIf="this.selected" style="margin-top: 2rem">
+    <div class="filters-container">
+        <i nz-icon nzType="search"></i>&nbsp;&nbsp;
+        <input  (keyup)="inputChanged($event)" name="search" type="text"
+          id="search" placeholder="Buscar por título o descripción" />
     </div>
-    <table mat-table class="table-hover" [dataSource]="dataSource" style="width: 100%">
-      
-      <ng-container matColumnDef="tag">
-        <th mat-header-cell *matHeaderCellDef>Etiqueta</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.tag }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="testPlan">
-        <th mat-header-cell *matHeaderCellDef>Plan de prueba</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.testPlan }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="createdBy">
-        <th mat-header-cell *matHeaderCellDef>Registrado por</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.createdBy }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef>Fecha de registro</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.createdAt }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="options">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button style="margin-right: 0.5rem;" class="details" nz-button nzType="primary"
-            (click)="getDetailsUserStory(element.id)">
-            <i nz-icon nzType="profile" nzTheme="outline"></i>
-          </button>
-          <button class="details" nz-button nzType="primary" (click)="updateUserStory(element.id)">
-            <i nz-icon nzType="edit" nzTheme="outline"></i>
-          </button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" showFirstLastButtons></mat-paginator>
+    <nz-table #middleTable nzSize="middle" [nzData]="userStories" [nzFrontPagination]="false" [nzPageIndex]="page"
+      [nzPageSize]="pageSize" [nzShowPagination]="true" [nzTotal]="count" [nzShowTotal]="rangeTemplate"
+      (nzPageIndexChange)="onPageIndexChange($event)">
+      <thead>
+        <tr>
+          <th>Etiqueta</th>
+          <th>Nombre</th>
+          <th>Plan de Pruebas</th>
+          <th>Registrado Por</th>
+          <th>Fecha de Registro</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of middleTable.data">
+          <td>{{ data.tag }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.testPlan }}</td>
+          <td>{{ data.createdAt }} </td>
+          <td>{{ data.createdBy }} </td>
+          <td class="containerbuttons">
+            <button style="margin-right: 0.5rem;" class="details" nz-button nzType="primary"
+              (click)="getDetailsUserStory(data.id)">
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
+            </button>
+            <button class="details" nz-button nzType="primary" (click)="updateUserStory(data.id)">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      Mostrando {{ range[0] }}-{{ range[1] }} de {{ count }} resultados
+    </ng-template>
   </div>
 </div>

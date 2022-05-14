@@ -25,6 +25,8 @@ import { DefectService } from 'src/app/services/defect.service';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { PriorityService } from 'src/app/services/priority.services';
 import { TestExecution } from '../../interfaces/testcase';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ejecucion-casos-pruebas',
@@ -43,6 +45,16 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   page: number = 1;
   pageSize: number = 10;
   count: number = 0;
+
+
+  pageTestCases: number = 1;
+  pageSizeTestCases: number = 10;
+  countTestCases: number = 0;
+
+  pageSteps: number = 1;
+  pageSizeSteps: number = 10;
+  countSteps: number = 0;
+
   defects: Array<{
     title: string;
     repro_steps: string;
@@ -64,6 +76,10 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   listTestCaseSteps: TestCaseSteps[] = [];
   listTestExecutions: TestExecution[] = [];
 
+
+  private modelChanged: Subject<string> = new Subject<string>();
+  private subscription: Subscription;
+  debounceTime = 500;
 
   file: any;
   xmlData: string[] = [];
@@ -87,7 +103,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     private testCaseService: TestCaseService,
     private spinnerService: SpinnerService,
     private defectService: DefectService,
-    private priorityService: PriorityService, 
+    private priorityService: PriorityService,
     private severityService: SeverityService,
     public utils: UtilsService
   ) {
@@ -132,21 +148,23 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.getPriority();
     this.getSeverity();
     console.log(localStorage.getItem('filterItems'));
+
+    this.subscription = this.modelChanged
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe((search: string) => {
+        this.search(search);
+      });
     if (localStorage.getItem('filterItems')) {
       this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
       this.filterFormGroup = this._fb.group({
         projects: [this.filterItems[1], [Validators.required]],
-        testSuite: [this.filterItems[0], [Validators.required]],
+        testSuite: [this.filterItems[0]],
       });
       // this.search();
-      this.filterFormGroup = this._fb.group({
-        projects: ['', [Validators.required]],
-        testSuite: ['', [Validators.required]],
-      });
     } else {
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
-        testSuite: ['', ]
+        testSuite: ['',]
       });
       this.filterItems = [];
     }
@@ -173,13 +191,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   getProjects() {
     this.ProjectService.getTestProjects(null, null, '').subscribe(
       (res) =>
-        (this.listProjects = res.result.map((project) => {
-          const filtProject = new Filter();
-          filtProject.group = 0;
-          filtProject.key = project.id;
-          filtProject.value = project.title;
-          return filtProject;
-        }))
+      (this.listProjects = res.result.map((project) => {
+        const filtProject = new Filter();
+        filtProject.group = 0;
+        filtProject.key = project.id;
+        filtProject.value = project.title;
+        return filtProject;
+      }))
     );
   }
 
@@ -207,23 +225,26 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     );
   }
 
-  search() {
+  search(search: string = '') {
     this.filterItems = [];
     localStorage.removeItem('filterItems');
     if (!this.filterFormGroup.invalid) {
       this.testCaseService
         .getTestCases(
-          null,
-          null,
-          '',
+          this.pageTestCases,
+          this.pageSizeTestCases,
+          search,
           this.filterFormGroup.controls['testSuite'].value
         )
         .subscribe((res) => {
           console.log(res.result);
+          this.pageTestCases = res.page;
+          this.pageSizeTestCases = res.pageSize;
+          this.countTestCases = res.count;
           this.listTestCase = res.result.map((tCase) => {
             const testCase = new TestCase();
             (testCase.id = tCase.id),
-            (testCase.tag) = tCase.tag,
+              (testCase.tag) = tCase.tag,
               (testCase.title = tCase.title),
               (testCase.description = tCase.description),
               (testCase.priority = tCase.priority),
@@ -254,6 +275,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         this.filterFormGroup.controls['projects'].value;
       console.log(this.filterFormGroup.controls['testSuite'].value);
       console.log(this.filterFormGroup.controls['projects'].value);
+
     }
   }
 
@@ -263,6 +285,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   }
 
   updateFilter(e: any) {
+    console.log("HABLA");
     if (e.source.ngControl.name == 'projects') {
       this.suiteService
         .getTestSuitesByProject(null, null, '', e.value)
@@ -357,7 +380,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.nivelPositionTest--;
     this.testCaseSelected = null;
     this.listTestCaseSteps = [];
-    this.dataSourceTestSteps = new MatTableDataSource(); 
+    this.dataSourceTestSteps = new MatTableDataSource();
     this.chargeTestSteps = 0;
     this.disabledRegisterBug = true;
     this.Pagination();
@@ -389,41 +412,62 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       );
     }
   }
-  showDetail(testCase:any){
+  showDetail(testCase: any) {
     console.log(this.page);
     console.log(this.pageSize);
     console.log(this.count);
     this.testCaseDetailSelected = testCase;
     this.spinnerService.isLoading.next(true);
-    this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res)=>{
+    this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res) => {
       console.log(res.result)
       this.listTestExecutions = res.result;
-      this.page= res.page;
+      this.page = res.page;
       this.count = res.count;
     });
     this.DetalleVisible = true;
   }
 
-  fetchExecutions(page: number, pageSize: number,search:string,id:number){
-    this.testCaseService.getTestExecutions(page,pageSize,search,id).subscribe(
-    (res)=>{
-      this.listTestExecutions = res.result;
-      this.page= res.page;
-      this.pageSize = res.pageSize;
-      this.count = res.count;
-    });
+  fetchExecutions(page: number, pageSize: number, search: string, id: number) {
+    this.testCaseService.getTestExecutions(page, pageSize, search, id).subscribe(
+      (res) => {
+        this.listTestExecutions = res.result;
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      });
+  }
+
+
+  fetchTestCases(page: number, pageSize: number, search: string, id: number) {
+    this.testCaseService.getTestCases(page, pageSize, search, id).subscribe(
+      (res) => {
+        this.listTestCase = res.result;
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      });
   }
 
   onPageIndexChange(selectedPage: number) {
-    this.fetchExecutions(selectedPage,this.pageSize,'',this.testCaseDetailSelected.id);
+    this.fetchExecutions(selectedPage, this.pageSize, '', this.testCaseDetailSelected.id);
   }
-
+  onPageIndexChangeTestCases(selectedPage: number) {
+    this.pageTestCases = selectedPage;
+    this.search();
+  }
+  onPageIndexChangeSteps(selectedPage: number) {
+    this.pageSteps = selectedPage;
+    this.getTestSteps();
+  }
+  inputChanged(event) {
+    this.modelChanged.next(event.target.value);
+  }
   deleteFile() {
     this.file = null;
     this.xmlData = [];
   }
 
-  showModal(){
+  showModal() {
     this.isVisible = true;
   }
   handleCancel(): void {
@@ -445,37 +489,37 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.submitted = true;
     if (this.validateAddForm.valid) {
       this.defectService
-      .createDefect(
-        this.validateAddForm.controls['title'].value,
-        this.validateAddForm.controls['repro_steps'].value,
-        parseInt(this.testCaseSelected.id.toString()),
-        this.validateAddForm.controls['selectPriority'].value,
-        this.validateAddForm.controls['selectSeverity'].value
-      )
-      .subscribe(
-        (defecto) => {
-          this.getDefects();
-          console.log('Response: ', defecto);
-          this.isVisible = false;
-          this.validateAddForm.controls['title'].setValue('');
-          this.validateAddForm.controls['repro_steps'].setValue('');
-          this.validateAddForm.controls['selectPriority'].setValue(0);
-          this.validateAddForm.controls['selectSeverity'].setValue(0);
-        },
-        (error) => console.log(error)
-      );
-  } else {
-    Object.values(this.validateAddForm.controls).forEach((control) => {
-      if (control.invalid) {
-        control.markAsDirty();
-        control.updateValueAndValidity({ onlySelf: true});
-      }
-    });
+        .createDefect(
+          this.validateAddForm.controls['title'].value,
+          this.validateAddForm.controls['repro_steps'].value,
+          parseInt(this.testCaseSelected.id.toString()),
+          this.validateAddForm.controls['selectPriority'].value,
+          this.validateAddForm.controls['selectSeverity'].value
+        )
+        .subscribe(
+          (defecto) => {
+            this.getDefects();
+            console.log('Response: ', defecto);
+            this.isVisible = false;
+            this.validateAddForm.controls['title'].setValue('');
+            this.validateAddForm.controls['repro_steps'].setValue('');
+            this.validateAddForm.controls['selectPriority'].setValue(0);
+            this.validateAddForm.controls['selectSeverity'].setValue(0);
+          },
+          (error) => console.log(error)
+        );
+    } else {
+      Object.values(this.validateAddForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
     }
   }
 
-  getDefects(){
-    this.defectService.getDefects(null,null,'',this.testCaseSelected.id).subscribe(
+  getDefects() {
+    this.defectService.getDefects(null, null, '', this.testCaseSelected.id).subscribe(
       (res) => {
         this.defects = res.result.map((defectos) => {
           return {

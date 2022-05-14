@@ -199,7 +199,6 @@ export class PlanComponent implements OnInit, OnDestroy {
               project: tPlan.project.title,
               registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
               registerBy: tPlan.createdBy,
-              tag:tPlan.tag
             };
           });
           this.page = res.page;
@@ -336,7 +335,6 @@ export class PlanComponent implements OnInit, OnDestroy {
             project: tPlan.project.title,
             registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
             registerBy: tPlan.createdBy,
-            tag: tPlan.tag
           };
         });
         this.page = res.page;
