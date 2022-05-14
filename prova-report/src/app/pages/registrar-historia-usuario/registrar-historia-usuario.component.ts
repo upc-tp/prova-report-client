@@ -72,6 +72,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     disable: boolean
   }> = [];
 
+  filterItems: string[];
 
   listPlans: Array<{
     id: number;
@@ -85,7 +86,10 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   isUpdate = false;
 
   ngOnInit(): void {
-    this.projectId = +localStorage.getItem("projectId");
+    if(localStorage.getItem('filterItems')){ 
+      this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
+      this.projectId = +this.filterItems[0];
+    }
     this.getTestCases(); 
     this.getTestPlans(this.projectId);
     if(this.route.snapshot.queryParamMap.get('userStoryId')){
@@ -176,7 +180,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
             this.f.selectPlan.value,
             this.f.name.value,
             this.f.description.value,
-            +localStorage.getItem('projectId'),
+            this.userStoryId,
             this.f.criterias.value
           )
           .subscribe(

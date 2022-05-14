@@ -5,7 +5,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { UtilsService } from 'src/app/common/UtilsService';
+import { Filter } from 'src/app/interfaces/global.model';
 import { PlanService } from 'src/app/services/plan.service';
 import { ProjectService } from 'src/app/services/projects.service';
 import { UserStoryService } from 'src/app/services/userstory.service';
@@ -19,24 +22,32 @@ import Swal from 'sweetalert2';
 export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
 
   projectId: number;
+  testPlanId: number;
   listProjects: Array<{
     id: number;
     name: string;
   }> = [];
-
-
+  private modelChanged: Subject<string> = new Subject<string>();
+  private subscription: Subscription;
+  debounceTime = 500;
+  page: number = 1;
+  pageSize: number = 10;
+  count: number = 0;
+  listTestPlan: Filter[] = [];
   userStories: Array<{
     id: number;
     name: string;
     tag: string;
+    testPlan: string;
     description: string;
     createdBy: string;
     createdAt: string;
   }> = [];
-  
+
+  filterItems: string[];
   filterFormGroup: FormGroup;
-  displayedColumns: string[] = ['tag','name','testPlan', 'createdBy', 'createdAt', 'options'];
-  dataSource = new MatTableDataSource<any>(); 
+  displayedColumns: string[] = ['tag', 'name', 'testPlan', 'createdBy', 'createdAt', 'options'];
+  dataSource = new MatTableDataSource<any>();
   found: boolean = false;
   selected: boolean = false;
   projectNameSelected: string;
@@ -53,73 +64,87 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
-    private iconRegistry:MatIconRegistry,
+    private iconRegistry: MatIconRegistry,
     private router: Router,
+    private testPlanService: PlanService,
   ) {
-      this.iconRegistry.addSvgIcon(
-        'NoTest',
-        this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
-      );
-   }
-  
+    this.iconRegistry.addSvgIcon(
+      'NoTest',
+      this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
+    );
+  }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
     console.log('inicie');
-    console.log(localStorage.getItem('projectId'));
     this.getProjects();
-    if(localStorage.getItem('projectId')){
-      this.found = true;
-      this.filterFormGroup = this._fb.group({
-        projects: [+localStorage.getItem('projectId'),[Validators.required]]
+    this.subscription = this.modelChanged
+      .pipe(debounceTime(this.debounceTime))
+      .subscribe((search: string) => {
+        this.getUserStories(this.page, this.pageSize, search);
       });
-      this.projectId = +localStorage.getItem('projectId');
+    if (localStorage.getItem('filterItems')) {
+      this.found = true;
+      this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
+      this.filterFormGroup = this._fb.group({
+        projects: [this.filterItems[0], [Validators.required]],
+        testPlans: [this.filterItems[1]]
+      });
+      this.updateTestPlans();
+      console.log(localStorage.getItem('filterItems'));
+      this.projectId = +this.filterItems[0];
+      this.testPlanId = +this.filterItems[1];
       this.selected = true;
-      this.getUserStories();
+      this.getUserStories(this.page, this.pageSize);
     }
     else {
       this.filterFormGroup = this._fb.group({
-        projects: ['',[Validators.required]]
+        projects: ['', [Validators.required]],
+        testPlans: [''],
       });
     }
   }
 
   ngOnDestroy(): void {
-    console.log('me fui');
   }
-  
+
   getProjects() {
     this.projectService.getTestProjects(null, null, '').subscribe(
-      (res) =>{
+      (res) => {
         this.listProjects = res.result.map((project) => {
-        return{
-          id: project.id,
-          name: project.title
-        }
-      })
-      console.log(this.listProjects) ; 
+          return {
+            id: project.id,
+            name: project.title
+          }
+        })
+        console.log(this.listProjects);
       }
     );
   }
-  
-  selectProject(){
-    localStorage.removeItem('projectId');
-    if(this.filterFormGroup.controls['projects'].value){
+
+  selectProject() {
+    localStorage.removeItem('filterItems');
+    if (this.filterFormGroup.controls['projects'].value) {
       this.firstEntry = false;
       this.selected = true;
+      if (this.filterFormGroup.controls['testPlans'].value) {
+
+        this.testPlanId = +this.filterFormGroup.controls['testPlans'].value;
+      }
       this.projectId = +this.filterFormGroup.controls['projects'].value;
-      this.getUserStories();
-    }else if(!this.firstEntry){
+      this.getUserStories(this.page, this.pageSize);
+    } else if (!this.firstEntry) {
       Swal.fire(
         {
           title: 'Selecciona un proyecto',
-          showCloseButton:true,
-          icon:'info'
+          showCloseButton: true,
+          icon: 'info'
         });
     }
 
   }
-  
+
   validaciones(campo: string): boolean {
     return (
       this.filterFormGroup.get(campo).invalid &&
@@ -127,10 +152,11 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUserStories(){
-    this.userStoryService.getUserStories(null, null, 'DESC', this.projectId).subscribe( (res) => {
-      this.userStories = res.result.map( (uStory) => {
-        return{
+  getUserStories(page, pageSize, search: string = '') {
+    console.log("El test Plan id es: ", this.testPlanId);
+    this.userStoryService.getUserStories(page, pageSize, 'DESC', this.projectId, this.testPlanId, search).subscribe((res) => {
+      this.userStories = res.result.map((uStory) => {
+        return {
           id: uStory.id,
           tag: uStory.tag,
           name: uStory.name,
@@ -140,34 +166,77 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           createdAt: this.utils.formatDate(new Date(uStory.createdAt))
         };
       });
-      if(this.userStories.length == 0){
+      if (this.userStories.length == 0) {
         Swal.fire(
           {
             title: 'No existen historias de usuario',
-            showCloseButton:true,
-            icon:'info'
+            showCloseButton: true,
+            icon: 'info'
           });
         this.selected = false;
       }
       this.dataSource = new MatTableDataSource(this.userStories);
       this.dataSource.paginator = this.paginator;
+      this.page = res.page;
+      this.pageSize = res.pageSize;
+      this.count = res.count;
     });
   }
 
-  getDetailsUserStory(id: number){
-    localStorage.removeItem('projectId');
-    localStorage.setItem('projectId', this.projectId.toString());
+  inputChanged(event) {
+    this.modelChanged.next(event.target.value);
+  }
+  onPageIndexChange(selectedPage: number) {
+    this.page = selectedPage;
+    this.getUserStories(this.page, this.pageSize);
+  }
+  getDetailsUserStory(id: number) {
+    localStorage.removeItem('filterItems');
+    localStorage.setItem('filterItems', Array[this.projectId.toString(), this.testPlanId.toString()]);
     this.router.navigate(['detalles-historia-usuario'], {
       queryParams: { userStoryId: id },
     });
   }
 
-  updateUserStory(id: number){
-    localStorage.removeItem('projectId');
-    localStorage.setItem('projectId', this.projectId.toString());
+  updateUserStory(id: number) {
+    localStorage.removeItem('filterItems');
+    localStorage.setItem('filterItems', Array[this.projectId.toString(), this.testPlanId.toString()]);
     this.router.navigate(['registrar-historia-usuario'], {
       queryParams: { userStoryId: id },
     });
+  }
+
+  updateFilter(e: any) {
+    if (e.source.ngControl.name == 'projects') {
+      console.log("TestPlan")
+      this.testPlanService
+        .getTestPlansByProject(null, null, '', e.value)
+        .subscribe((res) => {
+          console.log(res);
+          this.listTestPlan = res.result.map((testPlan) => {
+            const filtTestSuite = new Filter();
+            filtTestSuite.group = 1;
+            filtTestSuite.key = testPlan.id;
+            filtTestSuite.value = testPlan.title;
+            return filtTestSuite;
+          });
+        });
+    }
+  }
+
+  updateTestPlans() {
+    this.testPlanService
+      .getTestPlansByProject(null, null, '', this.projectId)
+      .subscribe((res) => {
+        console.log(res);
+        this.listTestPlan = res.result.map((testPlan) => {
+          const filtTestSuite = new Filter();
+          filtTestSuite.group = 1;
+          filtTestSuite.key = testPlan.id;
+          filtTestSuite.value = testPlan.title;
+          return filtTestSuite;
+        });
+      });
   }
 
   filterUserStories(e: Event) {
@@ -175,9 +244,13 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  createUserStory(){
-    localStorage.removeItem('projectId');
-    localStorage.setItem('projectId', this.projectId.toString());
+  createUserStory() {
+    localStorage.removeItem('filterItems');
+
+    this.filterItems = [];
+    this.filterItems.push(this.projectId.toString());
+    this.filterItems.push(this.testPlanId.toString());
+    localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['/registrar-historia-usuario']);
   }
 
@@ -194,7 +267,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     };
   }
 
-  enviarCsvData(){
+  enviarCsvData() {
     console.log(this.csvData[0]);
     if (this.file) {
       this.userStoryService
@@ -204,7 +277,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
         )
         .subscribe((res) => {
           console.log(res.result);
-          this.getUserStories();
+          this.getUserStories(this.page, this.pageSize);
           this.deleteFile();
         });
     } else {

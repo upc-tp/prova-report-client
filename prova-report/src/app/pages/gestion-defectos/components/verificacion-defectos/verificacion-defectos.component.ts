@@ -35,6 +35,11 @@ export class VerificacionDefectosComponent implements OnInit {
     priority: '',
     priorityId: 0,
     priorityIcon: '',
+    testPlan: '',
+    testSuite: '',
+    testCase: '',
+    tag: '',
+    state: ''
   };
   @Input() priorities: Array<{
     label: string;

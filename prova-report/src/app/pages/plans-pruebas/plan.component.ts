@@ -36,7 +36,6 @@ export class PlanComponent implements OnInit, OnDestroy {
     description: string;
     registerDate: string;
     registerBy: string;
-    tag:string;
   }> = [];
   projects: Array<{
     label: string;
@@ -201,7 +200,6 @@ export class PlanComponent implements OnInit, OnDestroy {
               project: tPlan.project.title,
               registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
               registerBy: tPlan.createdBy,
-              tag:tPlan.tag
             };
           });
           this.page = res.page;
@@ -339,7 +337,6 @@ export class PlanComponent implements OnInit, OnDestroy {
             project: tPlan.project.title,
             registerDate: new Date(tPlan.createdAt).toLocaleDateString(),
             registerBy: tPlan.createdBy,
-            tag: tPlan.tag
           };
         });
         this.page = res.page;

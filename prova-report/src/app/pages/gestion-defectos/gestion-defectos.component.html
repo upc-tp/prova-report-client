@@ -9,7 +9,7 @@
         (click)="showModal()"
         style="margin-right: 1rem"
       >
-        <span>Descargar Defectos</span>
+        <span>Exportar</span>
       </button>
     </div>
   </div>
@@ -162,7 +162,7 @@
 </div>
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="Asignar un colaborador"
+  nzTitle="Exportar Defectos"
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
   [nzOkLoading]="isOkLoading"
@@ -190,7 +190,7 @@
 
     <div class="row d-flex">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Test Suite</mat-label>
+        <mat-label>Suite de Pruebas</mat-label>
         <mat-select
           formControlName="testSuite"
           (selectionChange)="updateFilter($event)"
