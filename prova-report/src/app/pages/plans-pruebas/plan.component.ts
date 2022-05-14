@@ -192,6 +192,7 @@ export class PlanComponent implements OnInit, OnDestroy {
           console.log(res);
           this.data = res.result.map((tPlan) => {
             return {
+              tag: tPlan.tag,
               id: tPlan.id,
               title: tPlan.title,
               tag: tPlan.tag,
@@ -329,6 +330,7 @@ export class PlanComponent implements OnInit, OnDestroy {
       res => {
         this.data = res.result.map((tPlan) => {
           return {
+            tag: tPlan.tag,
             id: tPlan.id,
             tag: tPlan.tag,
             title: tPlan.title,

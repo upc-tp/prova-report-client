@@ -12,6 +12,7 @@ import { DefectView } from 'src/app/interfaces/defect';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { SpinnerService } from 'src/app/common/spinner/spinner.service';
+import { PlanService } from 'src/app/services/plan.service';
 
 @Component({
   selector: 'app-gestion-defectos',
@@ -21,7 +22,7 @@ import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 })
 export class GestionDefectosComponent implements OnInit {
   listProjects: Filter[] = [];
-  listTestSuite: Filter[] = [];
+  listTestPlans: Filter[] = [];
   listDefectState: Filter[] = [{group:2,key:1,value:'Nuevo'},{group:2,key:2,value:'Aceptado'},
   {group:2,key:3,value:'Rechazado'},{group:2,key:4,value:'Corregido'},{group:2,key:5,value:'En Observacion'}];
   filterFormGroup: FormGroup;
@@ -111,7 +112,8 @@ export class GestionDefectosComponent implements OnInit {
     private utils: UtilsService,
     private _sanitizer: DomSanitizer,
     private iconRegistry: MatIconRegistry,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private testPlanService: PlanService
   ) {
     this.iconRegistry.addSvgIcon(
       'BugIcon',
@@ -125,7 +127,7 @@ export class GestionDefectosComponent implements OnInit {
     this.getSeverities();
     this.filterFormGroup = this._fb.group({
       projects: ['', [Validators.required]],
-      testSuite: ['', [Validators.required]]
+      testPlans: ['']
     });
     this.filterDefectsGroup = this._fb.group({
       projects: ['', [Validators.required]],
@@ -209,15 +211,14 @@ export class GestionDefectosComponent implements OnInit {
 
   updateFilter(e: any) {
     if (e.source.ngControl.name == 'projects') {
-      this.suiteService
-        .getTestSuitesByProject(null, null, '', e.value)
+      this.testPlanService.getTestPlansByProject(null, null, '', e.value)
         .subscribe((res) => {
           console.log(res);
-          this.listTestSuite = res.result.map((testSuite) => {
+          this.listTestPlans = res.result.map((testPlan) => {
             const filtTestSuite = new Filter();
             filtTestSuite.group = 1;
-            filtTestSuite.key = testSuite.id;
-            filtTestSuite.value = testSuite.title;
+            filtTestSuite.key = testPlan.id;
+            filtTestSuite.value = testPlan.title;
             return filtTestSuite;
           });
         });
@@ -317,14 +318,12 @@ export class GestionDefectosComponent implements OnInit {
       this.isVisible = false;
       this.isOkLoading = false;
       this.filterFormGroup.controls['projects'].setValue(''),
-        this.filterFormGroup.controls['testSuite'].setValue('')
+        this.filterFormGroup.controls['testPlans'].setValue('')
     }, 3000);
   }
 
   handleCancel(): void {
     this.isVisible = false;
-    this.filterFormGroup.controls['projects'].setValue('');
-    this.filterFormGroup.controls['testSuite'].setValue('')
   }
 
 
@@ -334,7 +333,7 @@ export class GestionDefectosComponent implements OnInit {
       let datePdf = new Date();
       this.defectService.getPdf(
         this.filterFormGroup.controls['projects'].value,
-        this.filterFormGroup.controls['testSuite'].value
+        this.filterFormGroup.controls['testPlans'].value ? this.filterFormGroup.controls['testPlans'].value : null
       )
         .subscribe(x => {
           var newBlob = new Blob([x], { type: "application/pdf" });
@@ -354,7 +353,7 @@ export class GestionDefectosComponent implements OnInit {
           this.isVisible = false;
 
           this.filterFormGroup.controls['projects'].setValue('');
-          this.filterFormGroup.controls['testSuite'].setValue('')
+          this.filterFormGroup.controls['testPlan'].setValue('')
           setTimeout(function () {
             window.URL.revokeObjectURL(data);
             link.remove();

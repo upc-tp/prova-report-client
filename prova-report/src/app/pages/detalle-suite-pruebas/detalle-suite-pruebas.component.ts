@@ -209,7 +209,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
         (res) => (
           this.collaborators = res.result.map((tcollaborator) => {
             return {
-              label: tcollaborator.firstName,
+              label: tcollaborator.email,
               value: tcollaborator.uid
               
             };

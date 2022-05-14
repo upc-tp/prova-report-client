@@ -169,13 +169,13 @@
 
     <div class="row d-flex">
       <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Suite de Pruebas</mat-label>
+        <mat-label>Plan de Pruebas</mat-label>
         <mat-select
-          formControlName="testSuite"
+          formControlName="testPlans"
           (selectionChange)="updateFilter($event)"
         >
-          <mat-option *ngFor="let tSuite of listTestSuite" [value]="tSuite.key">
-            {{ tSuite.value }}
+          <mat-option *ngFor="let tPlan of listTestPlans" [value]="tPlan.key">
+            {{ tPlan.value }}
           </mat-option>
         </mat-select>
       </mat-form-field>

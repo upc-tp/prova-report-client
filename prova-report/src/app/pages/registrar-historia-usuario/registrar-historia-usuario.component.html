@@ -31,14 +31,14 @@
                     Seleccione uno</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
+                <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Nombre</mat-label>
                 <input matInput formControlName="name" type="input" placeholder="Nombre" />
                 <mat-error *ngIf="registerForm.controls['name'].hasError('required')">
                     Ingrese un nombre
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>Descripción</mat-label>
+                <mat-label><span style="color: #f36d6a;">*&nbsp;</span>Descripción</mat-label>
                 <textarea class="descriptionField" matInput formControlName="description" type="input"
                     placeholder="Descripción"></textarea>
                 <mat-error *ngIf="registerForm.controls['description'].hasError('required')">

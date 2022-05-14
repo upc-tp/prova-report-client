@@ -106,7 +106,7 @@
           <td>
             <div *ngIf="data.collaborator == null; else elseBlock">-</div>
             <ng-template #elseBlock>
-              {{ data.collaborator.firstName }}
+              {{ data.collaborator.email }}
             </ng-template>
           </td>
           <td>{{ data.registerDate }}</td>

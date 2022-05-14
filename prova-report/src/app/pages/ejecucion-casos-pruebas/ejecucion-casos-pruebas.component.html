@@ -96,9 +96,10 @@
             {{ data.createdAt }}
           </td>
 
-          <td>
-            {{ data.userInCharge?.firstName }}
-            {{ data.userInCharge?.lastName }}
+
+          <td (click)="enterTestCase(data)">
+            {{ data.userInCharge?.email }} 
+
           </td>
 
           <td class="col">
