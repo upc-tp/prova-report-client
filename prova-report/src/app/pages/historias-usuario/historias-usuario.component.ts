@@ -77,6 +77,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
+    localStorage.clear();
     console.log('inicie');
     this.getProjects();
     this.subscription = this.modelChanged
@@ -192,7 +193,12 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
   getDetailsUserStory(id: number) {
     localStorage.removeItem('filterItems');
-    localStorage.setItem('filterItems', Array[this.projectId.toString(), this.testPlanId.toString()]);
+    this.filterItems = [];
+    this.filterItems.push(this.projectId.toString());
+    if(this.testPlanId){
+      this.filterItems.push(this.testPlanId.toString());
+    }
+    localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['detalles-historia-usuario'], {
       queryParams: { userStoryId: id },
     });
@@ -200,7 +206,12 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
 
   updateUserStory(id: number) {
     localStorage.removeItem('filterItems');
-    localStorage.setItem('filterItems', Array[this.projectId.toString(), this.testPlanId.toString()]);
+    this.filterItems = [];
+    this.filterItems.push(this.projectId.toString());
+    if(this.testPlanId){
+      this.filterItems.push(this.testPlanId.toString());
+    }
+    localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['registrar-historia-usuario'], {
       queryParams: { userStoryId: id },
     });
@@ -246,10 +257,11 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
 
   createUserStory() {
     localStorage.removeItem('filterItems');
-
     this.filterItems = [];
     this.filterItems.push(this.projectId.toString());
-    this.filterItems.push(this.testPlanId.toString());
+    if(this.testPlanId){
+      this.filterItems.push(this.testPlanId.toString());
+    }
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['/registrar-historia-usuario']);
   }

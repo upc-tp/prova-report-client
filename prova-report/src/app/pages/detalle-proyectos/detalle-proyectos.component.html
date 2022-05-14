@@ -195,7 +195,7 @@
         </mat-label>
         <mat-select  formControlName="collaborators" >
           <mat-option *ngFor="let coll of listCollaborators" [value]="coll.id">
-            {{coll.name}}
+            {{coll.email}}
           </mat-option>
           <mat-option  *ngIf="listCollaborators.length == 0" [disabled]="true">
             No hay colaboradores disponibles

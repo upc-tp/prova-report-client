@@ -20,8 +20,8 @@ export class DefectService{
         return this.http.get<DefectResponse>(BASE_URL + this.defect + `?page=${page}&pageSize=${pageSize}&search=${search}&projectId=${projectId}&defectStateId=${defectStateId}&is_fixed=${isFixed}`)
     }
 
-    getPdf(projectId: number, testSuiteId: number): Observable<Blob>{
-        return this.http.get(BASE_URL + this.defect + `/${projectId}/${testSuiteId}/pdf`,{responseType: 'blob'});
+    getPdf(projectId: number, testPlanId: number): Observable<Blob>{
+        return this.http.get(BASE_URL + this.defect + `/${projectId}/pdf` + `?testPlanId=${testPlanId}`,{responseType: 'blob'});
     }
     getDefect(id: number): Observable<SingleDefectResponse> {
         return this.http.get<SingleDefectResponse>(BASE_URL + this.defect + `/${id}`)
