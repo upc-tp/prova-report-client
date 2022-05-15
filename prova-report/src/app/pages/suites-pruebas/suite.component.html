@@ -72,15 +72,15 @@
           </mat-form-field>
         </div>
         <div>
-          <div class="fileSection">
+          <div class="fileSectionSuite">
             <div>
               <mat-label class="text-fs-20 text-w-bold col-12"
                 >Carga de Archivo</mat-label
               >
             </div>
             <div
-              [class.noFileUploadBackground]="file == null"
-              [class.fileUploadBackground]="file != null"
+              [class.noFileUploadBackgroundSuite]="file == null"
+              [class.fileUploadBackgroundSuite]="file != null"
               style="width: 100%"
             >
               <div
@@ -165,6 +165,7 @@
         nzSize="large"
         nzType="primary"
         [nzLoading]="isOkLoadingMassive"
+        style="margin-top:1rem;"
       >
         Guardar
       </button>

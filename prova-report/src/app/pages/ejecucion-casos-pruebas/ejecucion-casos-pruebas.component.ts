@@ -89,6 +89,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   actualFilterTestSuite: string;
   actualFilterProject: string;
   toExecutionPage: boolean = false;
+  InstructionsFile = false;
   disabledRegisterBug = true;
   constructor(
     private router: Router,
@@ -456,6 +457,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.dataSourceTestSteps = new MatTableDataSource();
     this.chargeTestSteps = 0;
     this.disabledRegisterBug = true;
+    this.deleteFile();
+    this.formulario.controls['commentary'].patchValue('');
     this.Pagination();
     // this.PaginationTestCase();
   }
@@ -557,6 +560,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.DetalleVisible = false;
     this.submitted = false;
     this.id = null;
+    this.InstructionsFile = false;
     this.listTestExecutions = [];
   }
   handleOk(): void {
@@ -565,6 +569,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);
+  }
+  showInstruction(): void{
+    this.InstructionsFile = true;
   }
 
   submitForm(): void {
