@@ -20,6 +20,7 @@ export interface SuiteView {
 	title: string;
 	description: string;
 	project: string;
+	tag:string;
 	projectId: number;
 }
 
@@ -108,6 +109,7 @@ export interface Suite {
 	project: Project;
 	testPlan: TestPlan;
 	testState: TestState;
+	tag:string;
 }
 
 export interface SingleSuiteResponse {

@@ -195,7 +195,7 @@
           formControlName="title"
           type="text"
           id="title"
-          placeholder="Título"
+          placeholder="Ingrese el Título"
           autocomplete="off"
           [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
         />
@@ -217,6 +217,7 @@
           id="description"
           placeholder="Ingrese la descripción"
           autocomplete="off"
+          class="text-fs-16"
           [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
           style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
         >
@@ -410,7 +411,8 @@
           <td>{{ data.tag }}</td>
           <td>{{ data.title }}</td>
           <td>{{ data.project }}</td>
-          <td>{{ data.testPlan }}</td>
+          <td *ngIf="data.testPlan !=='undefined: undefined'">{{ data.testPlan }}</td>
+          <td *ngIf="data.testPlan ==='undefined: undefined'">-</td>
           <td>{{ data.registerDate }}</td>
           <td>{{ data.registerBy }}</td>
           <td>

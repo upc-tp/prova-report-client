@@ -1,11 +1,11 @@
 <div class="backgroundContent">
   <div class="banner">
-    Gestion de proyectos de prueba
+    Gestion de proyectos
     <button nz-button class="button-bg-primary" (click)="showModal()">
       <span>Nuevo</span>
     </button>
   </div>
-  <nz-modal [(nzVisible)]="isVisible" nzTitle="Proyecto de prueba" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Proyecto" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
     [nzOkLoading]="isOkLoading">
     <form nz-form class="create-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="form-item">
@@ -21,7 +21,7 @@
         <div class="form-label">
           <span style="color: #f36d6a;">*&nbsp;</span>Descripción
         </div>
-        <textarea nz-input formControlName="description" id="description" placeholder="Descripción" autocomplete="off"
+        <textarea nz-input class="text-fs-16" formControlName="description" id="description" placeholder="Descripción" autocomplete="off"
           [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
           style="height:5rem;width: 100%;padding: 0.5rem;border-radius: 5px;"></textarea>
         <!-- <input nz-input name="description" formControlName="description" type="text" id="description"
