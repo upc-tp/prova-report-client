@@ -21,12 +21,13 @@ export class TestCaseService {
     page: number,
     pageSize: number,
     search: string,
-    testSuiteId: number
+    testSuiteId: number,
+    projectId: number
   ): Observable<TestCaseResponse> {
     return this.http.get<TestCaseResponse>(
       BASE_URL +
         this.testCase +
-        `?page=${page}&pageSize=${pageSize}&search=${search}&testSuiteId=${testSuiteId}`
+        `?page=${page}&pageSize=${pageSize}&search=${search}&testSuiteId=${testSuiteId}&projectId=${projectId}`
     );
   }
 
