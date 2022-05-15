@@ -77,8 +77,6 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
-    localStorage.clear();
-    console.log('inicie');
     this.getProjects();
     this.subscription = this.modelChanged
       .pipe(debounceTime(this.debounceTime))
