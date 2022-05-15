@@ -73,6 +73,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   listTestCase: TestCase[] = [];
   listTestCaseSteps: TestCaseSteps[] = [];
   listTestExecutions: TestExecution[] = [];
+  listTestCaseState: Filter[] = [{group:2,key:1,value:'No ejecutado'},{group:2,key:2,value:'Superado'},{group:2,key:3,value:'Fallido'},{group:2,key:4,value:'Omitido'}]
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -162,6 +163,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
         testSuite: [''],
+        stateTestCase:['']
       });
       this.filterItems = [];
     }
@@ -224,17 +226,74 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     );
   }
 
+  search2(search: string = '') {
+    this.filterItems = [];
+    localStorage.removeItem('filterItems');
+    this.pageTestCases = 1;
+    if (!this.filterFormGroup.invalid) {
+      this.testCaseService
+        .getTestCasesByState(
+          this.pageTestCases,
+          this.pageSizeTestCases,
+          search,
+          this.filterFormGroup.controls['testSuite'].value,
+          this.filterFormGroup.controls['projects'].value,
+          this.filterFormGroup.controls['stateTestCase'].value
+        )
+        .subscribe((res) => {
+          console.log(res.count);
+          this.pageTestCases = res.page;
+          this.pageSizeTestCases = res.pageSize;
+          this.countTestCases = res.count;
+          this.listTestCase = res.result.map((tCase) => {
+            const testCase = new TestCase();
+            (testCase.id = tCase.id),
+              (testCase.tag = tCase.tag),
+              (testCase.title = tCase.title),
+              (testCase.description = tCase.description),
+              (testCase.priority = tCase.priority),
+              (testCase.severity = tCase.severity),
+              (testCase.testState = tCase.testState),
+              (testCase.testSuite = tCase.testSuite),
+              (testCase.lastExecution = tCase.lastExecution),
+              (testCase.userInCharge = tCase.userInCharge);
+            (testCase.createdAt = this.utils.formatDate(
+              new Date(tCase.createdAt)
+            )),
+              (testCase.createdBy = tCase.createdBy);
+            return testCase;
+          });
+          if (res.result.length == 0) {
+            Swal.fire({
+              title: 'El Proyecto no Cuenta con Casos de Prueba',
+              showCloseButton: true,
+              icon: 'info',
+            });
+          }
+          this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
+          this.Pagination();
+        });
+      this.actualFilterTestSuite =
+        this.filterFormGroup.controls['testSuite'].value;
+      this.actualFilterProject =
+        this.filterFormGroup.controls['projects'].value;
+      console.log(this.filterFormGroup.controls['testSuite'].value);
+      console.log(this.filterFormGroup.controls['projects'].value);
+    }
+  }
+
   search(search: string = '') {
     this.filterItems = [];
     localStorage.removeItem('filterItems');
     if (!this.filterFormGroup.invalid) {
       this.testCaseService
-        .getTestCases(
+        .getTestCasesByState(
           this.pageTestCases,
           this.pageSizeTestCases,
           search,
           this.filterFormGroup.controls['testSuite'].value,
-          this.filterFormGroup.controls['projects'].value
+          this.filterFormGroup.controls['projects'].value,
+          this.filterFormGroup.controls['stateTestCase'].value
         )
         .subscribe((res) => {
           console.log(res.count);
