@@ -290,6 +290,7 @@ export class DashboardComponent implements OnInit {
       colors: ['#2E93fA', '#48b337', '#f50000', '#f5a700'],
       chart: {
         width: 380,
+        height: 320,
         type: 'donut',
         animations: {
           enabled: false
@@ -302,9 +303,9 @@ export class DashboardComponent implements OnInit {
         enabled: true
       },
       legend: {
-        position: 'right',
-        offsetY: 0,
-        height: 230,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
       },
       plotOptions: {
         pie: {
@@ -327,6 +328,7 @@ export class DashboardComponent implements OnInit {
       labels: ["Nuevos", "Aceptados", "Rechazados", "Corregidos", "En Observacion"],
       chart: {
         width: 380,
+        height: 320,
         type: 'donut',
         animations: {
           enabled: false
@@ -339,9 +341,9 @@ export class DashboardComponent implements OnInit {
         enabled: true,
       },
       legend: {
-        position: 'left',
-        offsetY: 0,
-        height: 230,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
       },
       plotOptions: {
         pie: {
@@ -366,6 +368,7 @@ export class DashboardComponent implements OnInit {
         'Pruebas No asignadas'],
       chart: {
         width: 380,
+        height: 320,
         type: 'donut',
         animations: {
           enabled: false
@@ -378,9 +381,9 @@ export class DashboardComponent implements OnInit {
         enabled: true,
       },
       legend: {
-        position: 'right',
-        offsetY: 0,
-        height: 230,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
       },
       plotOptions: {
         pie: {
@@ -404,6 +407,7 @@ export class DashboardComponent implements OnInit {
       labels: ['Defectos corregidos', 'Defectos no corregidos'],
       chart: {
         width: 380,
+        height: 320,
         type: 'donut',
         animations: {
           enabled: false
@@ -416,9 +420,9 @@ export class DashboardComponent implements OnInit {
         enabled: true,
       },
       legend: {
-        position: 'right',
-        offsetY: 0,
-        height: 230,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
       },
       plotOptions: {
         pie: {
@@ -439,10 +443,11 @@ export class DashboardComponent implements OnInit {
 
     this.donutTestCoverage = {
       series: this.testsCoverageFilter,
-      labels: ['Casos de prueba ejecutados',
-        'Casos de prueba No ejecutados'],
+      labels: ['Pruebas ejecutadas',
+        'Pruebas no ejecutadas'],
       chart: {
-        width: 500,
+        width: 380,
+        height: 320,
         type: 'donut'
       },
       title: {
@@ -452,9 +457,9 @@ export class DashboardComponent implements OnInit {
         enabled: true,
       },
       legend: {
-        position: 'right',
-        offsetY: 0,
-        height: 230,
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40,
       },
       plotOptions: {
         pie: {
@@ -508,7 +513,6 @@ export class DashboardComponent implements OnInit {
         horizontalAlign: "left",
         offsetX: 40
       }
-
 
     };
 
