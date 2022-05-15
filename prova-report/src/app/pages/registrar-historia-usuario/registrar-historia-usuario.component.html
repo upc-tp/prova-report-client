@@ -20,6 +20,17 @@
 
         <div class="row d-flex">
             <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Proyecto</mat-label>
+                <mat-select [formControlName]="'projects'" (selectionChange)="updateFilter($event)">
+                    <mat-option *ngFor="let proj of listProjects" [value]="proj.id">
+                        {{ proj.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="validaciones('selectPlan')"
+                    class="form-text text-danger animate__animated animate__headShake">
+                    Seleccione uno</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Plan de prueba</mat-label>
                 <mat-select [formControlName]="'selectPlan'">
                     <mat-option *ngFor="let plan of listPlans" [value]="plan.id">

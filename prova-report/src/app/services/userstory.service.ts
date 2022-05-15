@@ -48,7 +48,7 @@ export class UserStoryService {
     );
   }
     
-  updateUserStory(testPlanId: number, name: string, description: string, id: number, userStoryCriterias: UserStoryCriteriaView[]): Observable<UserStoryCreatedResponse> {
+  updateUserStory(projectId: number, testPlanId: number, name: string, description: string, id: number, userStoryCriterias: UserStoryCriteriaView[]): Observable<UserStoryCreatedResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -57,6 +57,7 @@ export class UserStoryService {
 
     return this.http.put<UserStoryCreatedResponse>(BASE_URL + this.userStory + `/${id}`, {
       name,
+      projectId,
       testPlanId,
       description,
       userStoryCriterias

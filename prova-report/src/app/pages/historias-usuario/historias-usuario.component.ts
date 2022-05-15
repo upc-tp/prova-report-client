@@ -267,11 +267,13 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   createUserStory() {
     localStorage.removeItem('filterItems');
     this.filterItems = [];
-    this.filterItems.push(this.projectId.toString());
+    if(this.projectId){
+      this.filterItems.push(this.projectId.toString());
+      this.toOption = true;
+    }
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
-    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['/registrar-historia-usuario']);
   }

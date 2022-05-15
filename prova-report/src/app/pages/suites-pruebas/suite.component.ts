@@ -39,6 +39,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
     label: string;
     value: number;
   }> = [];
+  toOption: boolean = false;
   isVisible = false;
   isVisibleMassive = false;
   submitted = false;
@@ -321,10 +322,19 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    if(!this.toOption) { localStorage.removeItem('filterItems'); }
   }
 
   detailTestSuite(id: number){
     this.id = id;
+    localStorage.removeItem('filterItems');
+    this.filterItems = [];
+    this.filterItems.push(this.projectId.toString());
+    if(this.testPlanId){
+      this.filterItems.push(this.testPlanId.toString());
+    }
+    this.toOption = true;
+    localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});
   }
 

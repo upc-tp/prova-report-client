@@ -7,6 +7,7 @@ import { UtilsService } from 'src/app/common/UtilsService';
 import { RegisterRequest } from 'src/app/interfaces/users';
 import { UserStoryView } from 'src/app/interfaces/userstory';
 import { PlanService } from 'src/app/services/plan.service';
+import { ProjectService } from 'src/app/services/projects.service';
 import { TestCaseService } from 'src/app/services/testcase.service';
 import { UserStoryService } from 'src/app/services/userstory.service';
 import { TestCase } from '../ejecucion-casos-pruebas/models/TestCaseExecution.model';
@@ -30,7 +31,8 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     private planService: PlanService,
     private userStoryService: UserStoryService,
     private utils: UtilsService,
-    private testCaseService: TestCaseService
+    private testCaseService: TestCaseService,
+    private projectService: ProjectService
   ) { }
   saved: boolean = false;
   projectId: number;
@@ -79,6 +81,11 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     name: string;
   }> = [];
 
+  listProjects: Array<{
+    id: number;
+    name: string;
+  }> = [];
+
   selectedTestCases: Array<number> = [];
   selectedPlan: number = 0;
 
@@ -86,17 +93,13 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   isUpdate = false;
 
   ngOnInit(): void {
-    if(localStorage.getItem('filterItems')){ 
-      this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
-      this.projectId = +this.filterItems[0];
-      console.log("Este es el project Id", this.projectId, " ", this.filterItems[0])
-    }
     this.getTestCases(); 
-    this.getTestPlans(this.projectId);
+    this.getProjects();
     if(this.route.snapshot.queryParamMap.get('userStoryId')){
       this.isUpdate = true;
     }
     this.registerForm = this._fb.group({
+      projects: ['', Validators.required],
       selectPlan: [null],
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -121,6 +124,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
   
   getUserStory(){
     this.userStoryService.getUserStory(this.userStoryId).subscribe((res) => {
+      this.projectId = res.result.project.id;
       this.userStory.testPlanId = res.result.testPlan?.id;
       this.userStory.description = res.result.description;
       this.userStory.name = res.result.name;
@@ -136,9 +140,11 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
       } 
       );
       this.addTestCases();
+      this.getTestPlans(this.projectId);
       console.log("estos son los criterios", this.userStoryCriterias);
       this.registerForm = this._fb.group({
         name: [this.userStory.name, Validators.required],
+        projects: [this.projectId, Validators.required],
         selectPlan: [this.userStory.testPlanId],
         description: [this.userStory.description, Validators.required],
         criterias: this._fb.array(this.userStoryCriterias.map((U) => {
@@ -154,12 +160,49 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
 
     });
   }
+
+  getProjects() {
+    this.projectService.getTestProjects(null, null, '').subscribe(
+      (res) => (
+        this.listProjects = res.result.map((tProject) => {
+          return {
+            name: tProject.title,
+            id: tProject.id
+          };
+        })
+      )
+
+    );
+  }
+
+  updateFilter(e: any) {
+    if (e.source.ngControl.name == 'projects') {
+      this.registerForm.controls['selectPlan'].patchValue('');
+      this.planService
+        .getTestPlansByProject(null, null, '', e.value)
+        .subscribe((res) => {
+          console.log(res);
+          this.listPlans = res.result.map((testPlan) => {
+            return {
+              name: testPlan.title,
+              id: testPlan.id
+            }
+          });
+        });
+    }
+  }
+
+
   registerUserStory() {
     if (this.registerForm.valid) {
+      this.projectId = +this.f.projects.value;
 
+      console.log("project", this.projectId);
+      console.log("testplan", this.f.selectPlan.value);
       if(this.isUpdate){
-        this.userStoryService.updateUserStory(  
-          this.f.selectPlan.value,
+        this.userStoryService.updateUserStory( 
+          this.projectId,
+          this.f.selectPlan.value != '' ? this.f.selectPlan.value : null,
           this.f.name.value,
           this.f.description.value,
           this.userStoryId,
@@ -178,7 +221,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
         console.log(this.f.criterias.value);
         this.userStoryService
           .createUserStory(
-            this.f.selectPlan.value,
+            this.f.selectPlan.value != '' ? this.f.selectPlan.value : null,
             this.f.name.value,
             this.f.description.value,
             this.projectId,
