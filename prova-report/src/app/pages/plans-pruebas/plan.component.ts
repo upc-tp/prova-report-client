@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, finalize } from 'rxjs/operators';
 import { ProjectService } from 'src/app/services/projects.service';
 import { PlanService } from 'src/app/services/plan.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -20,9 +20,9 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
   styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent implements OnInit, OnDestroy {
-  isDetailVisible= false;
+  isDetailVisible = false;
   isVisibleProjectUpdateform = true;
-  isFilterVisible=true;
+  isFilterVisible = true;
   filterFormGroup: FormGroup;
   listProjects: Filter[] = [];
   listTestPlans: Filter[] = [];
@@ -47,17 +47,17 @@ export class PlanComponent implements OnInit, OnDestroy {
   }> = [];
   plan: PlanView = {
     registerDate: '',
-	  registerBy: '',
-	  modifiedAt: '',
-	  modifiedBy: '',
-	  id: 0,
-	  title: '',
-	  description: '',
-	  project: '',
-	  projectId: 0,
-    version:'',
+    registerBy: '',
+    modifiedAt: '',
+    modifiedBy: '',
+    id: 0,
+    title: '',
+    description: '',
+    project: '',
+    projectId: 0,
+    version: '',
     versionId: 0,
-    tag:''
+    tag: ''
   };
   isVisible = false;
   submitted = false;
@@ -68,12 +68,13 @@ export class PlanComponent implements OnInit, OnDestroy {
   page: number = 2;
   pageSize: number = 10;
   count: number = this.pageSize;
+  showProgress = false;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
 
-  constructor(private planService: PlanService, private projectService: ProjectService, private versionService: VersionService, private fb: FormBuilder, private router: Router, public utils: UtilsService, private _sanitizer: DomSanitizer, private iconRegistry: MatIconRegistry) { 
+  constructor(private planService: PlanService, private projectService: ProjectService, private versionService: VersionService, private fb: FormBuilder, private router: Router, public utils: UtilsService, private _sanitizer: DomSanitizer, private iconRegistry: MatIconRegistry) {
     this.iconRegistry.addSvgIcon(
       'NoTest',
       this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
@@ -83,11 +84,12 @@ export class PlanComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getProjectsFilter();
     this.filterFormGroup = this.fb.group({
-      projects: ['', [Validators.required]],});
+      projects: ['', [Validators.required]],
+    });
     //this.fetchPlans(this.page, this.pageSize);
     console.log(this.listProjects);
     this.getProjects();
-  
+
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
@@ -152,7 +154,7 @@ export class PlanComponent implements OnInit, OnDestroy {
               this.search();
             },
             (error) => console.log(error)
-            
+
           );
       }
     } else {
@@ -165,21 +167,21 @@ export class PlanComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProjectsFilter(){
+  getProjectsFilter() {
     this.projectService.getTestProjects(null, null, '').subscribe(
       (res) =>
-        (this.listProjects = res.result.map((project) => {
-          const filtProject = new Filter();
-          filtProject.group = 0;
-          filtProject.key = project.id;
-          filtProject.value = project.title;
-          console.log(filtProject)
-          return filtProject;
-        }))
+      (this.listProjects = res.result.map((project) => {
+        const filtProject = new Filter();
+        filtProject.group = 0;
+        filtProject.key = project.id;
+        filtProject.value = project.title;
+        console.log(filtProject)
+        return filtProject;
+      }))
     );
   }
 
-  search(){
+  search() {
     if (!this.filterFormGroup.invalid) {
       this.planService
         .getTestPlansByProject(
@@ -213,13 +215,13 @@ export class PlanComponent implements OnInit, OnDestroy {
               icon: 'info',
             });
           }
-          else{
+          else {
             this.isFilterVisible = false;
           }
         }
         );
-          //this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
-          //this.Pagination();
+      //this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
+      //this.Pagination();
     }
   }
   /*getPlansByProjectId(){
@@ -260,39 +262,43 @@ export class PlanComponent implements OnInit, OnDestroy {
     );
   }
 
-  generatePDF(id: number, name: string){
+  generatePDF(id: number, name: string, isDownload: boolean = false) {
     const navi = (window.navigator as any);
     let datePdf = new Date();
-    this.planService.getPdf(id)
-        .subscribe(x => {
-            var newBlob = new Blob([x], { type: "application/pdf" });
+    this.showProgress = true;
+    this.planService.getPdf(id).pipe(
+      finalize(() => this.showProgress = false)
+    ).subscribe(x => {
+      var newBlob = new Blob([x], { type: "application/pdf" });
 
-            if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
-              (window.navigator as any).msSaveOrOpenBlob(newBlob, "plan-de-pruebas-" + this.utils.formatDate(datePdf));
-                return;
-            }
-            
-            const data = window.URL.createObjectURL(newBlob);
-            
-            var link = document.createElement('a');
-            link.href = data;
-            link.download = "plan-de-pruebas-" + this.utils.formatDate(datePdf);
-            
-            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-            
-            setTimeout(function () {
-                window.URL.revokeObjectURL(data);
-                link.remove();
-            }, 100);
-        });
+      if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+        (window.navigator as any).msSaveOrOpenBlob(newBlob, "plan-de-pruebas-" + this.utils.formatDate(datePdf));
+        return;
+      }
+
+      const data = window.URL.createObjectURL(newBlob);
+
+      var link = document.createElement('a');
+      link.href = data;
+      link.target = '_blank';
+      if (isDownload) {
+        link.download = "plan-de-pruebas-" + this.utils.formatDate(datePdf);
+      }
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+      setTimeout(function () {
+        window.URL.revokeObjectURL(data);
+        link.remove();
+      }, 100);
+    });
   }
 
   getVersions(projectId: number) {
-    this.versionService.getVersionsForSelect(projectId).subscribe(res =>{
+    this.versionService.getVersionsForSelect(projectId).subscribe(res => {
       console.log(res);
       this.versions = res.result.map(tVersion => {
         console.log(tVersion);
-        return{
+        return {
           label: tVersion.title,
           value: tVersion.id
         }
@@ -306,22 +312,21 @@ export class PlanComponent implements OnInit, OnDestroy {
     this.getVersions(projectId);
   }
 
-  detailPlan(plan: PlanView)
-  {     
+  detailPlan(plan: PlanView) {
     console.log(plan);
-        this.plan = plan;
-        // this.planService.getTestPlan(id).subscribe((res) => {
-        //     this.plan.id = this.id;
-        //     this.plan.title = res.result.title;
-        //     this.plan.description = res.result.description;
-        //     this.plan.project = res.result.project.title;
-        //     this.plan.version = res.result.version.title;
-        //     this.plan.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
-	      //     this.plan.createdBy = res.result.createdBy;
-	      //     this.plan.modifiedAt = res.result.modifiedAt;
-	      //     this.plan.modifiedBy = res.result.modifiedBy;
-        // })
-        this.isDetailVisible = true;
+    this.plan = plan;
+    // this.planService.getTestPlan(id).subscribe((res) => {
+    //     this.plan.id = this.id;
+    //     this.plan.title = res.result.title;
+    //     this.plan.description = res.result.description;
+    //     this.plan.project = res.result.project.title;
+    //     this.plan.version = res.result.version.title;
+    //     this.plan.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
+    //     this.plan.createdBy = res.result.createdBy;
+    //     this.plan.modifiedAt = res.result.modifiedAt;
+    //     this.plan.modifiedBy = res.result.modifiedBy;
+    // })
+    this.isDetailVisible = true;
   }
 
   fetchPlans(page: number, pageSize: number, search: string = '') {
@@ -381,9 +386,9 @@ export class PlanComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  detailTestPlan(id: number){
+  detailTestPlan(id: number) {
     this.id = id;
-    this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});
+    this.router.navigate(['detalle-suite-pruebas'], { queryParams: { suiteId: this.id } });
   }
 
   validaciones(campo: string): boolean {

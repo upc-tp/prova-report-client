@@ -7,6 +7,9 @@ import { SuitesService } from '../../services/suites.service';
 import { Router } from '@angular/router';
 import { PlanService } from 'src/app/services/plan.service';
 import Swal from 'sweetalert2';
+import { Filter } from 'src/app/interfaces/global.model';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-suite',
@@ -14,6 +17,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./suite.component.scss'],
 })
 export class SuiteComponent implements OnInit, OnDestroy {
+  filterFormGroup: FormGroup;
+  projectId: number;
+  listProjects: Array<{
+    id: number;
+    name: string;
+  }> = [];
   data: Array<{
     id: number;
     title: string;
@@ -37,6 +46,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
   isOkLoadingMassive = false;
   validateForm!: FormGroup;
   formMassive: FormGroup;
+  found: boolean = false;
+  filterItems: string[];
   id: number;
   sProject: number = 0;
   page: number = 1;
@@ -44,6 +55,10 @@ export class SuiteComponent implements OnInit, OnDestroy {
   count: number = this.pageSize;
   file: any;
   csvData: string[] = [];
+  listTestPlan: Filter[] = [];
+  testPlanId: number;
+  selected: boolean = false;
+  firstEntry: boolean = true;
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -54,10 +69,16 @@ export class SuiteComponent implements OnInit, OnDestroy {
     private planService: PlanService, 
     private projectService: ProjectService, 
     private fb: FormBuilder, 
-    private router: Router) { }
+    private iconRegistry: MatIconRegistry,
+    private _sanitizer: DomSanitizer,
+    private router: Router) {
+      this.iconRegistry.addSvgIcon(
+        'NoTest',
+        this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
+      );
+     }
 
   ngOnInit(): void {
-    this.fetchSuites(this.page, this.pageSize);
     this.getProjects();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
@@ -76,10 +97,85 @@ export class SuiteComponent implements OnInit, OnDestroy {
       .subscribe((search: string) => {
         this.fetchSuites(this.page, this.pageSize, search);
       });
+
+      if (localStorage.getItem('filterItems')) {
+        this.found = true;
+        this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
+        this.filterFormGroup = this.fb.group({
+          projects: [this.filterItems[0], [Validators.required]],
+          testPlans: [this.filterItems[1]]
+        });
+        this.updateTestPlans();
+        console.log(localStorage.getItem('filterItems'));
+        this.projectId = +this.filterItems[0];
+        this.testPlanId = +this.filterItems[1];
+        this.selected = true;
+        this.fetchSuites(this.page, this.pageSize);
+      }
+      else {
+        this.filterFormGroup = this.fb.group({
+          projects: ['', [Validators.required]],
+          testPlans: [''],
+        });
+      }  
+  }
+  updateFilter(e: any) {
+    if (e.source.ngControl.name == 'projects') 
+    {
+      this.filterFormGroup.controls['testPlans'].patchValue('');
+      console.log("TestPlan")
+      this.planService
+        .getTestPlansByProject(null, null, '', e.value)
+        .subscribe((res) => {
+          console.log(res);
+          this.listTestPlan = res.result.map((testPlan) => {
+            const filtTestSuite = new Filter();
+            filtTestSuite.group = 1;
+            filtTestSuite.key = testPlan.id;
+            filtTestSuite.value = testPlan.title;
+            return filtTestSuite;
+          });
+        });
+    }
   }
 
+  updateTestPlans() {
+    this.planService
+      .getTestPlansByProject(null, null, '', this.projectId)
+      .subscribe((res) => {
+        console.log(res);
+        this.listTestPlan = res.result.map((testPlan) => {
+          const filtTestSuite = new Filter();
+          filtTestSuite.group = 1;
+          filtTestSuite.key = testPlan.id;
+          filtTestSuite.value = testPlan.title;
+          return filtTestSuite;
+        });
+      });
+  }
   // convenience getter for easy access to form fields
   get f() { return this.validateForm.controls; }
+
+  search(): void{
+    localStorage.removeItem('filterItems');
+    if (this.filterFormGroup.controls['projects'].value) {
+      this.firstEntry = false;
+      this.selected = true;
+      if (this.filterFormGroup.controls['testPlans'].value) {
+
+        this.testPlanId = +this.filterFormGroup.controls['testPlans'].value;
+      }
+      this.projectId = +this.filterFormGroup.controls['projects'].value;
+      this.fetchSuites(this.page, this.pageSize);
+    } else if (!this.firstEntry) {
+      Swal.fire(
+        {
+          title: 'Selecciona un proyecto',
+          showCloseButton: true,
+          icon: 'info'
+        });
+    }
+  }
 
   submitForm(): void {
     this.submitted = true;
@@ -171,7 +267,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
   }
 
   fetchSuites(page: number, pageSize: number, search: string = '') {
-    this.suiteService.getTestSuites(page, pageSize, search).subscribe(
+    this.suiteService.getTestSuitesByProjectTestPlan(page, pageSize, search, this.projectId, this.testPlanId).subscribe(
       res => {
         this.data = res.result.map((tSuite) => {
           return {
@@ -243,6 +339,13 @@ export class SuiteComponent implements OnInit, OnDestroy {
     });
   }
 
+  validaciones(campo: string): boolean {
+    return (
+      this.filterFormGroup.get(campo).invalid &&
+      this.filterFormGroup.get(campo).touched
+    );
+  }
+
   onPageIndexChange(selectedPage: number) {
     this.page = selectedPage;
     this.fetchSuites(this.page, this.pageSize);
@@ -271,6 +374,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
         )
         .subscribe((res) => {
           console.log(res.result);
+          this.isVisibleMassive = false;
           this.fetchSuites(this.page, this.pageSize);
           this.deleteFile();
         });
@@ -292,6 +396,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
   }
 
   handleCancelMassive(): void {
+    this.formMassive.controls['projects'].patchValue('');
+    this.deleteFile();
     this.isVisibleMassive = false;
   }
 

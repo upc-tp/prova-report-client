@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.1.2 (Python 3.7.5 on win32)" generated="20211103 00:24:42.264" rpa="false" schemaversion="2">
+	<suite id="s1" name="Tasks" source="C:\Users\alvar\AppData\Local\robocorp\RobocodeLab\temp\75_1497021_491870300_1\workarea61821c4e\tasks.robot">
+		<test id="s1-t1" name="TC-04 User can  search in google">
+			<kw name="Given a user has access to google">
+				<arg>
+					${URL}
+				</arg>
+				<kw name="Open Chrome Browser" library="RPA.Browser">
+					<arg>
+						${url}
+					</arg>
+					<doc>
+						Open Chrome browser. See ``Open Available Browser`` for
+						descriptions of arguments.
+					</doc>
+					<msg timestamp="20211103 00:24:43.753" level="INFO">
+						Creating an instance of the Chrome WebDriver.
+					</msg>
+					<msg timestamp="20211103 00:24:43.810" level="INFO">
+						Created download root directory: C:\Users\alvar\AppData\Local\robocorp\webdrivers
+					</msg>
+					<msg timestamp="20211103 00:24:43.810" level="INFO">
+						Created symlink directory: C:\Users\alvar\AppData\Local\robocorp\webdrivers
+					</msg>
+					<msg timestamp="20211103 00:24:43.812" level="INFO">
+						Creating an instance of the Chrome WebDriver.
+					</msg>
+					<msg timestamp="20211103 00:24:45.795" level="INFO">
+						Created Chrome browser with arguments: --disable-dev-shm-usage --disable-web-security --allow-running-insecure-content --no-sandbox
+					</msg>
+					<msg timestamp="20211103 00:24:45.795" level="INFO" html="true">
+						&lt;p&gt;Attempted combinations:&lt;/p&gt;&lt;div class="doc"&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Browser&lt;/th&gt;&lt;th&gt;Download&lt;/th&gt;&lt;th&gt;Error&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Chrome&lt;/td&gt;&lt;td&gt;False&lt;/td&gt;&lt;td&gt;Message: 'chromedriver' executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home
+						&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Chrome&lt;/td&gt;&lt;td&gt;True&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+					</msg>
+					<msg timestamp="20211103 00:24:45.795" level="INFO">
+						Opening url 'https://www.google.com/'
+					</msg>
+					<status status="PASS" starttime="20211103 00:24:43.752" endtime="20211103 00:24:48.499" />
+				</kw>
+				<status status="PASS" starttime="20211103 00:24:43.750" endtime="20211103 00:24:48.499" />
+			</kw>
+			<kw name="When he enter a search text">
+				<arg>
+					${QUERY}
+				</arg>
+				<kw name="Input Text" library="RPA.Browser">
+					<arg>
+						name:q
+					</arg>
+					<arg>
+						${text}
+					</arg>
+					<doc>
+						Types the given ``text`` into the text field identified by ``locator``.
+					</doc>
+					<msg timestamp="20211103 00:24:48.501" level="INFO">
+						Typing text 'robot-framework' into text field 'name:q'.
+					</msg>
+					<status status="PASS" starttime="20211103 00:24:48.500" endtime="20211103 00:24:48.652" />
+				</kw>
+				<status status="PASS" starttime="20211103 00:24:48.500" endtime="20211103 00:24:48.652" />
+			</kw>
+			<kw name="And click on search with Google">
+				<kw name="Submit Form" library="RPA.Browser">
+					<doc>
+						Submits a form identified by ``locator``.
+					</doc>
+					<msg timestamp="20211103 00:24:48.653" level="INFO">
+						Submitting form 'None'.
+					</msg>
+					<status status="PASS" starttime="20211103 00:24:48.653" endtime="20211103 00:24:51.727" />
+				</kw>
+				<status status="PASS" starttime="20211103 00:24:48.652" endtime="20211103 00:24:51.728" />
+			</kw>
+			<kw name="Then results should contain">
+				<arg>
+					Robot Framework
+				</arg>
+				<kw name="Page Should Contain" library="RPA.Browser">
+					<arg>
+						${expected}
+					</arg>
+					<doc>
+						Verifies that current page contains ``text``.
+					</doc>
+					<msg timestamp="20211103 00:24:51.768" level="INFO">
+						Current page contains text 'Robot Framework'.
+					</msg>
+					<status status="PASS" starttime="20211103 00:24:51.729" endtime="20211103 00:24:51.768" />
+				</kw>
+				<kw name="Close Browser" library="RPA.Browser">
+					<doc>
+						Closes the current browser.
+					</doc>
+					<status status="PASS" starttime="20211103 00:24:51.768" endtime="20211103 00:24:53.942" />
+				</kw>
+				<status status="PASS" starttime="20211103 00:24:51.728" endtime="20211103 00:24:53.943" />
+			</kw>
+			<kw name="Close All Browsers" library="RPA.Browser" type="TEARDOWN">
+				<doc>
+					Closes all open browsers and resets the browser cache.
+				</doc>
+				<status status="PASS" starttime="20211103 00:24:53.943" endtime="20211103 00:24:53.944" />
+			</kw>
+			<doc>
+				Google search
+			</doc>
+			<tag>
+				regression
+			</tag>
+			<status status="PASS" starttime="20211103 00:24:43.749" endtime="20211103 00:24:53.945" />
+		</test>
+		<test id="s1-t2" name="Registrar TC-2 factura de venta">
+			<status status="PASS" starttime="20211103 00:24:43.749" endtime="20211103 00:24:53.945" />
+		</test>
+		<doc>
+			Template robot main suite.
+		</doc>
+		<status status="PASS" starttime="20211103 00:24:42.267" endtime="20211103 00:24:53.949" />
+	</suite>
+	<statistics>
+		<total>
+			<stat PASS="1" PASS="0" skip="0">
+				All Tests
+			</stat>
+		</total>
+		<tag>
+			<stat PASS="1" PASS="0" skip="0">
+				regression
+			</stat>
+		</tag>
+		<suite>
+			<stat PASS="1" PASS="0" skip="0" id="s1" name="Tasks">
+				Tasks
+			</stat>
+		</suite>
+	</statistics>
+	<errors>
+		<msg timestamp="20211103 00:24:43.590" level="WARN">
+			This is a deprecated import that will be removed in favor of RPA.Browser.Selenium
+		</msg>
+	</errors>
+</robot>

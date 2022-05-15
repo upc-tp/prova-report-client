@@ -3,14 +3,15 @@
     <span>Historias de Usuario</span>
     <div>
       <button nz-button nzType="primary" (click)="showModalMassive()" style="margin-right: 1rem;">
-        <span *ngIf="this.projectId">Carga Masiva</span>
+        <span>Carga Masiva</span>
       </button>
       <button nz-button nzType="primary" (click)="createUserStory()">
-        <span *ngIf="this.projectId">Nuevo</span>
+        <span>Nuevo</span>
       </button>
     </div>
   </div>
-  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Suite de prueba" (nzOnCancel)="handleCancelMassive()"
+
+  <nz-modal [(nzVisible)]="isVisibleMassive" nzTitle="Historia de usuario" (nzOnCancel)="handleCancelMassive()"
     (nzOnOk)="handleOkMassive()" [nzOkLoading]="isOkLoadingMassive">
     <div>
       <a nz-button nzBlock nzSize="large" nzType="primary" style="color: white; margin-bottom: 2rem;" nz-button
@@ -21,14 +22,30 @@
       </a>
 
     </div>
-    <form>
+    <form [formGroup]="formMassive" (ngSubmit)="enviarCsvData()">
       <div>
         <div>
-          <div class="fileSection">
+          <div class="fileSectionUserStories">
             <div>
               <mat-label class="text-fs-20 text-w-bold col-12">Carga de Archivo</mat-label>
             </div>
-            <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null"
+            <mat-form-field class="col-md-12" appearance="outline">
+              <mat-label>Proyectos</mat-label>
+              <mat-select formControlName="projects">
+                <mat-option
+                  *ngFor="let pro of listProjects; let i = index"
+                  [value]="pro.id"
+                >
+                  {{ pro.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="formMassive.controls['projects'].hasError('required')"
+              >
+                Seleccione un proyecto
+              </mat-error>
+            </mat-form-field>
+            <div [class.noFileUploadBackgroundUserStories]="file == null" [class.fileUploadBackgroundUserStories]="file != null"
               style="width: 100%;">
               <div class="text-center" style="margin-bottom: 1.5rem; margin-top: 1.5rem">
                 <div *ngIf="file == null">
@@ -66,13 +83,14 @@
           </div>
         </div>
       </div>
-      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive"
-        (click)="enviarCsvData()">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingMassive">
         Guardar
       </button>
     </form>
     <div *nzModalFooter></div>
   </nz-modal>
+
+
   <form [formGroup]="filterFormGroup">
     <div class="row d-flex">
       <div class="col-md-3">

@@ -147,7 +147,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
   }
 
   fetchTestCases(page: number, pageSize: number, search: string = ''){
-    this.testCaseService.getTestCases(page,pageSize,search,this.suiteId).subscribe(
+    this.testCaseService.getTestCases(page,pageSize,search,this.suiteId,null).subscribe(
       res =>{
           this.testCases = res.result.map((tCase) =>{
             return{

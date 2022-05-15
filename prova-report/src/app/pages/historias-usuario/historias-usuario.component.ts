@@ -27,6 +27,10 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     id: number;
     name: string;
   }> = [];
+  projects: Array<{
+    label: string;
+    value: number;
+  }> = [];
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
   debounceTime = 500;
@@ -103,6 +107,9 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
         testPlans: [''],
       });
     }
+    this.formMassive = this._fb.group({
+      projects: [null, [Validators.required]],
+    });
   }
 
   ngOnDestroy(): void {
@@ -220,6 +227,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
 
   updateFilter(e: any) {
     if (e.source.ngControl.name == 'projects') {
+      this.filterFormGroup.controls['testPlans'].patchValue('');
       console.log("TestPlan")
       this.testPlanService
         .getTestPlansByProject(null, null, '', e.value)
@@ -286,11 +294,12 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if (this.file) {
       this.userStoryService
         .bulkLoadUserStories(
-          this.filterFormGroup.controls['projects'].value,
+          this.formMassive.controls['projects'].value,
           this.csvData[0]
         )
         .subscribe((res) => {
           console.log(res.result);
+          this.isVisibleMassive = false;
           this.getUserStories(this.page, this.pageSize);
           this.deleteFile();
         });
@@ -312,6 +321,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   handleCancelMassive(): void {
+    this.deleteFile();
     this.isVisibleMassive = false;
   }
 

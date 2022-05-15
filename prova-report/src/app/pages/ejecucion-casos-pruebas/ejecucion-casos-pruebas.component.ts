@@ -45,7 +45,6 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   pageSize: number = 10;
   count: number = 0;
 
-
   pageTestCases: number = 1;
   pageSizeTestCases: number = 10;
   countTestCases: number = 0;
@@ -74,7 +73,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   listTestCase: TestCase[] = [];
   listTestCaseSteps: TestCaseSteps[] = [];
   listTestExecutions: TestExecution[] = [];
-
+  listTestCaseState: Filter[] = [{group:2,key:1,value:'No ejecutado'},{group:2,key:2,value:'Superado'},{group:2,key:3,value:'Fallido'},{group:2,key:4,value:'Omitido'}]
 
   private modelChanged: Subject<string> = new Subject<string>();
   private subscription: Subscription;
@@ -90,6 +89,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   actualFilterTestSuite: string;
   actualFilterProject: string;
   toExecutionPage: boolean = false;
+  InstructionsFile = false;
   disabledRegisterBug = true;
   constructor(
     private router: Router,
@@ -163,7 +163,8 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     } else {
       this.filterFormGroup = this._fb.group({
         projects: ['', [Validators.required]],
-        testSuite: ['',]
+        testSuite: [''],
+        stateTestCase:['']
       });
       this.filterItems = [];
     }
@@ -179,7 +180,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (!this.toExecutionPage) localStorage.removeItem('filterItems');
   }
-  get f() { return this.validateAddForm.controls; }
+  get f() {
+    return this.validateAddForm.controls;
+  }
   Pagination() {
     this.dataSourceTestCase.paginator = this.paginator;
     this.dataSourceTestCase.sort = this.sort;
@@ -190,13 +193,13 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   getProjects() {
     this.ProjectService.getTestProjects(null, null, '').subscribe(
       (res) =>
-      (this.listProjects = res.result.map((project) => {
-        const filtProject = new Filter();
-        filtProject.group = 0;
-        filtProject.key = project.id;
-        filtProject.value = project.title;
-        return filtProject;
-      }))
+        (this.listProjects = res.result.map((project) => {
+          const filtProject = new Filter();
+          filtProject.group = 0;
+          filtProject.key = project.id;
+          filtProject.value = project.title;
+          return filtProject;
+        }))
     );
   }
 
@@ -224,16 +227,19 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     );
   }
 
-  search(search: string = '') {
+  search2(search: string = '') {
     this.filterItems = [];
     localStorage.removeItem('filterItems');
+    this.pageTestCases = 1;
     if (!this.filterFormGroup.invalid) {
       this.testCaseService
-        .getTestCases(
+        .getTestCasesByState(
           this.pageTestCases,
           this.pageSizeTestCases,
           search,
-          this.filterFormGroup.controls['testSuite'].value
+          this.filterFormGroup.controls['testSuite'].value,
+          this.filterFormGroup.controls['projects'].value,
+          this.filterFormGroup.controls['stateTestCase'].value
         )
         .subscribe((res) => {
           console.log(res.count);
@@ -243,7 +249,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.listTestCase = res.result.map((tCase) => {
             const testCase = new TestCase();
             (testCase.id = tCase.id),
-              (testCase.tag) = tCase.tag,
+              (testCase.tag = tCase.tag),
               (testCase.title = tCase.title),
               (testCase.description = tCase.description),
               (testCase.priority = tCase.priority),
@@ -274,7 +280,61 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
         this.filterFormGroup.controls['projects'].value;
       console.log(this.filterFormGroup.controls['testSuite'].value);
       console.log(this.filterFormGroup.controls['projects'].value);
+    }
+  }
 
+  search(search: string = '') {
+    this.filterItems = [];
+    localStorage.removeItem('filterItems');
+    if (!this.filterFormGroup.invalid) {
+      this.testCaseService
+        .getTestCasesByState(
+          this.pageTestCases,
+          this.pageSizeTestCases,
+          search,
+          this.filterFormGroup.controls['testSuite'].value,
+          this.filterFormGroup.controls['projects'].value,
+          this.filterFormGroup.controls['stateTestCase'].value
+        )
+        .subscribe((res) => {
+          console.log(res.count);
+          this.pageTestCases = res.page;
+          this.pageSizeTestCases = res.pageSize;
+          this.countTestCases = res.count;
+          this.listTestCase = res.result.map((tCase) => {
+            const testCase = new TestCase();
+            (testCase.id = tCase.id),
+              (testCase.tag = tCase.tag),
+              (testCase.title = tCase.title),
+              (testCase.description = tCase.description),
+              (testCase.priority = tCase.priority),
+              (testCase.severity = tCase.severity),
+              (testCase.testState = tCase.testState),
+              (testCase.testSuite = tCase.testSuite),
+              (testCase.lastExecution = tCase.lastExecution),
+              (testCase.userInCharge = tCase.userInCharge);
+            (testCase.createdAt = this.utils.formatDate(
+              new Date(tCase.createdAt)
+            )),
+              (testCase.createdBy = tCase.createdBy);
+            return testCase;
+          });
+          if (res.result.length == 0) {
+            Swal.fire({
+              title: 'El Proyecto no Cuenta con Casos de Prueba',
+              showCloseButton: true,
+              icon: 'info',
+            });
+          }
+          this.dataSourceTestCase = new MatTableDataSource(this.listTestCase);
+          this.Pagination();
+        });
+      this.actualFilterTestSuite =
+        this.filterFormGroup.controls['testSuite'].value;
+      this.actualFilterProject =
+        this.filterFormGroup.controls['projects'].value;
+      console.log(this.filterFormGroup.controls['testSuite'].value);
+      console.log(this.filterFormGroup.controls['projects'].value);
     }
   }
 
@@ -284,8 +344,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   }
 
   updateFilter(e: any) {
-    console.log("HABLA");
+    console.log('HABLA');
     if (e.source.ngControl.name == 'projects') {
+      this.filterFormGroup.controls['testSuite'].patchValue('');
       this.suiteService
         .getTestSuitesByProject(null, null, '', e.value)
         .subscribe((res) => {
@@ -301,31 +362,18 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     }
   }
 
-  showDetailExecution(d:any)
-  {
+  showDetailExecution(d: any) {
     console.log(d.id);
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/detalles-ejecucion/'],{
-       queryParams: {
-         executionId : d.id
-       }
-      }));
+      this.router.createUrlTree(['/detalles-ejecucion/'], {
+        queryParams: {
+          executionId: d.id,
+        },
+      })
+    );
 
-     window.open(url,'_blank') 
+    window.open(url, '_blank');
   }
-
-  detailsExecutionTestCase(id: number) {
-    this.addFilterItem(this.actualFilterTestSuite);
-    this.addFilterItem(this.actualFilterProject);
-    if (this.filterItems.length > 0) {
-      localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
-    }
-    this.toExecutionPage = true;
-    this.router.navigate(['detalles-ejecucion-caso-prueba'], {
-      queryParams: { testCaseId: id },
-    });
-  }
-
 
   crearFormulario() {
     this.formulario = this._fb.group({
@@ -347,8 +395,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.getTestSteps();
           this.deleteFile();
           this.crearFormulario();
-          this.search()
+          this.search();
           this.disabledRegisterBug = false;
+          this.showDetailExecution(res.result);
         });
     } else {
       Swal.fire({
@@ -408,10 +457,11 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.dataSourceTestSteps = new MatTableDataSource();
     this.chargeTestSteps = 0;
     this.disabledRegisterBug = true;
+    this.deleteFile();
+    this.formulario.controls['commentary'].patchValue('');
     this.Pagination();
     // this.PaginationTestCase();
   }
-
 
   addFilterItem(item: string) {
     if (!this.filterItems.includes(item)) {
@@ -432,61 +482,59 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     console.log(this.count);
     this.testCaseDetailSelected = testCase;
     this.spinnerService.isLoading.next(true);
-    this.testCaseService.getTestExecutions(this.page, this.pageSize, '', testCase.id).subscribe((res) => {
-      console.log(res.result)
-      this.listTestExecutions = res.result.map(
-        (tExec) => {
+    this.testCaseService
+      .getTestExecutions(this.page, this.pageSize, '', testCase.id)
+      .subscribe((res) => {
+        console.log(res.result);
+        this.listTestExecutions = res.result.map((tExec) => {
           tExec.id = tExec.id;
           tExec.createdAt = this.utils.formatDate(new Date(tExec.createdAt));
           tExec.createdBy = this.utils.formatDate(new Date(tExec.createdBy));
-          tExec.startTime = this.utils.formatDateTime(new Date(tExec.startTime));
+          tExec.startTime = this.utils.formatDateTime(
+            new Date(tExec.startTime)
+          );
           tExec.endTime = this.utils.formatDateTime(new Date(tExec.endTime));
-          tExec.order =  tExec.order;
+          tExec.order = tExec.order;
           tExec.duration = this.utils.msToTime(Number(tExec.duration));
           return tExec;
-        }
-      );
-      this.page = res.page;
-      this.pageSize = res.pageSize;
-      this.count = res.count;
-    });
+        });
+        this.page = res.page;
+        this.pageSize = res.pageSize;
+        this.count = res.count;
+      });
     this.DetalleVisible = true;
   }
 
   fetchExecutions(page: number, pageSize: number, search: string, id: number) {
-    this.testCaseService.getTestExecutions(page, pageSize, search, id).subscribe(
-      (res) => {
-        this.listTestExecutions = res.result.map(
-          (tExec) => {
-            tExec.id = tExec.id;
-            tExec.createdAt = this.utils.formatDate( new Date(tExec.createdAt));
-            tExec.createdBy = this.utils.formatDate(new Date(tExec.createdBy));
-            tExec.startTime = this.utils.formatDateTime(new Date(tExec.startTime));
-            tExec.endTime = this.utils.formatDateTime(new Date(tExec.endTime));
-            tExec.order =  tExec.order;
-            tExec.duration = this.utils.msToTime(Number(tExec.duration));
-            return tExec;
-          }
-        );
+    this.testCaseService
+      .getTestExecutions(page, pageSize, search, id)
+      .subscribe((res) => {
+        this.listTestExecutions = res.result.map((tExec) => {
+          tExec.id = tExec.id;
+          tExec.createdAt = this.utils.formatDate(new Date(tExec.createdAt));
+          tExec.createdBy = this.utils.formatDate(new Date(tExec.createdBy));
+          tExec.startTime = this.utils.formatDateTime(
+            new Date(tExec.startTime)
+          );
+          tExec.endTime = this.utils.formatDateTime(new Date(tExec.endTime));
+          tExec.order = tExec.order;
+          tExec.duration = this.utils.msToTime(Number(tExec.duration));
+          return tExec;
+        });
         this.page = res.page;
         this.pageSize = res.pageSize;
         this.count = res.count;
       });
   }
 
-
-  fetchTestCases(page: number, pageSize: number, search: string, id: number) {
-    this.testCaseService.getTestCases(page, pageSize, search, id).subscribe(
-      (res) => {
-        this.listTestCase = res.result;
-        this.page = res.page;
-        this.pageSize = res.pageSize;
-        this.count = res.count;
-      });
-  }
 
   onPageIndexChange(selectedPage: number) {
-    this.fetchExecutions(selectedPage, this.pageSize, '', this.testCaseDetailSelected.id);
+    this.fetchExecutions(
+      selectedPage,
+      this.pageSize,
+      '',
+      this.testCaseDetailSelected.id
+    );
   }
   onPageIndexChangeTestCases(selectedPage: number) {
     this.pageTestCases = selectedPage;
@@ -512,6 +560,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.DetalleVisible = false;
     this.submitted = false;
     this.id = null;
+    this.InstructionsFile = false;
     this.listTestExecutions = [];
   }
   handleOk(): void {
@@ -520,6 +569,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);
+  }
+  showInstruction(): void{
+    this.InstructionsFile = true;
   }
 
   submitForm(): void {
@@ -556,8 +608,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   }
 
   getDefects() {
-    this.defectService.getDefects(null, null, '', this.testCaseSelected.id).subscribe(
-      (res) => {
+    this.defectService
+      .getDefects(null, null, '', this.testCaseSelected.id)
+      .subscribe((res) => {
         this.defects = res.result.map((defectos) => {
           return {
             title: defectos.title,
@@ -566,36 +619,31 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
             priority: defectos.priority.name,
             severity: defectos.severity.name,
           };
-        })
-      }
-    )
+        });
+      });
   }
 
   getPriority() {
     this.priorityService.getPriorities(null, null, '').subscribe(
-      (res) => (
-        this.priorities = res.result.map((tPriority) => {
+      (res) =>
+        (this.priorities = res.result.map((tPriority) => {
           return {
             label: tPriority.name,
-            value: tPriority.id
+            value: tPriority.id,
           };
-        })
-      )
-
+        }))
     );
   }
 
   getSeverity() {
     this.severityService.getSeverities(null, null, '').subscribe(
-      (res) => (
-        this.severities = res.result.map((tSeverity) => {
+      (res) =>
+        (this.severities = res.result.map((tSeverity) => {
           return {
             label: tSeverity.name,
-            value: tSeverity.id
+            value: tSeverity.id,
           };
-        })
-      )
-
+        }))
     );
   }
 }
