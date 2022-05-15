@@ -314,18 +314,6 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
      window.open(url,'_blank') 
   }
 
-  detailsExecutionTestCase(id: number) {
-    this.addFilterItem(this.actualFilterTestSuite);
-    this.addFilterItem(this.actualFilterProject);
-    if (this.filterItems.length > 0) {
-      localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
-    }
-    this.toExecutionPage = true;
-    this.router.navigate(['detalles-ejecucion-caso-prueba'], {
-      queryParams: { testCaseId: id },
-    });
-  }
-
 
   crearFormulario() {
     this.formulario = this._fb.group({
@@ -347,8 +335,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.getTestSteps();
           this.deleteFile();
           this.crearFormulario();
-          this.search()
+          this.search();
           this.disabledRegisterBug = false;
+          this.showDetailExecution(res.result);
         });
     } else {
       Swal.fire({

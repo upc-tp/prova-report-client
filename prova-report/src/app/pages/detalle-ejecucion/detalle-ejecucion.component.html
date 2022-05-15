@@ -1,45 +1,98 @@
 <div class="backgroundContent">
-  <div class="bannerDetalleEje">
-    Detalle Ejecución
-  </div>
-  <div style="padding: 0.5rem;">
+  <div class="bannerDetalleEje">Detalle Ejecución</div>
+  <div style="padding: 0.5rem">
     <div class="row">
       <div class="col-6">
-        <h2><b> {{executionSelected?.testCase.tag}} - {{executionSelected?.testCase.title}} - Ejecución
-            #{{executionSelected?.order }} </b></h2>
+        <h2>
+          <b>
+            {{ executionSelected?.testCase.tag }} -
+            {{ executionSelected?.testCase.title }} - Ejecución #{{
+              executionSelected?.order
+            }}
+          </b>
+        </h2>
       </div>
-
     </div>
 
     <div class="row">
       <div class="col-6">
         <h2><b> Fecha Inicio </b></h2>
-        <span> {{executionSelected?.startTime | date:'dd/M/yy H:mm:ss'}} </span>
+        <span>
+          {{ executionSelected?.startTime | date: "dd/M/yy H:mm:ss" }}
+        </span>
       </div>
       <div class="col-6">
         <h2><b> Fecha Fin </b></h2>
-        <span> {{executionSelected?.endTime | date:'dd/M/yy H:mm:ss'}} </span>
+        <span>
+          {{ executionSelected?.endTime | date: "dd/M/yy H:mm:ss" }}
+        </span>
       </div>
     </div>
 
     <div class="row">
       <div class="col-6">
         <h2><b> Comentarios </b></h2>
-        <textarea style="height: 7rem; width:80%; border-radius: 5px; padding: 0.5rem;"
-          disabled="true"> {{executionSelected?.comments}} </textarea>
+        <textarea
+          style="height: 7rem; width: 80%; border-radius: 5px; padding: 0.5rem"
+          disabled="true"
+        >
+ {{ executionSelected?.comments }} </textarea
+        >
       </div>
       <div class="col-6">
         <h2><b> Duración </b></h2>
         <span> {{ utils.msToTime(executionSelected?.duration) }} </span>
       </div>
     </div>
-
   </div>
-  <div>
-    <h2><b> Pasos de Ejecución </b></h2>
-    <nz-table #middleTableSteps nzSize="middle" [nzData]="testExecutionSteps" [nzFrontPagination]="true"
-      [nzPageIndex]="pageSteps" [nzPageSize]="pageSizeSteps" [nzShowPagination]="true" [nzTotal]="countSteps"
-      [nzShowTotal]="rangeTemplateSteps" (nzPageIndexChange)="onPageIndexChangeSteps($event)">
+  <div class="row">
+    <div class="col-6">
+      <h2><b> Pasos de Ejecución </b></h2>
+    </div>
+    <div class="col-6">
+      <div>
+        <h2>
+          <b>
+            Reporte Defectos
+            <mat-icon
+              class="BugIcon"
+              svgIcon="BugIcon"
+              style="color: #5afe73"
+            ></mat-icon>
+            <button
+              type="button"
+              mat-flat-button
+              color="primary"
+              class="button-global ps-3 pe-3 iconify-mright"
+              style="margin-left: 2rem"
+              (click)="showModal()"
+            >
+              <span
+                class="iconify"
+                data-icon="ant-design:plus-circle-filled"
+                style="color: white"
+                data-width="24"
+                data-height="24"
+              ></span>
+              <span>Reportar Defecto</span>
+            </button>
+          </b>
+        </h2>
+      </div>
+    </div>
+
+    <nz-table
+      #middleTableSteps
+      nzSize="middle"
+      [nzData]="testExecutionSteps"
+      [nzFrontPagination]="true"
+      [nzPageIndex]="pageSteps"
+      [nzPageSize]="pageSizeSteps"
+      [nzShowPagination]="true"
+      [nzTotal]="countSteps"
+      [nzShowTotal]="rangeTemplateSteps"
+      (nzPageIndexChange)="onPageIndexChangeSteps($event)"
+    >
       <thead>
         <tr>
           <th nzWidth="60px">Logs</th>
@@ -53,25 +106,31 @@
       <tbody>
         <ng-container *ngFor="let data of middleTableSteps.data">
           <tr>
-            <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
+            <td
+              [nzExpand]="expandSet.has(data.id)"
+              (nzExpandChange)="onExpandChange(data.id, $event)"
+            ></td>
             <td>
               {{ data.name }}
             </td>
             <td>
-              <span [ngClass]="{
-                    'test-state-passed': data.testState.name == 'Superado',
-                    'test-state-non-executed':
-                      data.testState.name == 'No ejecutado',
-                    'test-state-skipped': data.testState.name == 'Omitido',
-                    'test-state-failed': data.testState.name == 'Fallido'
-                  }">{{ data.testState.name }}</span>
+              <span
+                [ngClass]="{
+                  'test-state-passed': data.testState.name == 'Superado',
+                  'test-state-non-executed':
+                    data.testState.name == 'No ejecutado',
+                  'test-state-skipped': data.testState.name == 'Omitido',
+                  'test-state-failed': data.testState.name == 'Fallido'
+                }"
+                >{{ data.testState.name }}</span
+              >
             </td>
             <td>
-              {{ data.startTime | date:'dd/M/yy H:mm:ss' }}
+              {{ data.startTime | date: "dd/M/yy H:mm:ss" }}
             </td>
 
             <td>
-              {{ data.endTime | date:'dd/M/yy H:mm:ss' }}
+              {{ data.endTime | date: "dd/M/yy H:mm:ss" }}
             </td>
 
             <td>
@@ -79,15 +138,24 @@
             </td>
           </tr>
           <tr [nzExpand]="expandSet.has(data.id)">
-            <div style="max-height: 100px; overflow: auto;">
-              <div *ngFor="let log of data.logs; let indexOfelement=index;">
-                <div>Action:&nbsp;{{log?.name}}&nbsp;({{log?.library}})&nbsp;({{utils.msToTime(log?.status?.duration)}})
+            <div style="max-height: 100px; overflow: auto">
+              <div *ngFor="let log of data.logs; let indexOfelement = index">
+                <div>
+                  Action:&nbsp;{{ log?.name }}&nbsp;({{
+                    log?.library
+                  }})&nbsp;({{ utils.msToTime(log?.status?.duration) }})
                 </div>
-                <div *ngFor="let msg of log.msgs"><span [ngClass]="{
-                  'msg-info': msg?.level == 'INFO',
-                  'msg-warn': msg?.level == 'WARN',
-                  'msg-fail': msg?.level == 'FAIL'
-                }">{{msg.level}}</span> {{msg.description}}</div>
+                <div *ngFor="let msg of log.msgs">
+                  <span
+                    [ngClass]="{
+                      'msg-info': msg?.level == 'INFO',
+                      'msg-warn': msg?.level == 'WARN',
+                      'msg-fail': msg?.level == 'FAIL'
+                    }"
+                    >{{ msg.level }}</span
+                  >
+                  {{ msg.description }}
+                </div>
               </div>
               <div *ngIf="!data.logs.length">No hay logs registrados</div>
             </div>
@@ -100,3 +168,59 @@
     </ng-template>
   </div>
 </div>
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading">
+  <ng-template #modalTitle>
+    <span> Añadir Defecto </span>
+    <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
+  </ng-template>
+  <form nz-form class="create-form" [formGroup]="validateAddForm" (ngSubmit)="submitForm()">
+    <div class="form-item">
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Título </nz-form-label>
+      <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título"
+        [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+      <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
+    </div>
+
+    <div class="form-item w-100">
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Pasos a reproducir </nz-form-label>
+      <textarea nz-input name="repro_steps" formControlName="repro_steps" type="text" id="repro_steps"
+        placeholder="Ingrese los pasos a reproducir"
+        style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
+        [ngClass]="{ 'is-invalid': submitted && f.repro_steps.errors }">
+      </textarea>
+      <span class="invalid-feedback" *ngIf="submitted && f.repro_steps.errors?.required">* Este campo es
+        obligatorio</span>
+
+    </div>
+
+    <div class="form-item w-100">
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Prioridad </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectPriority" class="select-input"
+        [ngClass]="{ 'is-invalid': submitted && f.selectPriority.errors }" nzPlaceHolder="Seleccione el nivel de prioridad"
+        [nzOptions]="priorities">
+        <nz-option nzValue="priorities.value" nzLabel="priorities.label"></nz-option>
+      </nz-select>
+      <span class="invalid-feedback" *ngIf="submitted && f.selectPriority.errors?.required">* Este campo es
+        obligatorio</span>
+    </div>
+
+    <div class="form-item w-100">
+      <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Severidad </nz-form-label>
+      <nz-select nzSize="large" formControlName="selectSeverity" class="select-input"
+        [ngClass]="{ 'is-invalid': submitted && f.selectSeverity.errors }" nzPlaceHolder="Seleccione el nivel de severidad"
+        [nzOptions]="severities">
+        <nz-option nzValue="severities.value" nzLabel="severities.label"></nz-option>
+      </nz-select>
+      <span class="invalid-feedback" *ngIf="f.selectSeverity.errors?.required">* Este campo es obligatorio</span>
+    </div>
+
+    <div class="form-item">
+      <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoading">
+        Registrar Defecto
+      </button>
+    </div>
+  </form>
+  <div *nzModalFooter></div>
+</nz-modal>
