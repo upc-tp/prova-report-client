@@ -1,39 +1,25 @@
 <nz-layout class="app-layout">
-  <nz-sider
-    *ngIf="currentUser"
-    class="menu-sidebar"
-    nzCollapsible
-    nzWidth="256px"
-    nzBreakpoint="md"
-    [(nzCollapsed)]="isCollapsed"
-    [nzTrigger]="null"
-  >
+  <nz-sider *ngIf="currentUser" class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <div class="sidebar-logo">
-      <img
-        [ngStyle]="{ left: isCollapsed ? '20px' : '15px' }"
-        src="assets/images/avatar.png"
-        alt="logo"
-      />
+      <img [ngStyle]="{ left: isCollapsed ? '20px' : '15px' }" src="assets/images/avatar.png" alt="logo" />
       <div [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
-        <span><h1>{{ currentUser.firstName}}</h1></span>
-        <span><h1>{{currentUser.lastName}}</h1></span>
+        <span>
+          <h1>{{ currentUser.firstName}}</h1>
+        </span>
+        <span>
+          <h1>{{currentUser.lastName}}</h1>
+        </span>
         <p>{{ currentUser.role === 'Admin' ? 'Administrador' : 'Tester' }}</p>
         <p class="primary-link"><a :href="/Perfil">Ver perfil</a></p>
         <p><a (click)="logout()">Cerrar sesión</a></p>
       </div>
     </div>
-    <p
-      style="color: white; margin-left: 15px; white-space: nowrap"
-      [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }"
-    >
+    <p style="color: white; margin-left: 15px; white-space: nowrap"
+      [ngStyle]="{ display: isCollapsed ? 'none' : 'inline-block' }">
       Menú de aplicaciones
     </p>
-    <ul
-      nz-menu
-      nzTheme="dark"
-      nzMode="inline"
-      [nzInlineCollapsed]="isCollapsed"
-    >
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <!-- <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -47,57 +33,38 @@
           </li>
         </ul>
       </li> -->
-      <li
-        nz-menu-item
-        nz-tooltip
-        nzTooltipPlacement="right"
-        [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
-        style="text-align: left"
-        routerLink="/dashboard"
-        routerLinkActive="ant-menu-item-selected"
-      >
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''"
+        style="text-align: left" routerLink="/dashboard" routerLinkActive="ant-menu-item-selected">
         <i nz-icon nzType="home"></i>
         <span>Dashboard</span>
       </li>
 
-      <li
-        nz-menu-item
-        nz-tooltip
-        nzTooltipPlacement="right"
-        [nzTooltipTitle]="isCollapsed ? 'Gestión de proyectos de prueba' : ''"
-        style="text-align: left"
-        routerLink="/gestion-proyectos"
-        routerLinkActive="ant-menu-item-selected"
-      >
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Gestión de proyectos de prueba' : ''" style="text-align: left"
+        routerLink="/gestion-proyectos" routerLinkActive="ant-menu-item-selected">
         <i nz-icon nzType="form"></i>
         <span>Proyectos</span>
       </li>
 
-      <li
-        nz-menu-item
-        nz-tooltip
-        nzTooltipPlacement="right"
-        [nzTooltipTitle]="isCollapsed ? 'Planes de prueba' : ''"
-        style="text-align: left"
-        routerLink="/plan-pruebas"
-        routerLinkActive="ant-menu-item-selected"
-      >
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Planes de prueba' : ''"
+        style="text-align: left" routerLink="/plan-pruebas" routerLinkActive="ant-menu-item-selected">
         <i nz-icon nzType="form"></i>
         <span>Planes de prueba</span>
       </li>
 
-      <li
-        nz-menu-item
-        nz-tooltip
-        nzTooltipPlacement="right"
-        [nzTooltipTitle]="isCollapsed ? 'Suites de prueba' : ''"
-        style="text-align: left"
-        routerLink="/suite-pruebas"
-        routerLinkActive="ant-menu-item-selected"
-      >
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Suites de prueba' : ''"
+        style="text-align: left" routerLink="/suite-pruebas" routerLinkActive="ant-menu-item-selected">
         <i nz-icon nzType="form"></i>
         <span>Suites de prueba</span>
       </li>
+
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Historias de Usuario' : ''" style="text-align: left"
+        routerLink="/historias-usuario" routerLinkActive="ant-menu-item-selected">
+        <i nz-icon nzType="form"></i>
+        <span>Historias de Usuario</span>
+      </li>
+
       <!-- <li
       nz-menu-item
       nz-tooltip
@@ -110,19 +77,13 @@
       <i nz-icon nzType="form"></i>
       <span>Detalle Suite de Pruebas</span>
     </li> -->
-    <li
-    nz-menu-item
-    nz-tooltip
-    nzTooltipPlacement="right"
-    [nzTooltipTitle]="isCollapsed ? 'Ejecucion Casos de Pruebas' : ''"
-    style="text-align: left"
-    routerLink="/ejecucion-casos-pruebas"
-    routerLinkActive="ant-menu-item-selected"
-  >
-    <i nz-icon nzType="form"></i>
-    <span>Ejecucion Casos de Prueba</span>
-  </li>
-  <!-- <li
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right"
+        [nzTooltipTitle]="isCollapsed ? 'Ejecucion Casos de Pruebas' : ''" style="text-align: left"
+        routerLink="/ejecucion-casos-pruebas" routerLinkActive="ant-menu-item-selected">
+        <i nz-icon nzType="form"></i>
+        <span>Ejecución Casos de Prueba</span>
+      </li>
+      <!-- <li
     nz-menu-item
     nz-tooltip
     nzTooltipPlacement="right"
@@ -148,45 +109,22 @@
   <span>Verificacion de Defectos</span>
 </li> -->
 
-<li
-nz-menu-item
-nz-tooltip
-nzTooltipPlacement="right"
-[nzTooltipTitle]="isCollapsed ? 'Gestion de Defectos' : ''"
-style="text-align: left"
-routerLink="/gestion-defectos"
-routerLinkActive="ant-menu-item-selected"
->
-<i nz-icon nzType="form"></i>
-<span>Gestion de Defectos</span>
-</li>
-
-  <li
-    nz-menu-item
-    nz-tooltip
-    nzTooltipPlacement="right"
-    [nzTooltipTitle]="isCollapsed ? 'Historias de Usuario' : ''"
-    style="text-align: left"
-    routerLink="/historias-usuario"
-    routerLinkActive="ant-menu-item-selected"
-  >
-    <i nz-icon nzType="form"></i>
-    <span>Historias de Usuario</span>
-  </li>
+      <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'Gestion de Defectos' : ''"
+        style="text-align: left" routerLink="/gestion-defectos" routerLinkActive="ant-menu-item-selected">
+        <i nz-icon nzType="form"></i>
+        <span>Gestión de Defectos</span>
+      </li>
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header *ngIf="currentUser">
       <div class="app-header">
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-          <i
-            class="trigger"
-            nz-icon
-            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-          ></i>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
           <span style="font-weight: 500;color: #3949ab;">
             <mat-icon svgIcon="ProvaIcon" class="provaLogo"></mat-icon>
-            Prova Report</span>
+            Prova Report
+          </span>
         </span>
       </div>
     </nz-header>
