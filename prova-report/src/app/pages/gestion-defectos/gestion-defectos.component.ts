@@ -265,7 +265,7 @@ export class GestionDefectosComponent implements OnInit {
   }
 
   getTestCases() {
-    this.testCaseService.getTestCases(null, null, '', 1).subscribe((res) => {
+    this.testCaseService.getTestCases(null, null, '', 1,null).subscribe((res) => {
       this.testCases = res.result.map((testCase) => {
         return {
           label: testCase.title,

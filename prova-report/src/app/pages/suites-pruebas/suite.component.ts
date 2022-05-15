@@ -120,7 +120,9 @@ export class SuiteComponent implements OnInit, OnDestroy {
       }  
   }
   updateFilter(e: any) {
-    if (e.source.ngControl.name == 'projects') {
+    if (e.source.ngControl.name == 'projects') 
+    {
+      this.filterFormGroup.controls['testPlans'].patchValue('');
       console.log("TestPlan")
       this.planService
         .getTestPlansByProject(null, null, '', e.value)

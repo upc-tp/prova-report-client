@@ -32,8 +32,19 @@
       </div>
 
       <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Estado Caso de Prueba</mat-label>
+          <mat-select formControlName="stateTestCase" multiple>
+            <mat-option *ngFor="let pro of listTestCaseState" [value]="pro.key">
+              {{ pro.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
         <button mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
-          style="margin-top: 0.5rem" (click)="search()">
+          style="margin-top: 0.5rem" (click)="search2()">
           <span class="iconify" data-icon="charm:paper-plane" style="color: white" data-width="24"
             data-height="24"></span>
           <span>Aplicar Filtros</span>

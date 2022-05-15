@@ -217,6 +217,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
 
   updateFilter(e: any) {
     if (e.source.ngControl.name == 'projects') {
+      this.filterFormGroup.controls['testPlans'].patchValue('');
       console.log("TestPlan")
       this.testPlanService
         .getTestPlansByProject(null, null, '', e.value)
