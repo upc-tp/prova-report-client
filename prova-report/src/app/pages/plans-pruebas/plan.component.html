@@ -5,7 +5,7 @@
       <span>Nuevo</span>
     </button>
   </div>
-
+  <mat-progress-bar style="margin: 0.5rem auto;" *ngIf="showProgress" mode="indeterminate"></mat-progress-bar>
   <nz-modal
     [(nzVisible)]="isVisible"
     nzTitle="Plan de prueba"
@@ -234,6 +234,7 @@
     />
     <hr style="border-color: white" />
   </div>
+  
   <nz-table
     #middleTable
     nzSize="middle"
@@ -288,9 +289,18 @@
           <button
             style="margin-right: 0.5rem"
             nz-button
-            nz-tooltip nzTooltipTitle="Exportar PDF" nzTooltipPlacement="bottomLeft"
+            nz-tooltip nzTooltipTitle="Descargar PDF" nzTooltipPlacement="bottomLeft"
             nzType="primary"
-            (click)="generatePDF(data.id, data.title)"
+            (click)="generatePDF(data.id, data.title, true)"
+          >
+            <i nz-icon nzType="download" nzTheme="outline"></i>
+          </button>
+          <button
+            style="margin-right: 0.5rem"
+            nz-button
+            nz-tooltip nzTooltipTitle="Ver PDF" nzTooltipPlacement="bottomLeft"
+            nzType="primary"
+            (click)="generatePDF(data.id, data.title, false)"
           >
             <i nz-icon nzType="file-pdf" nzTheme="outline"></i>
           </button>

@@ -147,3 +147,21 @@ tbody {
 .invalid-feedback {
   color: #e53935;
 }
+
+.create-form {
+  max-width: 1000px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+}
+
+.form-item {
+  flex: 1 100%;
+  margin: 0.5rem;
+  & input {
+    width: 100%;
+  }
+}
