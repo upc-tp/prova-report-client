@@ -266,21 +266,10 @@
           <mat-label class="text-fs-24 text-w-bold col-12">Comentarios</mat-label>
           <mat-form-field appearance="outline" style="width: 100%; margin-top: 0.7rem">
             <mat-label>Ingresa tu comentario</mat-label>
-            <textarea matInput style="height: 121px; resize: none" placeholder="Ingresa tu comentario"
+            <textarea matInput style="height: 166px; resize: none" placeholder="Ingresa tu comentario"
               formControlName="commentary">
             </textarea>
           </mat-form-field>
-
-          <div class="iconify-mright">
-            <mat-label class="text-fs-24 text-w-bold col-12" style="margin-right: 1rem">Reporte Defectos</mat-label>
-            <mat-icon class="BugIcon" svgIcon="BugIcon" style="color: #5afe73"></mat-icon>
-            <button type="button" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright"
-              [disabled]="disabledRegisterBug" style="margin-left: 2rem" (click)="showModal()">
-              <span class="iconify" data-icon="ant-design:plus-circle-filled" style="color: white" data-width="24"
-                data-height="24"></span>
-              <span>Reportar Defecto</span>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -352,7 +341,7 @@
           </div>
         </div>
       </div> -->
-      <div class="d-flex flex-row-reverse">
+      <div class="d-flex flex-row-reverse" style="margin-right:2rem">
         <button type="submit" mat-flat-button color="primary" class="button-global ps-3 pe-3 iconify-mright">
           <span class="iconify" data-icon="ant-design:plus-circle-filled" style="color: white" data-width="24"
             data-height="24"></span>
