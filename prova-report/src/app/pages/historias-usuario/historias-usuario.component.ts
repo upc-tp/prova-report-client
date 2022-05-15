@@ -167,7 +167,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           id: uStory.id,
           tag: uStory.tag,
           name: uStory.name,
-          testPlan: uStory.testPlan?.title,
+          testPlan: uStory.testPlan.tag +': '+uStory.testPlan?.title,
           description: uStory.description,
           createdBy: uStory.createdBy,
           createdAt: this.utils.formatDate(new Date(uStory.createdAt))
@@ -237,7 +237,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
             const filtTestSuite = new Filter();
             filtTestSuite.group = 1;
             filtTestSuite.key = testPlan.id;
-            filtTestSuite.value = testPlan.title;
+            filtTestSuite.value = testPlan.tag+': '+testPlan.title;
             return filtTestSuite;
           });
         });
@@ -253,7 +253,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           const filtTestSuite = new Filter();
           filtTestSuite.group = 1;
           filtTestSuite.key = testPlan.id;
-          filtTestSuite.value = testPlan.title;
+          filtTestSuite.value = testPlan.tag+': '+testPlan.title;
           return filtTestSuite;
         });
       });

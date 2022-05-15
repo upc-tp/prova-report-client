@@ -99,3 +99,13 @@ h4 {
     display: block;
     width: 100%;
   }
+  .centerItems {
+    display: flex;
+    align-items: center;
+    height: 300px;
+    justify-content: center;
+  }
+  .NoTest {
+    width: 181px;
+    height: 141px;
+  }

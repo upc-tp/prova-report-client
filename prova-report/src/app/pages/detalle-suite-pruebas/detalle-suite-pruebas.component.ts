@@ -54,7 +54,8 @@ export class DetalleSuitePruebasComponent implements OnInit {
     title: '',
     description: '',
     project: '',
-    projectId: 0
+    projectId: 0,
+    tag:''
   };
 
   collaborators: Array<{
@@ -113,6 +114,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.createdAt = this.utils.formatDateTime(new Date(res.result.createdAt));
       this.suite.project = res.result.project.title;
       this.suite.projectId = res.result.project.id;
+      this.suite.tag = res.result.tag;
       // Una vez que carga el suite de pruebas, obtiene los colaboradores del suite seleccionado
       this.getProjectCollaborators();
     });

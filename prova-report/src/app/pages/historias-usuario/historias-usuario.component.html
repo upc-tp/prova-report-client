@@ -162,7 +162,8 @@
         <tr *ngFor="let data of middleTable.data">
           <td>{{ data.tag }}</td>
           <td>{{ data.name }}</td>
-          <td>{{ data.testPlan }}</td>
+          <td *ngIf="data.testPlan !== 'undefined: undefined'">{{ data.testPlan }}</td>
+          <td *ngIf="data.testPlan === 'undefined: undefined'">-</td>
           <td>{{ data.createdBy }} </td>
           <td>{{ data.createdAt }} </td>
           <td class="containerbuttons">
