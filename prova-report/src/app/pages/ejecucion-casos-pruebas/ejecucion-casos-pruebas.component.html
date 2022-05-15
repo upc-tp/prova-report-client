@@ -234,7 +234,7 @@
         <div>
           <div class="row">
             <div>
-              <mat-label class="text-fs-24 text-w-bold col-12">Carga de Archivo</mat-label>
+              <mat-label class="text-fs-24 text-w-bold col-12">Carga de Archivo <span (click)="showInstruction()" style="cursor:pointer" nz-tooltip nzTooltipTitle="Ver Instrucciones" nzTooltipPlacement="right" ><i nz-icon nzType="question-circle" nzTheme="outline" style="vertical-align:baseline"></i></span></mat-label> 
             </div>
             <div [class.noFileUploadBackground]="file == null" [class.fileUploadBackground]="file != null" class="w-75">
               <div class="text-center" style="margin-bottom: 1.5rem; margin-top: 1.5rem">
@@ -453,6 +453,7 @@
   <div *nzModalFooter></div>
 </nz-modal>
 
+<!--Añadir Defecto-->
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
   [nzOkLoading]="isOkLoading">
   <ng-template #modalTitle>
@@ -513,5 +514,21 @@
       </button>
     </div>
   </form>
+  <div *nzModalFooter></div>
+</nz-modal>
+
+<!--Instrucciones Carga de Archivo-->
+<nz-modal [(nzVisible)]="InstructionsFile" [nzTitle]="titleInstructions" (nzOnCancel)="handleCancel()">
+  <ng-template #titleInstructions>
+    <b>Instrucciones Carga Archivo</b>
+  </ng-template>
+  <div class="row">
+    <span class="text-fs-20 mb-4 text-w-bold">1.Desarrolla tus scripts de pruebas con Robot Framework o Robocorp Lab</span>
+    <span class="text-fs-20 mb-4 text-w-bold">2.En los nombres de los casos de prueba colocar las etiquetas TC-X dentro del nombre</span>
+    <span class="text-fs-20 mb-4 text-w-bold">3.Exporta los resultados de la ejecución de las pruebas en formato.xml</span>
+    <span class="text-fs-20 mb-4 text-w-bold">4.Sube los resultados output.xml en los casos de prueba de Prova Report para cargar el detalle de cada ejecución</span>
+    <span class="text-fs-20 mb-2 text-w-bold">Ejemplo de Etiquetas TC:</span>
+    <img src="assets/images/CapturaCargaArchivo.png" width="454" height="236">
+  </div>
   <div *nzModalFooter></div>
 </nz-modal>

@@ -375,6 +375,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           console.log(res.result);
           this.fetchSuites(this.page, this.pageSize);
+          this.isVisibleMassive = false;
           this.deleteFile();
         });
     } else {
