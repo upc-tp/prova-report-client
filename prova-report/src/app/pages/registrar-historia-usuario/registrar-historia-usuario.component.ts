@@ -89,6 +89,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
     if(localStorage.getItem('filterItems')){ 
       this.filterItems = JSON.parse(localStorage.getItem('filterItems'));
       this.projectId = +this.filterItems[0];
+      console.log("Este es el project Id", this.projectId, " ", this.filterItems[0])
     }
     this.getTestCases(); 
     this.getTestPlans(this.projectId);
@@ -180,7 +181,7 @@ export class RegistrarHistoriaUsuarioComponent implements OnInit, OnDestroy {
             this.f.selectPlan.value,
             this.f.name.value,
             this.f.description.value,
-            this.userStoryId,
+            this.projectId,
             this.f.criterias.value
           )
           .subscribe(

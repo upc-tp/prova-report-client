@@ -43,7 +43,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     createdBy: string;
     createdAt: string;
   }> = [];
-
+  toOption: boolean = false;
   filterItems: string[];
   filterFormGroup: FormGroup;
   displayedColumns: string[] = ['tag', 'name', 'testPlan', 'createdBy', 'createdAt', 'options'];
@@ -106,6 +106,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if(!this.toOption) { localStorage.removeItem('filterItems'); }
   }
 
   getProjects() {
@@ -196,6 +197,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
+    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['detalles-historia-usuario'], {
       queryParams: { userStoryId: id },
@@ -209,6 +211,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
+    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['registrar-historia-usuario'], {
       queryParams: { userStoryId: id },
@@ -260,6 +263,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
+    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['/registrar-historia-usuario']);
   }
