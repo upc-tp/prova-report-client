@@ -17,21 +17,30 @@ export class DetalleEjecucionComponent implements OnInit {
   pageSteps: number = 1;
   pageSizeSteps: number = 10;
   countSteps: number = 0;
-  constructor(private route: ActivatedRoute, private router:Router, private testExecutionService: TestExecutionService, public utils: UtilsService) { }
+
+  expandSet = new Set<number>();
+
+  constructor(private route: ActivatedRoute, private router: Router, private testExecutionService: TestExecutionService, public utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe( params =>{
-        this.executionId = Number(params.executionId);
+    this.route.queryParams.subscribe(params => {
+      this.executionId = Number(params.executionId);
     });
     this.getExecution();
   }
-  getExecution(){
+  getExecution() {
     this.testExecutionService.getTestExecution(this.executionId).subscribe((res) => {
       console.log(res);
-        this.executionSelected = res.result;
-        this.testExecutionSteps = this.executionSelected.testExecutionSteps;
-        console.log(this.executionSelected.testExecutionSteps)
-        this.countSteps = this.testExecutionSteps.length;
+      this.executionSelected = res.result;
+      this.testExecutionSteps = this.executionSelected.testExecutionSteps.map(step => {
+        return {
+          ...step,
+          expand: false
+        }
+      });
+      console.log("Test execution steps:");
+      console.log(this.testExecutionSteps);
+      this.countSteps = this.testExecutionSteps.length;
     });
   }
 
@@ -39,6 +48,15 @@ export class DetalleEjecucionComponent implements OnInit {
     this.pageSteps = selectedPage;
     // this.getTestSteps();
   }
-  backtestCaseExecution(){}
+
+  onExpandChange(id: number, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
+  }
+
+  backtestCaseExecution() { }
 
 }

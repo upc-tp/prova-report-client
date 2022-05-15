@@ -1,14 +1,29 @@
 .bannerDetalleEje {
-    text-align: left;
-    font-weight: bold;
-    color: #fff;
-    font-size: 18px !important;
-    background: #4dd0e1;
-    padding: 1.25rem;
-    border-radius: 0.25rem;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-  }
+  text-align: left;
+  font-weight: bold;
+  color: #fff;
+  font-size: 18px !important;
+  background: #4dd0e1;
+  padding: 1.25rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.msg-info {
+  color: skyblue;
+  font-weight: bold;
+}
+
+.msg-warn {
+  color: yellow;
+  font-weight: bold;
+}
+
+.msg-fail {
+  color: red;
+  font-weight: bold;
+}
