@@ -374,8 +374,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
         )
         .subscribe((res) => {
           console.log(res.result);
-          this.fetchSuites(this.page, this.pageSize);
           this.isVisibleMassive = false;
+          this.fetchSuites(this.page, this.pageSize);
           this.deleteFile();
         });
     } else {
@@ -396,6 +396,8 @@ export class SuiteComponent implements OnInit, OnDestroy {
   }
 
   handleCancelMassive(): void {
+    this.formMassive.controls['projects'].patchValue('');
+    this.deleteFile();
     this.isVisibleMassive = false;
   }
 

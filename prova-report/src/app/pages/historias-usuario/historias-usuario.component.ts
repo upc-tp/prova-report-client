@@ -288,6 +288,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
         )
         .subscribe((res) => {
           console.log(res.result);
+          this.isVisibleMassive = false;
           this.getUserStories(this.page, this.pageSize);
           this.deleteFile();
         });
@@ -309,6 +310,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   handleCancelMassive(): void {
+    this.deleteFile();
     this.isVisibleMassive = false;
   }
 
