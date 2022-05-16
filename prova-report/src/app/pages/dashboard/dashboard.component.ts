@@ -487,7 +487,7 @@ export class DashboardComponent implements OnInit {
       },
       plotOptions: {
         bar: {
-          horizontal: true
+          horizontal: false
         }
       },
       stroke: {

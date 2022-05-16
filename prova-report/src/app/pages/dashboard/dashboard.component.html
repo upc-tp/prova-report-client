@@ -69,12 +69,7 @@
         </apx-chart>
       </div>
       <!--Execution Trend-->
-      <div nz-col class="gutter-row">
-        <apx-chart class="graphs" [series]="donutTestCoverage.series" [chart]="donutTestCoverage.chart"
-          [xaxis]="donutTestCoverage.xaxis" [title]="donutTestCoverage.title"
-          [dataLabels]="donutTestCoverage.dataLabels" [legend]="donutTestCoverage.legend"
-          [labels]="donutTestCoverage.labels" [colors]="donutTestCoverage.colors"
-          [plotOptions]="donutTestCoverage.plotOptions"></apx-chart>
+      <div class="gutter-row">
         <apx-chart class="graphs" [series]="requirementsStackedBarHorizontalOptions.series"
           [chart]="requirementsStackedBarHorizontalOptions.chart"
           [title]="requirementsStackedBarHorizontalOptions.title"
@@ -85,13 +80,21 @@
           [legend]="requirementsStackedBarHorizontalOptions.legend"
           [fill]="requirementsStackedBarHorizontalOptions.fill">
         </apx-chart>
+      </div>
+      <!--Cobertura de requisitos-->
+      <div nz-col class="gutter-row">
+        <apx-chart class="graphs" [series]="donutTestCoverage.series" [chart]="donutTestCoverage.chart"
+          [xaxis]="donutTestCoverage.xaxis" [title]="donutTestCoverage.title"
+          [dataLabels]="donutTestCoverage.dataLabels" [legend]="donutTestCoverage.legend"
+          [labels]="donutTestCoverage.labels" [colors]="donutTestCoverage.colors"
+          [plotOptions]="donutTestCoverage.plotOptions"></apx-chart>
         <apx-chart class="graphs" [series]="donutDesignCoverage.series" [chart]="donutDesignCoverage.chart"
           [xaxis]="donutDesignCoverage.xaxis" [title]="donutDesignCoverage.title"
           [dataLabels]="donutDesignCoverage.dataLabels" [legend]="donutDesignCoverage.legend"
           [labels]="donutDesignCoverage.labels" [colors]="donutDesignCoverage.colors"
           [plotOptions]="donutDesignCoverage.plotOptions"></apx-chart>
       </div>
-      <!--Cobertura-->
+      <!--Cobertura de pruebas-->
       <div class="gutter-row">
         <apx-chart class="graphs" [series]="donutOptions.series" [chart]="donutOptions.chart"
           [xaxis]="donutOptions.xaxis" [title]="donutOptions.title" [dataLabels]="donutOptions.dataLabels"
