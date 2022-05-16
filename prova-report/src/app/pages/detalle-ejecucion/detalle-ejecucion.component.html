@@ -178,14 +178,14 @@
   <form nz-form class="create-form" [formGroup]="validateAddForm" (ngSubmit)="submitForm()">
     <div class="form-item">
       <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Título </nz-form-label>
-      <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título"
+      <input nz-input name="title" formControlName="title" type="text" id="title" placeholder="Título" class="text-fs-16" nzSize="large"
         [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
       <span class="invalid-feedback" *ngIf="submitted && f.title.errors?.required">* Este campo es obligatorio</span>
     </div>
 
     <div class="form-item w-100">
       <nz-form-label><span style="color: #f36d6a;">*&nbsp;</span>Pasos a reproducir </nz-form-label>
-      <textarea nz-input name="repro_steps" formControlName="repro_steps" type="text" id="repro_steps"
+      <textarea nz-input name="repro_steps" formControlName="repro_steps" type="text" id="repro_steps" class="text-fs-16"
         placeholder="Ingrese los pasos a reproducir"
         style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
         [ngClass]="{ 'is-invalid': submitted && f.repro_steps.errors }">
