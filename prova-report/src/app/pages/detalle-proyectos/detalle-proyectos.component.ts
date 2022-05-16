@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { tick } from '@angular/core/testing';
 import { VersionService } from 'src/app/services/versions.services';
 import { UtilsService } from 'src/app/common/UtilsService';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-detalle-proyectos',
   templateUrl: './detalle-proyectos.component.html',
@@ -358,6 +359,54 @@ export class DetalleProyectosComponent implements OnInit {
     );
   }
 
+  deleteCollaborator(id:number,userId:number){
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el colaborador?',
+      text: "No volveras a visualizar el colaborador",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#218838',
+      cancelButtonColor: '#d33',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.projectService.deleteCollaborators(id,userId).subscribe(
+          (res) => {
+            if(res.success){
+              this.getProjectCollaborators();
+            }
+          }
+        );
+      }
+    })
+
+  }
+
+  deleteVersion(id:number){    
+    Swal.fire({
+      title: '¿Estas seguro de eliminar la versión?',
+      text: "No volveras a visualizar el registro",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#218838',
+      cancelButtonColor: '#d33',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.versionService.deleteVersion(id).subscribe(
+          (res) => {
+            if(res.success){
+              this.getVersions();
+            }
+          }
+        );
+      }
+    })
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

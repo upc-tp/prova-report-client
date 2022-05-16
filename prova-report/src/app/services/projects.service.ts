@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { BASE_URL } from '../common/urlConstants';
-import { ProjectsResponse, ProjectCreatedResponse, SingleProjectResponse, CollaboratorsResponse, CollaboratorCreatedResponse } from '../interfaces/projects';
+import { ProjectsResponse, ProjectCreatedResponse, SingleProjectResponse, CollaboratorsResponse, CollaboratorCreatedResponse, DeleteProjectResponse, DeleteCollaboratorResponse } from '../interfaces/projects';
 import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class ProjectService {
   private testProject = 'api/projects';
+  private collaborators = 'collaborators';
   constructor(private http: HttpClient) {}
 
   getTestProjects(page: number, pageSize: number, search: string): Observable<ProjectsResponse> {
@@ -34,6 +35,14 @@ export class ProjectService {
       map(this.extractData),
       catchError(this.handleErrorObservable)
     );
+  }
+
+  deleteCollaborators(id:number,userId:number): Observable<DeleteCollaboratorResponse>{
+    return this.http.delete<DeleteCollaboratorResponse>(BASE_URL + this.testProject + `/${id}/` + this.collaborators + `/${userId}`)
+  }
+
+  deleteTestProject(id: number): Observable<DeleteProjectResponse>{
+    return this.http.delete<DeleteProjectResponse>(BASE_URL + this.testProject + `/${id}`);
   }
 
   updateTestProject(title: string, description: string, id: number): Observable<ProjectCreatedResponse> {

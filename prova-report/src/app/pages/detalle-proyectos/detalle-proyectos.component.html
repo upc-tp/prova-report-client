@@ -67,6 +67,7 @@
               <th>Apellidos</th>
               <th>Correo Electrónico</th>
               <th>Rol</th>
+              <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -75,6 +76,18 @@
               <td>{{ data.lastName }}</td>
               <td>{{ data.email }}</td>
               <td>{{ data.role }}</td>
+              <td>
+                <button
+                nz-button
+                nz-tooltip
+                nzTooltipTitle="Eliminar colaborador"
+                nzTooltipPlacement="right"
+                nzType="primary"
+                (click)="deleteCollaborator(project.id,data.uid)"
+                >
+                  <i nz-icon nzType="delete" nzTheme="fill"></i>
+                </button>
+              </td>
             </tr>
           </tbody>
         </nz-table>
@@ -104,6 +117,7 @@
               <th>Descripción</th>
               <th>Fecha Registro</th>
               <th>Registrado por</th>
+              <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -113,6 +127,18 @@
               <td>{{ data.description }}</td>
               <td>{{ data.registerDate }}</td>
               <td>{{ data.registerBy }}</td>
+              <td>
+                <button
+                nz-button
+                nz-tooltip
+                nzTooltipTitle="Eliminar version"
+                nzTooltipPlacement="right"
+                nzType="primary"
+                (click)="deleteVersion(data.uid)"
+                >
+                  <i nz-icon nzType="delete" nzTheme="fill"></i>
+                </button>
+              </td>
             </tr>
           </tbody>
         </nz-table>
@@ -143,18 +169,19 @@
       <nz-form-label>
         <span style="color: #f36d6a;">*&nbsp;</span>Correo Electrónico
       </nz-form-label>
-      <input nz-input name="email" formControlName="email" type="text" id="email" placeholder="Email" />
+      <input nz-input name="email" formControlName="email" type="text" id="email" placeholder="Email"/>
     </nz-form-control>
     <nz-form-control class="form-item">
       <nz-form-label>
         <span style="color: #f36d6a;">*&nbsp;</span>Contraseña
       </nz-form-label>
-      <nz-input-group [nzSuffix]="suffixTemplate">
-        <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Contraseña actual" id="password"
+      <nz-input-group [nzSuffix]="suffixTemplate" style="height: 3rem;" nzSize='large'>
+        <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Contraseña actual" id="password" style="border:none;"
+        nzSize="large"
           name="password" formControlName="password" autocomplete="off" />
       </nz-input-group>
       <ng-template #suffixTemplate>
-        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+          <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" style="cursor: pointer;"
           (click)="passwordVisible = !passwordVisible"></i>
       </ng-template>
     </nz-form-control>
@@ -162,7 +189,7 @@
       <nz-form-label class="form-label">
         <span style="color: #f36d6a;">*&nbsp;</span>Rol
       </nz-form-label>
-      <nz-select nzSize="large" formControlName="role" class="select-input"
+      <nz-select nzSize="large" formControlName="role" class="select-input w-100"
         nzPlaceHolder="Seleccione el nivel de severidad">
         <nz-option nzLabel="Admin" nzValue="Admin"></nz-option>
         <nz-option nzLabel="Tester" nzValue="Tester"></nz-option>

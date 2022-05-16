@@ -20,6 +20,11 @@ export interface VersionsResponse {
 	result: Versions[];
 }
 
+export interface DeleteVersionResponse{
+	message:string;
+	success:string;
+}
+
 export interface Project {
 	createdAt: string;
 	createdBy?: any;

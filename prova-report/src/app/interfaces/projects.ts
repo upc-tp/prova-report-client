@@ -53,6 +53,16 @@ export interface SingleProjectResponse {
 	result: Project;
 }
 
+export interface DeleteProjectResponse{
+	message: string;
+	success: boolean;
+}
+
+export interface DeleteCollaboratorResponse{
+	message: string;
+	success: string;
+}
+
 export interface Collaborator {
     uid: number;
     email: string;

@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -129,6 +130,30 @@ export class ProyectosComponent implements OnInit {
   }
 
 
+  deleteProject(id:number){
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el proyecto?',
+      text: "No volveras a visualizar el proyecto",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#218838',
+      cancelButtonColor: '#d33',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.projectService.deleteTestProject(id).subscribe(
+          (res) => {
+            if(res.success){
+              this.page = 1;
+              this.fetchProjects(this.page, this.pageSize);
+            }
+          }
+        );
+      }
+    })
+  }
 
   showModal(): void {
     this.isVisible = true;

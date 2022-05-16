@@ -63,7 +63,7 @@
     <div class="form-item my-2 mx-4">
       <div class="form-label" nzfor="password"><span style="color: #f36d6a;">*&nbsp;</span>Contraseña</div>
       <nz-input-group [nzSuffix]="suffixEye1" class="passInput" style="height: 38px" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
-        <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password"
+        <input nz-input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password" style="border: none;"
         
           placeholder="Contraseña" required />
       </nz-input-group>
@@ -80,7 +80,7 @@
     <div class="form-item my-2 mx-4">
       <div class="form-label" nzfor="checkPassword"><span style="color: #f36d6a;">*&nbsp;</span>Confirmar Contraseña</div>
       <nz-input-group [nzSuffix]="suffixEye2" class="checkInput" [ngClass]="{ 'is-invalid': submitted && f.checkPassword.errors }">
-        <input nz-input [type]="passwordVisible2 ? 'text' : 'password'" formControlName="checkPassword"
+        <input nz-input [type]="passwordVisible2 ? 'text' : 'password'" formControlName="checkPassword" style="border: none;"
         
           id="checkPassword" placeholder="Confirmar contraseña" />
       </nz-input-group>

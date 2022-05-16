@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { BASE_URL } from '../common/urlConstants';
 import { map, catchError } from 'rxjs/operators';
 import { PrioritiesResponse } from '../interfaces/priorities';
-import { VersionsCreatedResponse, VersionsResponse } from '../interfaces/versions';
+import { VersionsCreatedResponse, VersionsResponse, DeleteVersionResponse } from '../interfaces/versions';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +36,10 @@ export class VersionService {
 
   getVersionsForSelect(projectId: number) {
     return this.http.get<VersionsResponse>(BASE_URL + this.priority + `?projectId=${projectId}`);
+  }
+
+  deleteVersion(id:number): Observable<DeleteVersionResponse>{
+    return this.http.delete<DeleteVersionResponse>(BASE_URL + this.priority + `/${id}`);
   }
 
   private extractData(res: any) {
