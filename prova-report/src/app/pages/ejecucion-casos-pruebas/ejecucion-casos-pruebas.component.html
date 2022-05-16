@@ -844,6 +844,8 @@
     >
     <span class="text-fs-20 mb-2 text-w-bold">Ejemplo de Etiquetas TC:</span>
     <img src="assets/images/CapturaCargaArchivo.png" width="454" height="236" />
+    <span class="text-fs-16 text-w-bold mt-4">No volver a mostrar  <label nz-checkbox [(ngModel)]="instrutionsCheck"></label></span>
   </div>
-  <div *nzModalFooter></div>
+
+  <div *nzModalFooter><button nz-button [nzType]="'primary'" (click)="handleOk()">Ok</button></div>
 </nz-modal>

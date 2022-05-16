@@ -91,6 +91,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
   toExecutionPage: boolean = false;
   InstructionsFile = false;
   disabledRegisterBug = true;
+  instrutionsCheck = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -189,12 +190,19 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
       selectSeverity: [null, [Validators.required]],
       selectPriority: [null, [Validators.required]],
     });
+
+    if(sessionStorage.getItem('instructionModal')){
+      console.log(sessionStorage.getItem('instructionModal'))
+      this.instrutionsCheck = JSON.parse(sessionStorage.getItem('instructionModal'))
+    }
+
     // this.getDefects();
   }
 
   ngOnDestroy(): void {
     if (!this.toExecutionPage) localStorage.removeItem('filterItems');
   }
+  
   get f() {
     return this.validateAddForm.controls;
   }
@@ -220,7 +228,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
 
   enterTestCase(element: any) {
     this.nivelPositionTest++;
-    this.showInstruction();
+    if(!this.instrutionsCheck){
+      this.showInstruction();
+    }
     this.testCaseSelected = element;
     if (this.testCaseSelected.lastExecution > 0) {
       this.getTestSteps();
@@ -580,11 +590,9 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     this.listTestExecutions = [];
   }
   handleOk(): void {
-    this.isOkLoading = true;
-    setTimeout(() => {
-      this.isVisible = false;
-      this.isOkLoading = false;
-    }, 3000);
+
+    sessionStorage.setItem('instructionModal',JSON.stringify(this.instrutionsCheck));
+    this.InstructionsFile = false;
   }
   showInstruction(): void{
     this.InstructionsFile = true;

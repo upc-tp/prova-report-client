@@ -79,7 +79,7 @@ export class DefectService{
         );
     }
 
-    updateDefectState(severityId: number, priorityId: number, id: number, defectStateId:number): Observable<DefectCreatedResponse> {
+    updateDefectState(severityId: number, priorityId: number, id: number, defectStateId:number, repro_steps:string): Observable<DefectCreatedResponse> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -89,7 +89,8 @@ export class DefectService{
         return this.http.put<DefectCreatedResponse>(BASE_URL + this.defect + `/${id}`, {
             severityId,
             priorityId,
-            defectStateId
+            defectStateId,
+            repro_steps
         }, httpOptions).pipe(
             map(this.extractData),
             catchError(this.handleErrorObservable)

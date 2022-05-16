@@ -55,6 +55,7 @@ export class GestionDefectosComponent implements OnInit {
     testSuite:string;
   }> = [];
 
+  
   defecto: DefectView = {
     id: 0,
     title: '',
@@ -141,7 +142,8 @@ export class GestionDefectosComponent implements OnInit {
     this.validateUpdateForm = this._fb.group({
       selectPriority: [null, [Validators.required]],
       selectSeverity: [null, [Validators.required]],
-      updateState: [null,[Validators.required]]
+      updateState: [null,[Validators.required]],
+      repro_steps: ['',[Validators.required]]
     });
   }
 
@@ -393,7 +395,7 @@ export class GestionDefectosComponent implements OnInit {
       defects.join();
       console.log(defects);
     }else{
-      defects = '1,2,3,4';
+      defects = '1,2,3,4,5';
       console.log(defects);
     }
     this.defectService
@@ -431,6 +433,7 @@ export class GestionDefectosComponent implements OnInit {
   }
 
   updateForm(): void {
+    console.log(this.validateUpdateForm.controls['repro_steps'].value)
     if (this.validateUpdateForm.valid) {
       if (this.id) {
         this.defectService
@@ -438,7 +441,8 @@ export class GestionDefectosComponent implements OnInit {
             this.validateUpdateForm.controls['selectSeverity'].value,
             this.validateUpdateForm.controls['selectPriority'].value,
             this.id,
-            this.validateUpdateForm.controls['updateState'].value
+            this.validateUpdateForm.controls['updateState'].value,
+            this.validateUpdateForm.controls['repro_steps'].value
           )
           .subscribe((defect) => {
             this.fetchDefects(this.page, this.pageSize);
@@ -457,6 +461,7 @@ export class GestionDefectosComponent implements OnInit {
             this.validateUpdateForm.controls['selectSeverity'].setValue(0);
             this.validateUpdateForm.controls['selectPriority'].setValue(0);
             this.validateUpdateForm.controls['updateState'].setValue(0);
+            this.validateUpdateForm.controls['repro_steps'].setValue('');
           });
       } else {
         Object.values(this.validateUpdateForm.controls).forEach((control) => {
@@ -482,7 +487,11 @@ export class GestionDefectosComponent implements OnInit {
       this.validateUpdateForm
         .get('updateState')
         .setValue(res.result.defectState.id);
-        
+      this.validateUpdateForm
+        .get('repro_steps')
+        .setValue(res.result.repro_steps);
+        this.defecto.tag = res.result.tag;
+        this.defecto.title = res.result.title;
       this.isUpdateVisible = true;
     });
   }
