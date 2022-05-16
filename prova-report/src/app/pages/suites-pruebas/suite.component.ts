@@ -133,7 +133,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             const filtTestSuite = new Filter();
             filtTestSuite.group = 1;
             filtTestSuite.key = testPlan.id;
-            filtTestSuite.value = testPlan.tag +': '+ testPlan.title;
+            filtTestSuite.value = testPlan?.tag +': '+ testPlan?.title;
             return filtTestSuite;
           });
         });
@@ -149,7 +149,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           const filtTestSuite = new Filter();
           filtTestSuite.group = 1;
           filtTestSuite.key = testPlan.id;
-          filtTestSuite.value = testPlan.tag +': '+ testPlan.title;
+          filtTestSuite.value = testPlan?.tag +': '+ testPlan?.title;
           return filtTestSuite;
         });
       });
