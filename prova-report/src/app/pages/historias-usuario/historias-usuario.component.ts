@@ -47,7 +47,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     createdBy: string;
     createdAt: string;
   }> = [];
-
+  toOption: boolean = false;
   filterItems: string[];
   filterFormGroup: FormGroup;
   displayedColumns: string[] = ['tag', 'name', 'testPlan', 'createdBy', 'createdAt', 'options'];
@@ -113,6 +113,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if(!this.toOption) { localStorage.removeItem('filterItems'); }
   }
 
   getProjects() {
@@ -166,7 +167,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           id: uStory.id,
           tag: uStory.tag,
           name: uStory.name,
-          testPlan: uStory.testPlan?.title,
+          testPlan: uStory.testPlan.tag +': '+uStory.testPlan?.title,
           description: uStory.description,
           createdBy: uStory.createdBy,
           createdAt: this.utils.formatDate(new Date(uStory.createdAt))
@@ -203,6 +204,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
+    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['detalles-historia-usuario'], {
       queryParams: { userStoryId: id },
@@ -216,6 +218,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }
+    this.toOption = true;
     localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['registrar-historia-usuario'], {
       queryParams: { userStoryId: id },
@@ -234,7 +237,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
             const filtTestSuite = new Filter();
             filtTestSuite.group = 1;
             filtTestSuite.key = testPlan.id;
-            filtTestSuite.value = testPlan.title;
+            filtTestSuite.value = testPlan.tag+': '+testPlan.title;
             return filtTestSuite;
           });
         });
@@ -250,7 +253,7 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
           const filtTestSuite = new Filter();
           filtTestSuite.group = 1;
           filtTestSuite.key = testPlan.id;
-          filtTestSuite.value = testPlan.title;
+          filtTestSuite.value = testPlan.tag+': '+testPlan.title;
           return filtTestSuite;
         });
       });
@@ -264,7 +267,10 @@ export class HistoriasUsuarioComponent implements OnInit, OnDestroy {
   createUserStory() {
     localStorage.removeItem('filterItems');
     this.filterItems = [];
-    this.filterItems.push(this.projectId.toString());
+    if(this.projectId){
+      this.filterItems.push(this.projectId.toString());
+      this.toOption = true;
+    }
     if(this.testPlanId){
       this.filterItems.push(this.testPlanId.toString());
     }

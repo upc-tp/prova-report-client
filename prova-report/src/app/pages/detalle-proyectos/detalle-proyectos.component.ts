@@ -22,7 +22,7 @@ export class DetalleProyectosComponent implements OnInit {
 
   listCollaborators: Array<{
     id: number;
-    name: string;
+    email: string;
   }> = [];
   testCases: Array<{
     id: number;
@@ -324,7 +324,7 @@ export class DetalleProyectosComponent implements OnInit {
           this.listCollaborators = res.result.map((tcollaborator) => {
             return {
               id: tcollaborator.uid,
-              name: tcollaborator.firstName,
+              email: tcollaborator.email,
             };
           })
         )

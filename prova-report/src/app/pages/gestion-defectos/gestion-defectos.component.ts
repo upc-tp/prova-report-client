@@ -13,6 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { SpinnerService } from 'src/app/common/spinner/spinner.service';
 import { PlanService } from 'src/app/services/plan.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-defectos',
@@ -119,6 +120,10 @@ export class GestionDefectosComponent implements OnInit {
       'BugIcon',
       this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/bug.svg')
     );
+    this.iconRegistry.addSvgIcon(
+      'NoTest',
+      this._sanitizer.bypassSecurityTrustResourceUrl('assets/icons/no-test.svg')
+    );
    }
 
   ngOnInit(): void {
@@ -186,6 +191,13 @@ export class GestionDefectosComponent implements OnInit {
               testSuite: defect.testCase.testSuite.title
             };
           });
+          if(res.result.length == 0){
+            Swal.fire({
+              title: 'El Proyecto no Cuenta con Defectos',
+              showCloseButton: true,
+              icon: 'info',
+            });
+          }
           this.page = res.page;
           this.pageSize = res.pageSize;
           this.count = res.count;

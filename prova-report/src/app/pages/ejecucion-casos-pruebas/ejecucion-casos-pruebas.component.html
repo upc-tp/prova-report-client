@@ -157,8 +157,12 @@
             {{ data.createdAt }}
           </td>
 
-          <td (click)="enterTestCase(data)">
+          <td *ngIf="data.userInCharge">
             {{ data.userInCharge?.email }}
+          </td>
+
+          <td *ngIf="!data.userInCharge">
+            -
           </td>
 
           <td class="col">
@@ -226,9 +230,9 @@
             data-height="24"
             style="color: #03dac5"
           ></span>
-          <span class="text-fs-24 text-w-bold" style="margin-left: 12px"
+          <span class="text-fs-20 text-w-bold" style="margin-left: 12px"
             >Suite: </span
-          ><span class="text-fs-20">{{
+          ><span class="text-fs-16">{{
             testCaseSelected.testSuite.title
           }}</span>
         </div>
@@ -241,13 +245,15 @@
             data-width="24"
             data-height="24"
           ></span>
-          <span class="text-fs-24 text-w-bold" style="margin-left: 12px"
+          <span class="text-fs-20 text-w-bold" style="margin-left: 12px"
             >Formato de Carga
           </span>
-          <a #downloadFormat style="display: none;"
-          download="output.xml"
-          target="_blank"
-          href="../../../assets/files/output.xml"
+          <a
+            #downloadFormat
+            style="display: none"
+            download="output.xml"
+            target="_blank"
+            href="../../../assets/files/output.xml"
           ></a>
           <button
             mat-flat-button
@@ -264,71 +270,85 @@
               data-height="24"
             ></span>
             <span>Descargar</span>
-        </button>
+          </button>
         </div>
       </div>
     </div>
 
     <div
       class="row"
-      style="margin-left: 2rem; margin-top: 2rem; margin-right: 2rem"
+      style="
+        margin-left: 2rem;
+        margin-top: 2rem;
+        margin-right: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      "
     >
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Caso de prueba:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.tag }}
-        </span>
+      <div>
+        <div class="col">
+          <h2>
+            <b
+              >{{ testCaseSelected.tag }} -
+              {{ testCaseSelected.title }} &nbsp;</b
+            >
+            <span
+              class="text-fs-16"
+              [ngClass]="{
+                'test-state-passed':
+                  testCaseSelected.testState.name == 'Superado',
+                'test-state-non-executed':
+                  testCaseSelected.testState.name == 'No ejecutado',
+                'test-state-skipped':
+                  testCaseSelected.testState.name == 'Omitido',
+                'test-state-failed':
+                  testCaseSelected.testState.name == 'Fallido'
+              }"
+            >
+              {{ testCaseSelected.testState.name }}
+            </span>
+          </h2>
+        </div>
+        <div class="col">
+          <h2 class="text-fs-20"><b> Descripcion: </b></h2>
+          <textarea
+            class="text-fs-16"
+            style="height: 7rem; width: 80%; border-radius: 5px; padding: 0.5rem;"
+            disabled="true"
+          >{{testCaseSelected.description}}</textarea>
+        </div>
       </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Titulo:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.title }}
-        </span>
-      </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Descripcion:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.description }}
-        </span>
-      </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Estado:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.testState.name }}
-        </span>
-      </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Prioridad:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.priority.name }}
-        </span>
-      </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Severidad:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.severity.name }}
-        </span>
-      </div>
-      <div class="col">
-        <span class="text-fs-24 text-w-bold col-12" style="margin-bottom: 1rem"
-          >Responsable:
-        </span>
-        <span class="text-fs-20">
-          {{ testCaseSelected.userInCharge?.firstName }}
-          {{ testCaseSelected.userInCharge?.lastName }}
-        </span>
+
+      <div>
+        <div class="row mb-4">
+          <div class="col-6">
+            <h2><b>Prioridad:</b></h2>
+            <span class="text-fs-16">
+              <img style="width: 1rem;" [src]="VerifyIconPriority(testCaseSelected.priority.name)">
+              {{ testCaseSelected.priority.name }}
+            </span>
+          </div>
+          <div class="col-6">
+            <h2><b>Severidad:</b></h2>
+            <span class="text-fs-16">
+              <img style="width: 1rem;" [src]="VerifyIconSeverity(testCaseSelected.severity.name)">
+              {{ testCaseSelected.severity.name }}
+            </span>
+          </div>
+        </div>
+
+        <div class="col">
+          <h2
+            ><b>Responsable:</b>
+        </h2>
+          <span class="text-fs-16" *ngIf="testCaseSelected.userInCharge">
+            {{ testCaseSelected.userInCharge?.firstName }}
+            {{ testCaseSelected.userInCharge?.lastName }}
+          </span>
+          <span class="text-fs-16" *ngIf="!testCaseSelected.userInCharge">
+            Sin Responsable Asignado
+          </span>
+        </div>
       </div>
     </div>
     <form [formGroup]="formulario" (ngSubmit)="enviarEjecucion()">
@@ -339,7 +359,7 @@
         <div>
           <div class="row">
             <div>
-              <mat-label class="text-fs-24 text-w-bold col-12"
+              <mat-label class="text-fs-20 text-w-bold col-12"
                 >Carga de Archivo
                 <span
                   (click)="showInstruction()"
@@ -437,7 +457,7 @@
         </div>
 
         <div>
-          <mat-label class="text-fs-24 text-w-bold col-12"
+          <mat-label class="text-fs-20 text-w-bold col-12"
             >Comentarios</mat-label
           >
           <mat-form-field
@@ -562,6 +582,7 @@
         <div class="col-6">
           <h2><b> Descripcion </b></h2>
           <textarea
+            class="text-fs-16"
             style="
               width: 80%;
               height: 7rem;

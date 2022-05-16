@@ -39,6 +39,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
     label: string;
     value: number;
   }> = [];
+  toOption: boolean = false;
   isVisible = false;
   isVisibleMassive = false;
   submitted = false;
@@ -132,7 +133,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             const filtTestSuite = new Filter();
             filtTestSuite.group = 1;
             filtTestSuite.key = testPlan.id;
-            filtTestSuite.value = testPlan.title;
+            filtTestSuite.value = testPlan.tag +': '+ testPlan.title;
             return filtTestSuite;
           });
         });
@@ -148,7 +149,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
           const filtTestSuite = new Filter();
           filtTestSuite.group = 1;
           filtTestSuite.key = testPlan.id;
-          filtTestSuite.value = testPlan.title;
+          filtTestSuite.value = testPlan.tag +': '+ testPlan.title;
           return filtTestSuite;
         });
       });
@@ -254,7 +255,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
       this.testPlans = res.result.map(tPlan => {
         console.log(tPlan);
         return {
-          label: tPlan.title,
+          label: tPlan.tag +': '+tPlan.title,
           value: tPlan.id
         }
       });
@@ -276,7 +277,7 @@ export class SuiteComponent implements OnInit, OnDestroy {
             title: tSuite.title,
             description: tSuite.description,
             project: tSuite.project.title,
-            testPlan: tSuite.testPlan?.title,
+            testPlan: tSuite.testPlan?.tag+': '+tSuite.testPlan?.title,
             registerDate: new Date(tSuite.createdAt).toLocaleDateString(),
             registerBy: tSuite.createdBy,
           };
@@ -321,10 +322,19 @@ export class SuiteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    if(!this.toOption) { localStorage.removeItem('filterItems'); }
   }
 
   detailTestSuite(id: number){
     this.id = id;
+    localStorage.removeItem('filterItems');
+    this.filterItems = [];
+    this.filterItems.push(this.projectId.toString());
+    if(this.testPlanId){
+      this.filterItems.push(this.testPlanId.toString());
+    }
+    this.toOption = true;
+    localStorage.setItem('filterItems', JSON.stringify(this.filterItems));
     this.router.navigate(['detalle-suite-pruebas'],{queryParams:{suiteId:this.id}});
   }
 

@@ -142,6 +142,21 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     'duration',
   ];
 
+  VerifyIconSeverity(name:string){
+    return name === 'Trivial'
+    ? '/assets/images/trivial.png'
+    : name === 'Normal'
+    ? '/assets/images/normal.png'
+    : '/assets/images/critico.png';
+  }
+
+  VerifyIconPriority(name:string){
+    return  name ==='Baja' ? '/assets/images/low-priority.png'
+    : name === 'Media'
+    ? '/assets/images/middle-priority.png'
+    : '/assets/images/high-priority.png'
+  }
+
   ngOnInit(): void {
     this.getProjects();
     this.getPriority();
@@ -205,6 +220,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
 
   enterTestCase(element: any) {
     this.nivelPositionTest++;
+    this.showInstruction();
     this.testCaseSelected = element;
     if (this.testCaseSelected.lastExecution > 0) {
       this.getTestSteps();

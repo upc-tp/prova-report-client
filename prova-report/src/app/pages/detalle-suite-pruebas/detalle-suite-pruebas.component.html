@@ -12,24 +12,22 @@
   </div>
   <div class="container-group">
     <div class="suite-info">
-      <h2>
-        <b> Título </b>
-      </h2>
-      <span>{{ suite.title }}</span>
+      <h2 class="text-fs-16"><b>{{suite.tag}} - {{ suite.title }}</b></h2>
       <h2><b> Descripcion </b></h2>
       <textarea
         style="width: 80%; height: 7rem; border-radius: 5px; padding: 0.5rem"
         disabled="true"
+        class="text-fs-16"
         >{{ suite.description }}</textarea
       >
       <h2><b> Proyecto </b></h2>
-      <span>{{ suite.project }}</span>
+      <span class="text-fs-16">{{ suite.project }}</span>
     </div>
     <div class="suite-infor">
       <h2><b> Registrado por </b></h2>
-      <span>{{ suite.createdBy }}</span>
+      <span class="text-fs-16">{{ suite.createdBy }}</span>
       <h2><b> Fecha de Registro </b></h2>
-      <span>{{ suite.createdAt }}</span>
+      <span class="text-fs-16">{{ suite.createdAt }}</span>
     </div>
   </div>
   <br />
@@ -181,6 +179,7 @@
         formControlName="description"
         type="text"
         id="description"
+        class="text-fs-16"
         placeholder="Descripción"
         style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
         [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
@@ -304,19 +303,20 @@
       <textarea
         style="height: 5rem; width: 100%; border-radius: 5px; padding: 0.5rem"
         disabled="true"
+        class="text-fs-16"
         >{{ tCaseSelected?.description }}</textarea
       >
       <div class="row mt-4">
         <div class="col-6">
           <h2><b> Prioridad </b></h2>
-          <span class="text-fs-14 text-black">
+          <span class="text-fs-16 text-black">
             <img style="width: 1rem" [src]="tCaseSelected?.priorityIcon" />
             {{ tCaseSelected?.priority }}
           </span>
         </div>
         <div class="col-6">
           <h2><b> Severidad </b></h2>
-          <span class="text-fs-14 text-black">
+          <span class="text-fs-16 text-black">
             <img style="width: 1rem" [src]="tCaseSelected?.severityIcon" />
             {{ tCaseSelected?.severity }}
           </span>
@@ -325,7 +325,7 @@
       <div class="row mt-4">
         <div class="col-6">
           <h2><b> Responsable </b></h2>
-          <span class="text-fs-14 text-black">
+          <span class="text-fs-16 text-black">
             {{ tCaseSelected?.registerBy}}
           </span>
         </div>
