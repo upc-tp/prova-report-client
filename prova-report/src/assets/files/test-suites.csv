@@ -1,6 +1,6 @@
-﻿Type,Title,Description,Priority,Severity,Test Plan Key,User in Charge
+﻿Type,Title,Description,Priority,Severity,Test Plan Key,User in Charge(email)
 ST,Módulo de catálogo,Conjunto de pruebas enfocadas a validar el módulo de catálogo,,,TP-01,
-TC,Listar marcas satisfactoriamente,1. Iniciar sesión en la aplicación 2. Hacer clic en el enlace Marcas 3. La aplicación debe mostrar el listado de Marcas,1,1,,
+TC,Listar marcas satisfactoriamente,1. Iniciar sesión en la aplicación 2. Hacer clic en el enlace Marcas 3. La aplicación debe mostrar el listado de Marcas,1,1,,alvaradomanuel2013@gmail.com
 TC,Registrar marca satisfactoriamente,1. Iniciar sesión en la aplicación 2. Hacer clic en el enlace Marcas 3. Ingresar al formulario de registro de marca 4. Llenar los campos obligatorios nombre y descripción 5. Dar clic en Guardar 6. La aplicación debe mostrar un mensaje satisfactorio: La marca Laive ha sido registrada satisfactoriamente,3,3,,
 TC,Listar categorías satisfactoriamente,1. Iniciar sesión en la aplicación 2. Hacer clic en el enlace Categorías 3. La aplicación debe mostrar el listado de Categorías,1,1,,
 TC,Registrar categoría satisfactoriamente,1. Iniciar sesión en la aplicación 2. Hacer clic en el enlace Categorías 3. Ingresar al formulario de registro de categoría 4. Llenar los campos obligatorios nombre y descripción 5. Dar clic en Guardar 6. La aplicación debe mostrar un mensaje satisfactorio: La categoría Frutas y verduras ha sido registrada satisfactoriamente,3,3,,
