@@ -179,21 +179,19 @@
 <nz-modal [(nzVisible)]="isVisibleAssign" nzTitle="Asignar un colaborador" (nzOnCancel)="handleCancelAssign()"
   (nzOnOk)="handleOkAssign()" [nzOkLoading]="isOkLoadingAssign">
   <form class="create-form" [formGroup]="validateFormAssign" (ngSubmit)="submitFormAssign()">
-    <div class="row d-flex">
-      <mat-form-field appearance="outline" class="w-100" style="width: 99%;">
-        <mat-label>
-          <span style="color: #f36d6a;">*&nbsp;</span>Colaboradores
-        </mat-label>
-        <mat-select formControlName="collaborators">
-          <mat-option *ngFor="let coll of listCollaborators" [value]="coll.id">
-            {{coll.email}}
-          </mat-option>
-          <mat-option *ngIf="listCollaborators.length == 0" [disabled]="true">
-            No hay colaboradores disponibles
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline" class="w-100" style="width: 99%;">
+      <mat-label>
+        <span style="color: #f36d6a;">*&nbsp;</span>Colaboradores
+      </mat-label>
+      <mat-select formControlName="collaborators">
+        <mat-option *ngFor="let coll of listCollaborators" [value]="coll.id">
+          {{coll.email}}
+        </mat-option>
+        <mat-option *ngIf="listCollaborators.length == 0" [disabled]="true">
+          No hay colaboradores disponibles
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <div class="form-item">
       <button nz-button nzBlock nzSize="large" nzType="primary" [nzLoading]="isOkLoadingAssign">
         Guardar

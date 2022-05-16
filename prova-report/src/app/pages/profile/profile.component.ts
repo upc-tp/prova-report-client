@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   count: number = this.pageSize;
 
   private modelChanged: Subject<string> = new Subject<string>();
-  private subscription: Subscription;
+  private subscription: Subscription = new Subscription();
   debounceTime = 500;
 
   constructor(
@@ -50,9 +50,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService
-    ) {     this.authService.currentUser.subscribe(u => {
+  ) {
+    this.subscription.add(this.authService.currentUser.subscribe(u => {
       this.currentUser = u;
-    });}
+    }));
+  }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -81,18 +83,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
           );
       } else {
         this.profileService
-        .resetPassword(
-          this.validateForm.controls['oldPassword'].value,
-          this.validateForm.controls['newPassword'].value
-        )
-        .subscribe(
-          (suite) => {
-            console.log('Response: ', suite);
-            this.validateForm.controls['oldPassword'].setValue('');
-            this.validateForm.controls['newPassword'].setValue('');
-          },
-          (error) => console.log(error)
-        );
+          .resetPassword(
+            this.validateForm.controls['oldPassword'].value,
+            this.validateForm.controls['newPassword'].value
+          )
+          .subscribe(
+            (suite) => {
+              console.log('Response: ', suite);
+              this.validateForm.controls['oldPassword'].setValue('');
+              this.validateForm.controls['newPassword'].setValue('');
+            },
+            (error) => console.log(error)
+          );
       }
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
@@ -129,9 +131,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  detailTestProfile(id: number){
+  detailTestProfile(id: number) {
     this.id = id;
-    this.router.navigate(['detalle-profile-pruebas'],{queryParams:{profileId:this.id}});
+    this.router.navigate(['detalle-profile-pruebas'], { queryParams: { profileId: this.id } });
   }
 
 }

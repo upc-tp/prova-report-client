@@ -38,8 +38,9 @@ export class AppComponent {
   }
 
   logout() {
-    localStorage.clear();
     this.authService.logout().subscribe(res => {
+      localStorage.clear();
+      sessionStorage.clear();
       this.router.navigate(['/login']);
     });
   }
