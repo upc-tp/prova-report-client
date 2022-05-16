@@ -226,6 +226,14 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
     );
   }
 
+  getTestCase(id:number){
+    this.testCaseService.getTestCase(id).subscribe(
+      (res) => {
+        this.testCaseSelected = res.result;
+      }
+    );
+  }
+
   enterTestCase(element: any) {
     this.nivelPositionTest++;
     if(!this.instrutionsCheck){
@@ -421,6 +429,7 @@ export class EjecucionCasosPruebasComponent implements OnInit, OnDestroy {
           this.getTestSteps();
           this.deleteFile();
           this.crearFormulario();
+          this.getTestCase(this.testCaseSelected.id);
           this.search();
           this.disabledRegisterBug = false;
           this.showDetailExecution(res.result);
