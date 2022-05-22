@@ -102,9 +102,9 @@
             {{ data.severity }}
           </td>
           <td>
-            <div *ngIf="data.collaborator == null; else elseBlock">-</div>
+            <div *ngIf="data.userInCharge== null; else elseBlock">-</div>
             <ng-template #elseBlock>
-              {{ data.collaborator.email }}
+              {{ data.userInCharge.email }}
             </ng-template>
           </td>
           <td>{{ data.registerDate }}</td>
@@ -257,13 +257,11 @@
           formControlName="selectCollaborator"
           class="select-input"
           nzPlaceHolder="Seleccione Responsable"
-          [nzOptions]="collaborators"
           [ngClass]="{ 'is-invalid': submitted && f.selectCollaborator.errors }"
         >
-          <nz-option
-            nzValue="collaborators.value"
-            nzLabel="collaborators.label"
-          ></nz-option>
+          <nz-option *ngIf="this.id" [nzValue]="null" [nzLabel]="'Sin Responsable'"></nz-option>
+          <nz-option *ngFor="let coll of collaborators" 
+            [nzValue]="coll.value" [nzLabel]="coll.label"></nz-option>
         </nz-select>
       </nz-form-control>
     </nz-form-item>
@@ -326,7 +324,7 @@
         <div class="col-6">
           <h2><b> Responsable </b></h2>
           <span class="text-fs-16 text-black">
-            {{ tCaseSelected?.registerBy}}
+            {{ tCaseSelected?.userInCharge ? tCaseSelected?.userInCharge.email : "Sin Responsable"}}
           </span>
         </div>
         <div class="col-6">

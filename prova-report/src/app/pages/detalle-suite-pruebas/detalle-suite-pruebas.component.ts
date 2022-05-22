@@ -12,6 +12,7 @@ import { PriorityService } from 'src/app/services/priority.services';
 import { SeverityService } from 'src/app/services/seveities.services';
 import { UtilsService } from 'src/app/common/UtilsService';
 import { TestCaseSelected } from '../../interfaces/testcase';
+import { TagsOutline } from '@ant-design/icons-angular/icons';
 @Component({
   selector: 'app-detalle-suite-pruebas',
   templateUrl: './detalle-suite-pruebas.component.html',
@@ -62,7 +63,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
     label: string;
     value: number;
   }> = [];
-
+  addingNullCollaborator: boolean = false;
   id: number;
   saved: boolean = false;
   updated: boolean = false;
@@ -163,7 +164,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
               priorityIcon: tCase.priority.name === "Baja" ? '/assets/images/low-priority.png'  : tCase.priority.name === "Media" ? '/assets/images/middle-priority.png' : '/assets/images/high-priority.png',
               severityIcon: tCase.severity.name === "Trivial" ? '/assets/images/trivial.png'  : tCase.severity.name === "Normal" ? '/assets/images/normal.png' : '/assets/images/critico.png',
               severity: tCase.severity.name,
-              collaborator: tCase.userInCharge,
+              userInCharge: tCase.userInCharge,
               registerDate: this.utils.formatDate(new Date(tCase.createdAt)),
               registerBy: tCase.createdBy
             };
@@ -207,7 +208,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
 
   getProjectCollaborators(){
     this.projectService
-      .getCollaborators(null, null, '', this.suite.projectId).subscribe(
+      .getCollaborators(null, null, '', this.suite.projectId, 1).subscribe(
         (res) => (
           this.collaborators = res.result.map((tcollaborator) => {
             return {
@@ -217,7 +218,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
             };
           })
         )
-      )
+      )  
   }
 
   detailCase(tCaseSelect: TestCaseSelected){
@@ -233,6 +234,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
     this.submitted = true;
     if (this.validateForm.valid) {
       if (this.id) {
+        console.log("Este es el valor del colaborador", parseInt(this.validateForm.controls['selectCollaborator'].value));
         this.testCaseService
           .updateTestCase(
             this.validateForm.controls['title'].value,
@@ -241,7 +243,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
             this.id,
             this.validateForm.controls['selectPriority'].value,
             this.validateForm.controls['selectSeverity'].value,
-            parseInt(this.validateForm.controls['selectCollaborator'].value)
+            this.validateForm.controls['selectCollaborator'].value == null ? null : parseInt(this.validateForm.controls['selectCollaborator'].value)
           )
           .subscribe(
             (testCase) => {
