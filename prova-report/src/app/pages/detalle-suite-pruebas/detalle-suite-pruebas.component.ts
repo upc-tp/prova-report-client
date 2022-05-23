@@ -112,7 +112,7 @@ export class DetalleSuitePruebasComponent implements OnInit {
       this.suite.title = res.result.title;
       this.suite.description = res.result.description;
       this.suite.createdBy = res.result.createdBy;
-      this.suite.createdAt = this.utils.formatDateTime(new Date(res.result.createdAt));
+      this.suite.createdAt = this.utils.formatDate(new Date(res.result.createdAt));
       this.suite.project = res.result.project.title;
       this.suite.projectId = res.result.project.id;
       this.suite.tag = res.result.tag;
